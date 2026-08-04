@@ -7,6 +7,16 @@ import evinProfile from '../assets/evin.png';
 import { useResolvedTheme } from '../hooks/useResolvedTheme';
 import { getPlatformShortcut } from '../utils/platformUtils';
 
+/**
+ * 上游 releases 地址。与 electron/config/distribution.ts 的
+ * DISTRIBUTION.upstreamReleasesUrl 保持一致。
+ *
+ * 渲染层与主进程走不同的 tsconfig 与打包管线，无法直接 import 主进程模块，
+ * 因此这里保留一份等价常量；两处若需修改必须同步。
+ */
+const UPSTREAM_RELEASES_URL =
+    'https://github.com/Natively-AI-assistant/natively-cluely-ai-assistant/releases/latest';
+
 interface AboutSectionProps { }
 
 export const AboutSection: React.FC<AboutSectionProps> = () => {
@@ -60,6 +70,34 @@ export const AboutSection: React.FC<AboutSectionProps> = () => {
             <div>
                 <h3 className="text-lg font-bold text-text-primary mb-1">About Natively</h3>
                 <p className="text-sm text-text-secondary">Designed to be invisible, intelligent, and trusted.</p>
+            </div>
+
+            {/* Custom build notice — this is the community Simplified Chinese build. */}
+            <div>
+                <h4 className="text-xs font-bold text-text-tertiary uppercase tracking-wider mb-2 px-1">Build</h4>
+                <div className="bg-bg-item-surface rounded-xl border border-border-subtle p-5 flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-500 shadow-sm shadow-emerald-500/5">
+                            <Globe size={18} className="opacity-80" />
+                        </div>
+                        <div>
+                            <h5 className="text-sm font-bold text-text-primary">Natively ZH</h5>
+                            <p className="text-xs text-text-secondary mt-0.5 leading-relaxed max-w-lg">
+                                This is a community Simplified Chinese build. It never downloads or
+                                installs official updates automatically. Installing an official
+                                release will replace this build and remove the Chinese interface.
+                            </p>
+                        </div>
+                    </div>
+                    <a
+                        href={UPSTREAM_RELEASES_URL}
+                        onClick={(e) => handleOpenLink(e, UPSTREAM_RELEASES_URL)}
+                        className="whitespace-nowrap px-4 py-2 bg-text-primary hover:bg-white/90 text-bg-main text-xs font-bold rounded-lg transition-all shadow hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 flex items-center gap-2"
+                    >
+                        <Github size={14} />
+                        View Upstream Releases
+                    </a>
+                </div>
             </div>
 
             {/* What's New Section */}

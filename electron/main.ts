@@ -3,9 +3,14 @@ import * as crypto from "crypto"
 import path from "path"
 import fs from "fs"
 import { autoUpdater } from "electron-updater"
+import { DISTRIBUTION, configureDistributionUserData } from "./config/distribution"
 if (!app.isPackaged) {
   require('dotenv').config();
 }
+
+// 必须在任何模块读取 userData 之前执行，否则 SettingsManager / DatabaseManager
+// 会先落到官方的 %APPDATA%\natively 目录，与官方安装共用同一个数据库。
+configureDistributionUserData(app)
 
 /**
  * Whether THIS build carries a real Developer ID signature.
@@ -41,6 +46,9 @@ function isSignedBuild(): boolean {
  *    macOS build must fall back to the manual "open the download" flow.
  */
 function canAutoInstall(): boolean {
+  // Natively ZH：自定义中文构建永远不做在位自动安装。官方更新包会整体替换
+  // app.asar，汉化资源随之丢失，且用户不会收到任何提示。
+  if (!DISTRIBUTION.allowBackgroundAutoUpdate) return false
   if (!app.isPackaged) return false
   if (process.platform === 'darwin') return isSignedBuild()
   return true
@@ -1168,6 +1176,18 @@ export class AppState {
     // user doesn't click "Restart". On builds that can't auto-install (dev, or
     // an unsigned macOS build) we keep the manual flow: no silent download, no
     // install-on-quit — the UI routes the user to the manual download instead.
+    // Natively ZH：在启用后台更新之前就退出，连 10 秒自动检查都不注册。
+    // 两个标志显式置 false，不依赖 electron-updater 的默认值。
+    if (!DISTRIBUTION.allowBackgroundAutoUpdate) {
+      autoUpdater.autoDownload = false
+      autoUpdater.autoInstallOnAppQuit = false
+      console.log(
+        `[AutoUpdater] ${DISTRIBUTION.productName}: background auto-update disabled. ` +
+        `Upstream releases can only be reviewed manually via ${DISTRIBUTION.upstreamReleasesUrl}`
+      )
+      return
+    }
+
     const autoInstall = canAutoInstall()
     autoUpdater.autoDownload = autoInstall
     autoUpdater.autoInstallOnAppQuit = autoInstall
