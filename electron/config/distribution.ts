@@ -45,7 +45,37 @@ export const DISTRIBUTION = Object.freeze({
     /** 人工查看上游版本的地址；只用于 shell.openExternal，不作为更新源。 */
     upstreamReleasesUrl:
         'https://github.com/Natively-AI-assistant/natively-cluely-ai-assistant/releases/latest',
+
+    /**
+     * 中文构建的语音识别默认语言（内部键，见 electron/config/languages.ts）。
+     * 上游默认 'english-us'；中文构建改为 'chinese'（bcp47 zh-CN / iso639 zh）。
+     *
+     * 仅在用户**从未设置过**时生效。已有配置一律原样保留——
+     * 界面语言和语音识别是两回事，不能因为装了中文版就改掉用户的识别语言。
+     */
+    defaultSttLanguage: 'chinese',
+
+    /**
+     * 中文构建的 AI 回复默认语言。上游默认 'auto'（跟随用户语言）；
+     * 中文构建改为 'Chinese'，与 AI_RESPONSE_LANGUAGES 中的 code 完全一致。
+     * 同样只在从未设置过时生效。
+     */
+    defaultAiResponseLanguage: 'Chinese',
 })
+
+/**
+ * 解析「已存值优先、缺省回退」的语言设置。
+ *
+ * 抽成纯函数是为了可测：CredentialsManager 是依赖 keytar 的单例，
+ * 在单元测试里构造代价过高，而这段逻辑恰恰是最需要锁死的——
+ * 一旦缺省值意外覆盖了已有配置，用户的语音识别语言会在升级后被悄悄改掉。
+ */
+export function resolveStoredLanguage(
+    stored: string | undefined | null,
+    fallback: string,
+): string {
+    return typeof stored === 'string' && stored.trim() !== '' ? stored : fallback;
+}
 
 /**
  * 把 userData 重定向到中文构建的独立目录。

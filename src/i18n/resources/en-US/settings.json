@@ -9,6 +9,13 @@
     },
     "answer": {
       "label": "AI reply language"
+    },
+    "chineseSpeech": {
+      "title": "Chinese speech and answers",
+      "description": "Sets speech recognition to Chinese (Simplified) and AI replies to Chinese. Does not change the interface language.",
+      "apply": "Apply",
+      "done": "Speech recognition and AI replies are now set to Chinese.",
+      "failed": "Could not apply both settings. Please try again."
     }
   },
   "localAi": {

@@ -1,9 +1,10 @@
 {
   "_comment": "残留英文门禁的强制范围。每个迁移任务先把目标文件加入 enforcedFiles 触发红灯，再迁移文案，最后保持绿灯。排除项必须逐条写理由，禁止使用 src/** 或 electron/** 级别的宽泛忽略。",
-  "_progress": "Task 5 纳入首屏全局文案（App.tsx、ErrorBoundary.tsx）。其余组件在 Task 7-11 逐批纳入，Task 14 扩至全部用户界面。",
+  "_progress": "Task 6 纳入 SettingsOverlay.tsx：语言设置区已完整迁移且不得进入 allowlist；同文件其余区域以 reason='migrated in Task 9' 的逐条 allowlist 暂时放行，Task 9 迁移时必须全部删除（过期条目会导致门禁失败，不会被遗忘）。其余组件在 Task 7-11 逐批纳入，Task 14 扩至全部用户界面。",
   "enforcedFiles": [
     "src/App.tsx",
-    "src/components/ErrorBoundary.tsx"
+    "src/components/ErrorBoundary.tsx",
+    "src/components/SettingsOverlay.tsx"
   ],
   "excluded": []
 }

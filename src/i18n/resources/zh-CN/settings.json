@@ -9,6 +9,13 @@
     },
     "answer": {
       "label": "AI 回复语言"
+    },
+    "chineseSpeech": {
+      "title": "中文语音与回答",
+      "description": "把语音识别设为简体中文、AI 回复设为中文。不会改变界面语言。",
+      "apply": "应用",
+      "done": "语音识别与 AI 回复已设为中文。",
+      "failed": "未能同时应用两项设置，请重试。"
     }
   },
   "localAi": {

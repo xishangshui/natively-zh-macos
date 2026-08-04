@@ -6,6 +6,7 @@
 import { app, safeStorage } from 'electron';
 import fs from 'fs';
 import path from 'path';
+import { DISTRIBUTION, resolveStoredLanguage } from '../config/distribution';
 
 const CREDENTIALS_PATH = path.join(app.getPath('userData'), 'credentials.enc');
 
@@ -192,12 +193,21 @@ export class CredentialsManager {
         return this.credentials.tavilyApiKey;
     }
 
+    // 中文构建的缺省语言。只对**从未设置过**的配置生效：已有值一律原样返回，
+    // 否则用户的语音识别语言会在装了中文版之后被悄悄改掉——界面语言和
+    // 语音识别是两个独立概念，装中文界面不代表要用中文开会。
     public getSttLanguage(): string {
-        return this.credentials.sttLanguage || 'english-us';
+        return resolveStoredLanguage(
+            this.credentials.sttLanguage,
+            DISTRIBUTION.defaultSttLanguage,
+        );
     }
 
     public getAiResponseLanguage(): string {
-        return this.credentials.aiResponseLanguage || 'auto';
+        return resolveStoredLanguage(
+            this.credentials.aiResponseLanguage,
+            DISTRIBUTION.defaultAiResponseLanguage,
+        );
     }
     public getDefaultModel(): string {
         // Default to Flash-Lite: ~0.65s first-token vs ~2.3s for full Flash on

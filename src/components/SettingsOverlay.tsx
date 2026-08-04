@@ -6,8 +6,9 @@ import {
     Camera, RotateCcw, Eye, Layout, MessageSquare, Crop,
     ChevronDown, ChevronUp, Check, BadgeCheck, Power, Palette, Calendar, Ghost, Sun, Moon, RefreshCw, Info, Globe, FlaskConical, Terminal, Settings, Activity, ExternalLink, Trash2,
     Sparkles, Pencil, Briefcase, Building2, Search, MapPin, CheckCircle, HelpCircle, Zap, SlidersHorizontal, PointerOff,
-    Star, AlertCircle, Gift, Smartphone, Cpu, Shield
+    Star, AlertCircle, Gift, Smartphone, Cpu, Shield, Languages, Wand2
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { analytics } from '../lib/analytics/analytics.service';
 import { AboutSection } from './AboutSection';
 import { HelpSettings } from './settings/HelpSettings';
@@ -354,6 +355,8 @@ interface SettingsOverlayProps {
 }
 
 const SettingsOverlay: React.FC<SettingsOverlayProps> = ({ isOpen, onClose, initialTab = 'general' }) => {
+    // Task 6 只迁移语言设置区；其余区域在 Task 9 迁移。
+    const { t } = useTranslation(['settings', 'common', 'errors']);
     const isLight = useResolvedTheme() === 'light';
     const [activeTab, setActiveTab] = useState(initialTab);
 
@@ -486,6 +489,17 @@ const SettingsOverlay: React.FC<SettingsOverlayProps> = ({ isOpen, onClose, init
         const stored = localStorage.getItem('natively_auto_scroll');
         return stored === 'true';
     });
+
+    // 三类语言各自独立，绝不共用 state 或 setter：
+    //   uiLocale           界面语言（本组件新增）
+    //   recognitionLanguage 语音识别语言（内部键，如 'chinese'）
+    //   aiResponseLanguage  AI 回复语言（如 'Chinese'）
+    // 把界面切成英文的用户完全可能仍在开中文会议，反之亦然。
+
+    // Interface Language
+    const [uiLocale, setUiLocale] = useState<'zh-CN' | 'en-US'>('zh-CN');
+    const [uiLocaleError, setUiLocaleError] = useState<string | null>(null);
+    const [speechSwitchStatus, setSpeechSwitchStatus] = useState<'idle' | 'done' | 'failed'>('idle');
 
     // Recognition Language
     const [recognitionLanguage, setRecognitionLanguage] = useState('');
@@ -703,6 +717,75 @@ const SettingsOverlay: React.FC<SettingsOverlayProps> = ({ isOpen, onClose, init
         };
         loadLanguages();
     }, []);
+
+    // 界面语言：读取当前值，并跟随主进程广播（其他窗口切换时本窗口同步）。
+    useEffect(() => {
+        let cancelled = false;
+        window.electronAPI?.getUiLocale?.().then((locale) => {
+            if (!cancelled && (locale === 'zh-CN' || locale === 'en-US')) setUiLocale(locale);
+        }).catch(() => { /* 读取失败保持默认值，不阻断设置页 */ });
+
+        const unsubscribe = window.electronAPI?.onUiLocaleChanged?.((locale) => {
+            if (locale === 'zh-CN' || locale === 'en-US') setUiLocale(locale);
+        });
+        return () => {
+            cancelled = true;
+            unsubscribe?.();
+        };
+    }, []);
+
+    /**
+     * 切换界面语言。
+     *
+     * 只动 uiLocale —— 绝不顺带修改语音识别语言或 AI 回复语言。
+     * 保存失败时回滚下拉框：主进程未持久化成功却让界面停在新语言，
+     * 会导致重启后悄悄回退，用户完全无从察觉。
+     */
+    const handleUiLocaleChange = async (next: 'zh-CN' | 'en-US') => {
+        const previous = uiLocale;
+        setUiLocaleError(null);
+        setUiLocale(next); // 乐观更新
+
+        try {
+            const result = await window.electronAPI?.setUiLocale?.(next);
+            if (!result?.success) {
+                setUiLocale(result?.locale ?? previous);
+                setUiLocaleError(t('errors:locale.saveFailed'));
+            }
+        } catch {
+            setUiLocale(previous);
+            setUiLocaleError(t('errors:locale.saveFailed'));
+        }
+    };
+
+    /**
+     * 一键把语音识别和 AI 回复切成中文。
+     *
+     * 刻意做成显式按钮而非切换界面语言时的隐式副作用：这两个设置影响的是
+     * 会议内容的处理方式，用户必须明确知道自己改了什么。
+     * 使用内部键 'chinese' / 'Chinese'，不是 bcp47。
+     */
+    const handleSwitchToChineseSpeech = async () => {
+        setSpeechSwitchStatus('idle');
+        try {
+            const sttResult = await window.electronAPI?.setRecognitionLanguage?.('chinese');
+            const aiResult = await window.electronAPI?.setAiResponseLanguage?.('Chinese');
+
+            if (sttResult?.success === false || aiResult?.success === false) {
+                setSpeechSwitchStatus('failed');
+                return;
+            }
+
+            setRecognitionLanguage('chinese');
+            setAiResponseLanguage('Chinese');
+            if (availableLanguages['chinese']) {
+                setSelectedSttGroup(availableLanguages['chinese'].group);
+            }
+            setSpeechSwitchStatus('done');
+        } catch {
+            setSpeechSwitchStatus('failed');
+        }
+    };
 
     const handleLanguageChange = async (key: string) => {
         setRecognitionLanguage(key);
@@ -1810,6 +1893,76 @@ const SettingsOverlay: React.FC<SettingsOverlayProps> = ({ isOpen, onClose, init
                                                     </div>
                                                 </div>
 
+                                                {/* Interface Language —— 只影响界面显示，
+                                                    不改动语音识别与 AI 回复语言 */}
+                                                <div className="flex items-center justify-between px-4 py-3">
+                                                    <div className="flex items-center gap-4">
+                                                        <div className="w-10 h-10 bg-bg-item-surface rounded-lg border border-border-subtle flex items-center justify-center shrink-0 text-text-tertiary">
+                                                            <Languages size={20} />
+                                                        </div>
+                                                        <div>
+                                                            <h3 className="text-sm font-bold text-text-primary">
+                                                                {t('settings:language.ui.title')}
+                                                            </h3>
+                                                            <p className="text-xs text-text-secondary mt-0.5">
+                                                                {t('settings:language.ui.description')}
+                                                            </p>
+                                                            {uiLocaleError && (
+                                                                <p className="text-xs text-red-400 mt-1">{uiLocaleError}</p>
+                                                            )}
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="flex items-center gap-1 bg-bg-component border border-border-subtle rounded-lg p-1 shrink-0">
+                                                        {([
+                                                            { code: 'zh-CN' as const, label: '简体中文' },
+                                                            { code: 'en-US' as const, label: 'English' },
+                                                        ]).map((option) => (
+                                                            <button
+                                                                key={option.code}
+                                                                onClick={() => handleUiLocaleChange(option.code)}
+                                                                className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors whitespace-nowrap ${
+                                                                    uiLocale === option.code
+                                                                        ? 'bg-bg-item-active text-text-primary'
+                                                                        : 'text-text-secondary hover:text-text-primary'
+                                                                }`}
+                                                            >
+                                                                {option.label}
+                                                            </button>
+                                                        ))}
+                                                    </div>
+                                                </div>
+
+                                                {/* 一键把语音识别与 AI 回复切成中文。刻意做成显式操作，
+                                                    不作为切换界面语言的副作用。 */}
+                                                <div className="flex items-center justify-between px-4 py-3">
+                                                    <div className="flex items-center gap-4">
+                                                        <div className="w-10 h-10 bg-bg-item-surface rounded-lg border border-border-subtle flex items-center justify-center shrink-0 text-text-tertiary">
+                                                            <Wand2 size={20} />
+                                                        </div>
+                                                        <div>
+                                                            <h3 className="text-sm font-bold text-text-primary">
+                                                                {t('settings:language.chineseSpeech.title')}
+                                                            </h3>
+                                                            <p className="text-xs text-text-secondary mt-0.5">
+                                                                {speechSwitchStatus === 'done'
+                                                                    ? t('settings:language.chineseSpeech.done')
+                                                                    : speechSwitchStatus === 'failed'
+                                                                        ? t('settings:language.chineseSpeech.failed')
+                                                                        : t('settings:language.chineseSpeech.description')}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <button
+                                                        onClick={handleSwitchToChineseSpeech}
+                                                        className="bg-bg-component hover:bg-bg-elevated border border-border-subtle text-text-primary px-3 py-1.5 rounded-lg text-xs font-medium transition-colors whitespace-nowrap shrink-0"
+                                                    >
+                                                        {speechSwitchStatus === 'failed'
+                                                            ? t('common:actions.retry')
+                                                            : t('settings:language.chineseSpeech.apply')}
+                                                    </button>
+                                                </div>
+
                                                     {/* AI Response Language */}
                                                 <div className="flex items-center justify-between px-4 py-3">
                                                     <div className="flex items-center gap-4">
@@ -1823,7 +1976,7 @@ const SettingsOverlay: React.FC<SettingsOverlayProps> = ({ isOpen, onClose, init
                                                             <Globe size={20} />
                                                         </div>
                                                         <div>
-                                                            <h3 className="text-sm font-bold text-text-primary">AI Response Language</h3>
+                                                            <h3 className="text-sm font-bold text-text-primary">{t('settings:language.answer.label')}</h3>
                                                             <p className="text-xs text-text-secondary mt-0.5">
                                                                 {aiResponseLanguage === 'auto'
                                                                     ? 'Mirrors user\'s language automatically'
