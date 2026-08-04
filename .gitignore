@@ -15,6 +15,9 @@ natively-api
 natively/
 .natively
 settings.json
+# 上面的裸 settings.json 规则匹配任意深度的同名文件，会连带忽略 i18n 词典。
+# 词典是产品源码的一部分，必须入库——否则本机测试通过、他人克隆后缺文件。
+!src/i18n/resources/*/settings.json
 natively/pro_licenses.json
 env
 /env

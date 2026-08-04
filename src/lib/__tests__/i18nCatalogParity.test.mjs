@@ -7,6 +7,8 @@
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import { execFileSync } from 'node:child_process';
+import path from 'node:path';
 
 import {
     BASE_LOCALE,
@@ -98,6 +100,34 @@ describe('i18n 词典完整性', () => {
             }
         }
         assert.deepEqual(empty, [], `以下键的值为空：\n${empty.join('\n')}`);
+    });
+
+    test('没有词典文件被 .gitignore 忽略', () => {
+        // 回归用例：.gitignore 有一条裸的 `settings.json` 规则（本意是编辑器配置），
+        // 会连带忽略 src/i18n/resources/*/settings.json。这类问题在本机不可见——
+        // 文件存在、测试全过——但他人克隆后词典缺失，静态导入直接构建失败。
+        const ignored = [];
+        for (const locale of LOCALES) {
+            for (const namespace of NAMESPACES) {
+                const file = catalogPath(locale, namespace);
+                if (!fs.existsSync(file)) continue;
+                try {
+                    // check-ignore 命中时退出码 0，未命中时退出码 1（抛异常）
+                    execFileSync('git', ['check-ignore', '-q', file], {
+                        cwd: path.dirname(file),
+                        stdio: 'ignore',
+                    });
+                    ignored.push(`${locale}/${namespace}.json`);
+                } catch {
+                    // 未被忽略，正常
+                }
+            }
+        }
+        assert.deepEqual(
+            ignored,
+            [],
+            `以下词典被 .gitignore 忽略，不会进入仓库：\n${ignored.join('\n')}`,
+        );
     });
 
     test('完整门禁无任何问题', () => {

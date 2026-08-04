@@ -1,0 +1,14 @@
+{
+  "language": {
+    "ui": {
+      "title": "界面语言",
+      "description": "仅改变界面显示。语音识别语言与 AI 回复语言保持不变。"
+    },
+    "speech": {
+      "label": "语音识别语言"
+    },
+    "answer": {
+      "label": "AI 回复语言"
+    }
+  }
+}

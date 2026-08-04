@@ -1,0 +1,14 @@
+{
+  "language": {
+    "ui": {
+      "title": "Interface language",
+      "description": "Changes the interface only. Speech recognition and AI reply languages are kept as they are."
+    },
+    "speech": {
+      "label": "Speech recognition language"
+    },
+    "answer": {
+      "label": "AI reply language"
+    }
+  }
+}
