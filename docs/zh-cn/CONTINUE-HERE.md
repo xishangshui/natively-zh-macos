@@ -98,10 +98,58 @@ Task 15 的 `electron-builder` 需求更高，届时可能仍不够。
 
 ## 3. 当前进度
 
-已完成 Task 1–7、7.5、8。共 13 个提交，工作树 clean。
+已完成 Task 1–7、7.5、8，以及 **Task 9 的第 1 批**。共 15 个提交，工作树 clean。
+
+计划复选框：**42/75**（Task 8 已勾完；Task 9 的 5 个尚未勾，因为 Task 9 未完）。
+
+### Task 9 只做完了一半——接手第一件事就是做完它
+
+第 1 批（提交 `666a29e`）迁移了 11 个文件并**删光了 225 条
+`reason="migrated in Task 9"` 暂放条目**，词典新增 371 个键。
+
+第 2 批**尚未开始**，剩两个文件、约 220 处：
+
+| 文件 | 待迁移处数 |
+|---|---|
+| `src/components/settings/NativelyApiSettings.tsx` | 119 |
+| `src/components/settings/NativelyProSettings.tsx` | 101 |
+
+这两个文件**目前不在 `enforcedFiles` 里**（`i18n-scope.json` 的 `_progress`
+已写明原因），所以门禁是绿的。做完第 2 批后必须把它们加回 `enforcedFiles`，
+再勾 Task 9 的 5 个复选框。
+
+`NativelyProSettings.tsx` 里有退款政策、邮箱、Device ID 等文案，
+注意 `natively.contact@gmail.com` 属于联系方式，不翻译（进 allowlist）。
+
+### 迁移过程中沉淀的四个坑（Task 10–14 会重复遇到）
+
+**1. 字面量兼作样式判别器。** `badge === 'Saved'` 既是显示文案又决定绿色徽标配色。
+直接把调用点换成译文会连带破坏配色。做法是把内部令牌降为小写
+（`'saved'`，非散文，扫描器不报），显示时再查词典。
+**迁移前先 grep 这个字面量有没有被 `===` 比较过。**
+
+**2. placeholder 写成参数默认值会固化语言。**
+`({ placeholder = "Select device" })` 在模块求值期就定死了，
+必须改成运行时 `placeholder ?? t(...)`。
+
+**3. 内部枚举带连字符，词典键名不允许。** `very-fast` / `very-high` 拼进
+`t(\`x.\${enum}\`)` 会查不到键，**静默回退成键名本身显示给用户**。
+用显式映射表，不要字符串拼接。
+
+**4. 批量替换 JSX 属性必须带花括号。** 把 `title="X"` 机械替换成
+`title=t('k')` 是语法错误（本次踩过，11 处）。正确是 `title={t('k')}`。
+对象字面量里的 `label: t('k')` 不受影响。
+**批量替换后一定跑 `npx tsc --noEmit`**——它是唯一能抓到这类错的门禁。
+
+顺带一条：`t('updates.checking')` 少了命名空间分隔符会去查
+`common:updates.checking`（defaultNS 是 common），必须写 `t('updates:status.checking')`。
+另外词典键名规范要求**至少一层点号**，顶层扁平键（如 `checking`）会被门禁拒绝。
+
+### 提交历史
 
 ```
-（本次）  feat: 本地化会议主界面                        Task 8（收尾）
+666a29e  feat: 本地化设置总览与供应商配置              Task 9（第 1 批）
+7a3d071  feat: 本地化会议主界面                        Task 8（收尾）
 2ae27c9  docs: 补充新会话接手指南并修正门禁范围
 8fda467  feat: 本地化会议聊天、建议浮层与跟进邮件      Task 8（部分）
 3d23693  test: 加固残留英文扫描器，改用样式判别        Task 7.5（计划外插入）
@@ -115,8 +163,6 @@ b31167d  build: 隔离 Natively ZH 发行标识并禁用自动更新 Task 2
 660cc92  docs: 记录 zh-CN 构建基线证据                Task 1
 98e0040  fix: 修复上游基线的类型检查与测试脚本
 ```
-
-计划复选框已勾到 Task 8（42/75）。
 
 ---
 
@@ -214,13 +260,17 @@ Compare-Object $base $now | Where-Object { $_.SideIndicator -eq '=>' }   # 必�
 
 ## 6. 剩余工作
 
-### 立即要做：Task 9
+### 立即要做：Task 9 第 2 批
 
-Task 8 已完成，证据见 `docs/zh-cn/evidence/task-08/README.md`。
-门禁范围现含 20 个文件；`NativelyInterface.tsx` 新增 8 条永久 allowlist
-（诊断报告标题、`Shift` 按键名、6 个模型名）。
+见 §3 的表格：`NativelyApiSettings.tsx`（119 处）与
+`NativelyProSettings.tsx`（101 处）。做完后把两个文件加回 `enforcedFiles`，
+勾 Task 9 的 5 个复选框，再进 Task 10。
 
-**迁移中踩到的一类坑，Task 9–12 会反复遇到：**
+门禁范围现含 30 个文件，allowlist 51 条（全部是永久性的产品名、模型名、
+供应商名、API 字段、示例命令、按键名、区域 ID、日志路径）——
+**已无任何暂放条目**。
+
+**迁移中踩到的一类坑，Task 10–12 会反复遇到：**
 上游有若干测试拿**英文字面量**当「结构未被回退」的锚点
 （如 `assert.match(src, /Repair Permissions/)`）。文案迁走后它们必然转红。
 正确处理是**把锚点换成语义键、保留原结构断言、再补一条词典断言**
@@ -233,7 +283,8 @@ Task 8 已完成，证据见 `docs/zh-cn/evidence/task-08/README.md`。
 
 按计划执行。几个要点：
 
-- **Task 9** 迁移 `SettingsOverlay.tsx`（2810 行），必须**删光 225 条暂放 allowlist**
+- **Task 9** 第 1 批已完成（含 `SettingsOverlay.tsx` 3194 行），
+  225 条暂放 allowlist 已删光；剩两个文件见上
 - **Task 12** 改 Electron 主进程托盘/对话框/数据库种子，风险最高，
   务必比对基线失败集合
 - **Task 13** 字体栈目前**不含任何中文字体**（运行时实测为 Tailwind 默认值），
