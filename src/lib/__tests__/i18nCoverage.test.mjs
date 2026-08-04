@@ -115,6 +115,24 @@ describe('门禁工具：扫描行为', () => {
         assert.equal(findings[0].literal, 'Local AI memory ready');
     });
 
+    test('|| 与 ?? 兜底文案会被捕获', () => {
+        // 回归用例：setOllamaPullMessage(data.status || 'Downloading...') 这类
+        // 兜底串是用户在异常路径上真正看到的文字，只看顶层实参节点会整类漏掉。
+        const { findings } = scanFixture({
+            'fixture/Fallback.tsx': [
+                'function f(data){',
+                "  setPullMessage(data.status || 'Downloading now');",
+                "  setPullLabel(data.label ?? 'Please wait');",
+                "  setPullTitle(data.ok ? 'All done' : 'Something failed');",
+                '}',
+            ].join('\n'),
+        });
+        assert.deepEqual(
+            findings.map((f) => f.literal).sort(),
+            ['All done', 'Downloading now', 'Please wait', 'Something failed'],
+        );
+    });
+
     test('looksLikeProse 区分散文与枚举', () => {
         assert.equal(looksLikeProse('Local AI memory ready'), true);
         assert.equal(looksLikeProse('Connecting'), true);

@@ -11,6 +11,7 @@
   },
   "state": {
     "loading": "Loading...",
-    "empty": "Nothing here yet"
+    "empty": "Nothing here yet",
+    "indexing": "Re-indexing meetings..."
   }
 }

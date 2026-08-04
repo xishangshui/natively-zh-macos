@@ -2,6 +2,7 @@ import React from "react"
 import ReactDOM from "react-dom/client"
 import App from "./App"
 import "./index.css"
+import { initializeRendererI18n } from "./i18n"
 
 const THEME_CACHE_KEY = 'natively_resolved_theme';
 
@@ -30,8 +31,20 @@ if (window.electronAPI?.getThemeMode) {
   });
 }
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-)
+// Step 3: Resolve the UI language BEFORE mounting React.
+// Rendering first and switching language afterwards makes the window paint one
+// frame in the default language and then jump — very visible on the launcher and
+// meeting overlays, which are small windows that appear instantly.
+// initializeRendererI18n never rejects: if the IPC call fails it falls back to
+// the default locale, so a main-process hiccup can never leave a blank window.
+async function bootstrap() {
+  await initializeRendererI18n()
+
+  ReactDOM.createRoot(document.getElementById("root")!).render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  )
+}
+
+void bootstrap()

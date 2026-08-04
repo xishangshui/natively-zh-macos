@@ -4,5 +4,11 @@
   },
   "state": {
     "notConfigured": "尚未配置"
+  },
+  "changed": {
+    "title": "AI 供应商已更改",
+    "description": "有 {{count}} 场会议使用的是此前的 AI 供应商（{{oldProvider}}），在 {{newProvider}} 下不会出现在搜索结果中。",
+    "dismiss": "忽略",
+    "reindex": "自动重建索引"
   }
 }

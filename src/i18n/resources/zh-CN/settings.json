@@ -10,5 +10,8 @@
     "answer": {
       "label": "AI 回复语言"
     }
+  },
+  "localAi": {
+    "ready": "本地 AI 记忆已就绪"
   }
 }

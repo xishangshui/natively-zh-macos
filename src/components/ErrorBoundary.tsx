@@ -6,6 +6,9 @@
 
 import React, { Component, ReactNode } from 'react';
 import { RefreshCw, AlertTriangle } from 'lucide-react';
+// 直接用 i18next 单例而非 useTranslation：这是 class 组件，且它要在应用
+// 已经崩溃的情况下工作——此时不应再依赖 React context 是否完好。
+import i18n from '../i18n';
 
 interface Props {
     children: ReactNode;
@@ -86,10 +89,10 @@ export class ErrorBoundary extends Component<Props, State> {
             >
                 <AlertTriangle size={36} color="#ff4444" style={{ marginBottom: '4px' }} />
                 <h2 style={{ margin: 0, fontSize: '16px', fontWeight: 600, color: '#fff' }}>
-                    {context} crashed
+                    {i18n.t('errors:boundary.title', { context })}
                 </h2>
                 <p style={{ margin: 0, fontSize: '12px', color: '#888', maxWidth: '320px', lineHeight: 1.5 }}>
-                    An unexpected error occurred. Your data is safe — click below to recover.
+                    {i18n.t('errors:boundary.description')}
                 </p>
                 {this.state.errorMessage && (
                     <code style={{
@@ -118,7 +121,7 @@ export class ErrorBoundary extends Component<Props, State> {
                         }}
                     >
                         <RefreshCw size={13} />
-                        Try to recover
+                        {i18n.t('errors:boundary.recover')}
                     </button>
                     <button
                         onClick={this.handleHardReload}
@@ -130,7 +133,7 @@ export class ErrorBoundary extends Component<Props, State> {
                         }}
                     >
                         <RefreshCw size={13} />
-                        Reload UI
+                        {i18n.t('errors:boundary.reload')}
                     </button>
                 </div>
             </div>

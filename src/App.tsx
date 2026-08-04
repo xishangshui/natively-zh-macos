@@ -34,10 +34,14 @@ import { analytics } from "./lib/analytics/analytics.service"
 import { ErrorBoundary } from "./components/ErrorBoundary"
 import ModesSettings from "./components/settings/ModesSettings"
 import { ProfileIntelligenceSettings } from "./components/ProfileIntelligenceSettings"
+import { useTranslation } from "react-i18next"
 
 const queryClient = new QueryClient()
 
 const App: React.FC = () => {
+  // 用到的 namespace 显式列出：common 是默认域，providers/settings 供
+  // 供应商变更横幅与本地 AI 状态使用。
+  const { t } = useTranslation(['common', 'providers', 'settings', 'errors']);
   const isSettingsWindow = new URLSearchParams(window.location.search).get('window') === 'settings';
   const isLauncherWindow = new URLSearchParams(window.location.search).get('window') === 'launcher';
   const isOverlayWindow = new URLSearchParams(window.location.search).get('window') === 'overlay';
@@ -379,12 +383,13 @@ const App: React.FC = () => {
       removeProgress = window.electronAPI.onOllamaPullProgress((data) => {
         setOllamaPullStatus('downloading');
         setOllamaPullPercent(data.percent || 0);
-        setOllamaPullMessage(data.status || 'Downloading...');
+        // data.status 是 Ollama 返回的原始英文状态，保留原文；仅兜底文案本地化。
+        setOllamaPullMessage(data.status || t('common:state.loading'));
       });
 
       removeComplete = window.electronAPI.onOllamaPullComplete(() => {
         setOllamaPullStatus('complete');
-        setOllamaPullMessage('Local AI memory ready');
+        setOllamaPullMessage(t('settings:localAi.ready'));
         setOllamaPullPercent(100);
         setTimeout(() => setOllamaPullStatus('idle'), 3000);
       });
@@ -771,9 +776,15 @@ const App: React.FC = () => {
               <div className="flex items-start gap-3">
                 <AlertCircle className="w-5 h-5 text-[#ff3333] shrink-0 mt-0.5" />
                 <div>
-                  <h3 className="text-[#E0E0E0] font-medium text-sm">Provider Changed</h3>
+                  <h3 className="text-[#E0E0E0] font-medium text-sm">{t('providers:changed.title')}</h3>
                   <p className="text-[#A0A0A0] text-xs mt-1 leading-relaxed">
-                    ⚠ {incompatibleWarning.count} meetings used your previous AI provider ({incompatibleWarning.oldProvider}) and won't appear in search results under {incompatibleWarning.newProvider}.
+                    {/* 整句用单个插值键：中英文语序不同，拆成「前半段 + 变量 +
+                        后半段」在中文里会读不通。供应商名原样插入，不翻译。 */}
+                    ⚠ {t('providers:changed.description', {
+                      count: incompatibleWarning.count,
+                      oldProvider: incompatibleWarning.oldProvider,
+                      newProvider: incompatibleWarning.newProvider,
+                    })}
                   </p>
                 </div>
               </div>
@@ -782,13 +793,13 @@ const App: React.FC = () => {
                   onClick={() => setIncompatibleWarning(null)}
                   className="px-3 py-1.5 rounded-lg text-xs font-medium text-[#A0A0A0] hover:text-white hover:bg-white/5 transition-colors"
                 >
-                  Dismiss
+                  {t('providers:changed.dismiss')}
                 </button>
                 <button 
                   onClick={handleReindex}
                   className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#ff3333]/10 text-[#ff3333] hover:bg-[#ff3333]/20 transition-colors"
                 >
-                  Re-index automatically
+                  {t('providers:changed.reindex')}
                 </button>
               </div>
             </div>

@@ -170,6 +170,39 @@ export function scanSource(relPath, sourceText) {
         return null;
     };
 
+    /**
+     * 收集一个表达式里所有用户可见的字面量。
+     *
+     * 必须递归进 `||` / `??` 和三元表达式：兜底文案惯用
+     * `setMessage(data.status || 'Downloading...')` 的写法，只看顶层节点会
+     * 整类漏掉——而这些兜底串恰恰是用户在异常路径上真正看到的文字。
+     * 括号表达式一并穿透。
+     */
+    const stringsFromArgument = (node, out = []) => {
+        if (!node) return out;
+        const direct = stringFromExpression(node);
+        if (direct !== null) {
+            out.push({ node, text: direct });
+            return out;
+        }
+        if (ts.isParenthesizedExpression(node)) {
+            stringsFromArgument(node.expression, out);
+        } else if (ts.isBinaryExpression(node)) {
+            const op = node.operatorToken.kind;
+            if (
+                op === ts.SyntaxKind.BarBarToken
+                || op === ts.SyntaxKind.QuestionQuestionToken
+            ) {
+                stringsFromArgument(node.left, out);
+                stringsFromArgument(node.right, out);
+            }
+        } else if (ts.isConditionalExpression(node)) {
+            stringsFromArgument(node.whenTrue, out);
+            stringsFromArgument(node.whenFalse, out);
+        }
+        return out;
+    };
+
     const visit = (node) => {
         // 1. JSX 文本
         if (ts.isJsxText(node)) {
@@ -207,8 +240,9 @@ export function scanSource(relPath, sourceText) {
 
             if (isUserFacing) {
                 for (const arg of node.arguments) {
-                    const literal = stringFromExpression(arg);
-                    if (literal !== null) record(arg, literal, 'call:' + calleeName);
+                    for (const found of stringsFromArgument(arg)) {
+                        record(found.node, found.text, 'call:' + calleeName);
+                    }
                 }
             }
         }

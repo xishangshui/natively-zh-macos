@@ -4,5 +4,11 @@
   },
   "state": {
     "notConfigured": "Not configured"
+  },
+  "changed": {
+    "title": "Provider Changed",
+    "description": "{{count}} meetings used your previous AI provider ({{oldProvider}}) and will not appear in search results under {{newProvider}}.",
+    "dismiss": "Dismiss",
+    "reindex": "Re-index automatically"
   }
 }

@@ -4,5 +4,11 @@
   },
   "locale": {
     "saveFailed": "Could not save the interface language. Please try again."
+  },
+  "boundary": {
+    "title": "{{context}} crashed",
+    "description": "An unexpected error occurred. Your data is safe — click below to recover.",
+    "recover": "Try to recover",
+    "reload": "Reload UI"
   }
 }

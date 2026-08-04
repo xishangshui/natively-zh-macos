@@ -10,5 +10,8 @@
     "answer": {
       "label": "AI reply language"
     }
+  },
+  "localAi": {
+    "ready": "Local AI memory ready"
   }
 }
