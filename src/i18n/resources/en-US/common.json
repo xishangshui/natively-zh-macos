@@ -15,13 +15,25 @@
     "show": "Show",
     "minimize": "Minimize",
     "restore": "Restore",
-    "maximize": "Maximize"
+    "maximize": "Maximize",
+    "copied": "Copied",
+    "copyAnswer": "Copy answer",
+    "copyMessage": "Copy message",
+    "remove": "Remove",
+    "removeAll": "Remove all",
+    "reset": "Reset",
+    "regenerate": "Regenerate",
+    "stop": "Stop",
+    "details": "Details",
+    "rebind": "Rebind",
+    "openSettings": "Open Settings"
   },
   "state": {
     "loading": "Loading...",
     "empty": "Nothing here yet",
     "indexing": "Re-indexing meetings...",
     "finalizing": "Finalizing...",
-    "loadingModels": "Loading models..."
+    "loadingModels": "Loading models...",
+    "notSet": "not set"
   }
 }

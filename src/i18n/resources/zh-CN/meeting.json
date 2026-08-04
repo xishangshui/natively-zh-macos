@@ -20,5 +20,115 @@
       "followUp": "后续问题",
       "recap": "要点回顾"
     }
+  },
+  "channel": {
+    "interviewer": "对方",
+    "you": "我",
+    "interviewerIcon": "🎤 对方",
+    "youIcon": "👤 我",
+    "via": "来自"
+  },
+  "stt": {
+    "notConfigured": "语音识别未配置",
+    "notConfiguredDetail": "打开音频设置选择一个供应商",
+    "needsAttention": "语音识别需要处理",
+    "reconnecting": "语音识别重连中",
+    "listening": "正在等待音频…",
+    "healthy": "语音识别正常",
+    "micPrefix": "麦克风 ·",
+    "live": "实时",
+    "disconnected": "已断开",
+    "listeningShort": "正在聆听…",
+    "titleNotConfigured": "转写功能尚未配置",
+    "noProvider": "尚未选择语音识别供应商。打开「设置 → 音频」选择一个。",
+    "errorPrefix": "❌ 语音识别错误：{{detail}}",
+    "reconnectRetry": "⏳ 语音识别正在重连，请稍后再试。",
+    "noSpeech": "⚠️ 未检测到语音。请靠近麦克风说话。"
+  },
+  "actions": {
+    "whatToAnswer": "我该怎么回答？",
+    "clarify": "追问澄清",
+    "brainstorm": "头脑风暴",
+    "recap": "要点回顾",
+    "followUp": "后续问题",
+    "answer": "回答",
+    "suggestedActions": "建议操作",
+    "dismissAction": "忽略{{action}}"
+  },
+  "screenshot": {
+    "attached": "已附加截图",
+    "one": "张截图",
+    "attachedSuffix": "已附加",
+    "alt": "截图",
+    "analyze": "分析这张截图",
+    "selective": "进行区域截图"
+  },
+  "answer": {
+    "correctedAnswer": "已修正的回答",
+    "codeBadge": "代码",
+    "header": "🎯 **回答：**",
+    "verifiedRunning": "已通过运行代码验证",
+    "verifiedPrefix": "已验证 ·",
+    "testCase": "个测试用例",
+    "passed": "通过",
+    "ranTests": "已运行",
+    "testsSucceeded": "个测试用例，全部通过",
+    "stillFinishing": "上一个回答还在生成，请稍候…",
+    "stillGeneratingHint": "代码提示还在生成，请稍候…"
+  },
+  "prompts": {
+    "whatToSay": "关于这个我该说什么？",
+    "codeHint": "给我一个代码提示",
+    "brainstormContext": "结合这个上下文头脑风暴"
+  },
+  "input": {
+    "askOrAnswer": "提问，或点击「回答」",
+    "askAnything": "询问屏幕内容或对话，或",
+    "askMeAnything": "随便问我…"
+  },
+  "suggestion": {
+    "generating": "正在生成建议…",
+    "title": "💡 建议回复",
+    "confidenceSuffix": "% 置信度",
+    "rePrefix": "回复：「",
+    "followUpHint": "说「换个说法」或「说简短些」可继续调整",
+    "reQuestion": "回复：「{{question}}…」"
+  },
+  "stealth": {
+    "hotkeyInUse": "隐形输入快捷键",
+    "hotkeyInUseDetail": "已被占用。点击输入框激活，或在设置中重新绑定。",
+    "needsAccessibility": "隐形输入需要辅助功能权限。请在系统设置中授予，然后重启 Natively。"
+  },
+  "permissions": {
+    "screenDenied": "屏幕录制权限被拒绝",
+    "audioIssue": "音频采集异常",
+    "openMicSettings": "打开麦克风设置",
+    "openScreenSettings": "打开屏幕录制设置",
+    "micSettingsTitle": "打开 macOS 麦克风隐私设置",
+    "screenSettingsTitle": "打开 macOS 屏幕录制隐私设置",
+    "appSettingsTitle": "打开 Natively 设置",
+    "repair": "修复权限",
+    "repairing": "正在重置…",
+    "repairTitle": "重置 Natively 的 macOS 权限记录（重启后需要重新授权）"
+  },
+  "privacy": {
+    "localRoute": "本地/私有链路",
+    "customRoute": "自定义端点链路"
+  },
+  "search": {
+    "thisMeeting": "搜索本次会议",
+    "allMeetings": "搜索全部会议"
+  },
+  "email": {
+    "draftTitle": "起草跟进邮件",
+    "to": "收件人",
+    "recipientPlaceholder": "收件人邮箱",
+    "subject": "主题",
+    "subjectPlaceholder": "邮件主题",
+    "drafting": "正在起草跟进邮件…",
+    "bodyPlaceholder": "撰写邮件内容…"
+  },
+  "hotkeys": {
+    "tab": "Tab"
   }
 }

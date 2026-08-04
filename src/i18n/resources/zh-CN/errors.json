@@ -13,5 +13,16 @@
   },
   "launcher": {
     "apiNotInitialized": "错误：Electron API 未初始化，请检查 preload 脚本。"
+  },
+  "message": {
+    "withDetail": "错误：{{detail}}",
+    "markedWithDetail": "❌ 错误：{{detail}}",
+    "startStream": "❌ 启动音频流失败：{{detail}}",
+    "withCode": "❌ 错误（{{code}}）"
+  },
+  "chat": {
+    "noResponse": "没有收到回复，请重试。",
+    "checkSettings": "没有收到回复，请检查设置。",
+    "somethingWrong": "出了点问题，请重试。"
   }
 }

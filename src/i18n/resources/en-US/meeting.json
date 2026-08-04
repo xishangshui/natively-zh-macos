@@ -20,5 +20,115 @@
       "followUp": "Follow up questions",
       "recap": "Recap"
     }
+  },
+  "channel": {
+    "interviewer": "Interviewer",
+    "you": "You",
+    "interviewerIcon": "🎤 Interviewer",
+    "youIcon": "👤 You",
+    "via": "via"
+  },
+  "stt": {
+    "notConfigured": "STT not configured",
+    "notConfiguredDetail": "Open Audio settings to select a provider",
+    "needsAttention": "STT needs attention",
+    "reconnecting": "STT reconnecting",
+    "listening": "Listening for audio…",
+    "healthy": "STT healthy",
+    "micPrefix": "mic ·",
+    "live": "Live",
+    "disconnected": "Disconnected",
+    "listeningShort": "listening...",
+    "titleNotConfigured": "Transcription Not Configured",
+    "noProvider": "No STT provider selected. Open Settings → Audio to pick one.",
+    "errorPrefix": "❌ STT Error: {{detail}}",
+    "reconnectRetry": "⏳ STT is reconnecting, try again in a moment.",
+    "noSpeech": "⚠️ No speech detected. Try speaking closer to your microphone."
+  },
+  "actions": {
+    "whatToAnswer": "What to answer?",
+    "clarify": "Clarify",
+    "brainstorm": "Brainstorm",
+    "recap": "Recap",
+    "followUp": "Follow Up Question",
+    "answer": "Answer",
+    "suggestedActions": "Suggested actions",
+    "dismissAction": "Dismiss {{action}}"
+  },
+  "screenshot": {
+    "attached": "Screenshot attached",
+    "one": "screenshot",
+    "attachedSuffix": "attached",
+    "alt": "Screenshot",
+    "analyze": "Analyze this screenshot",
+    "selective": "for selective screenshot"
+  },
+  "answer": {
+    "correctedAnswer": "Corrected answer",
+    "codeBadge": "CODE",
+    "header": "🎯 **Answer:**",
+    "verifiedRunning": "verified by running the code",
+    "verifiedPrefix": "verified ·",
+    "testCase": "test case",
+    "passed": "passed",
+    "ranTests": "Ran",
+    "testsSucceeded": "test case(s) successfully",
+    "stillFinishing": "Still finishing the previous answer — one moment…",
+    "stillGeneratingHint": "Still generating the code hint — one moment…"
+  },
+  "prompts": {
+    "whatToSay": "What should I say about this?",
+    "codeHint": "Give me a code hint for this",
+    "brainstormContext": "Brainstorm with this context"
+  },
+  "input": {
+    "askOrAnswer": "Ask a question or click Answer",
+    "askAnything": "Ask anything on screen or conversation, or",
+    "askMeAnything": "Ask me anything..."
+  },
+  "suggestion": {
+    "generating": "Generating suggestion...",
+    "title": "💡 Suggested Response",
+    "confidenceSuffix": "% confidence",
+    "rePrefix": "Re: \"",
+    "followUpHint": "Say \"rephrase that\" or \"make it shorter\" for follow-ups",
+    "reQuestion": "Re: \"{{question}}...\""
+  },
+  "stealth": {
+    "hotkeyInUse": "Stealth typing hotkey",
+    "hotkeyInUseDetail": "is already in use. Click the input to activate, or rebind in Settings.",
+    "needsAccessibility": "Stealth typing needs Accessibility access. Grant it in System Settings, then restart Natively."
+  },
+  "permissions": {
+    "screenDenied": "Screen Recording Permission Denied",
+    "audioIssue": "Audio Capture Issue",
+    "openMicSettings": "Open Mic Settings",
+    "openScreenSettings": "Open Screen Settings",
+    "micSettingsTitle": "Open macOS Microphone privacy settings",
+    "screenSettingsTitle": "Open macOS Screen Recording privacy settings",
+    "appSettingsTitle": "Open Natively Settings",
+    "repair": "Repair Permissions",
+    "repairing": "Resetting…",
+    "repairTitle": "Reset macOS permission entries for Natively (you will need to grant them again after relaunch)"
+  },
+  "privacy": {
+    "localRoute": "Local/private route",
+    "customRoute": "Custom endpoint route"
+  },
+  "search": {
+    "thisMeeting": "Search this meeting",
+    "allMeetings": "Search all meetings"
+  },
+  "email": {
+    "draftTitle": "Draft Follow-up",
+    "to": "To",
+    "recipientPlaceholder": "Recipient email",
+    "subject": "Subject",
+    "subjectPlaceholder": "Subject line",
+    "drafting": "Drafting perfect follow-up...",
+    "bodyPlaceholder": "Write your email..."
+  },
+  "hotkeys": {
+    "tab": "Tab"
   }
 }

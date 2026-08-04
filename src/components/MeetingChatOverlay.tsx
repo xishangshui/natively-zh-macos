@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useStreamBuffer } from '../hooks/useStreamBuffer';
 import { X, Copy, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -185,6 +186,7 @@ const UserMessage: React.FC<{ content: string }> = ({ content }) => (
 );
 
 const AssistantMessage: React.FC<{ content: string; isStreaming?: boolean }> = ({ content, isStreaming }) => {
+    const { t } = useTranslation(['common']);
     const [copied, setCopied] = useState(false);
     const isLightTheme = useResolvedTheme() === 'light';
     const cardBgBorderClass = isLightTheme
@@ -217,7 +219,7 @@ const AssistantMessage: React.FC<{ content: string; isStreaming?: boolean }> = (
                             className="flex items-center gap-1.5 text-[11px] text-text-tertiary hover:text-[#4ade80] transition-colors"
                         >
                             {copied ? <Check size={12} className="text-emerald-500" /> : <Copy size={12} />}
-                            {copied ? 'Copied' : 'Copy'}
+                            {copied ? t('common:actions.copied') : t('common:actions.copy')}
                         </button>
                     </div>
                 )}
@@ -246,7 +248,7 @@ const AssistantMessage: React.FC<{ content: string; isStreaming?: boolean }> = (
                                     <div className="my-2 rounded-xl overflow-hidden border border-white/[0.08] shadow-lg bg-zinc-800/60 backdrop-blur-md">
                                         <div className="bg-white/[0.04] px-3 py-1 border-b border-white/[0.08]">
                                             <span className="text-[9px] uppercase tracking-widest font-semibold text-white/40 font-mono">
-                                                {lang || 'CODE'}
+                                                {lang || t('meeting:answer.codeBadge')}
                                             </span>
                                         </div>
                                         <div className="bg-transparent">
@@ -305,6 +307,7 @@ const MeetingChatOverlay: React.FC<MeetingChatOverlayProps> = ({
     initialQuery = '',
     // onNewQuery
 }) => {
+    const { t } = useTranslation(['meeting', 'common', 'errors', 'launcher']);
     const [messages, setMessages] = useState<Message[]>([]);
     const [chatState, setChatState] = useState<ChatState>('idle');
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -454,7 +457,7 @@ const MeetingChatOverlay: React.FC<MeetingChatOverlayProps> = ({
             const errorCleanup = window.electronAPI?.onRAGStreamError((data: { error: string }) => {
                 console.error('[MeetingChat] RAG stream error:', data.error);
                 setMessages(prev => prev.filter(msg => msg.id !== assistantMessageId));
-                setErrorMessage("Couldn't get a response. Please try again.");
+                setErrorMessage(t('errors:chat.noResponse'));
                 setChatState('error');
                 streamBuffer.reset();
                 tokenCleanup?.();
@@ -511,7 +514,7 @@ ${contextString}`;
                     const oldErrorCleanup = window.electronAPI?.onGeminiStreamError((error: string) => {
                         console.error('[MeetingChat] Gemini stream error (fallback):', error);
                         setMessages(prev => prev.filter(msg => msg.id !== assistantMessageId));
-                        setErrorMessage("Couldn't get a response. Please check your settings.");
+                        setErrorMessage(t('errors:chat.checkSettings'));
                         setChatState('error');
                         streamBuffer.reset();
                         oldTokenCleanup?.();
@@ -563,7 +566,7 @@ ${contextString}`;
                 const oldErrorCleanup = window.electronAPI?.onGeminiStreamError((error: string) => {
                     console.error('[MeetingChat] Gemini stream error:', error);
                     setMessages(prev => prev.filter(msg => msg.id !== assistantMessageId));
-                    setErrorMessage("Couldn't get a response. Please check your settings.");
+                    setErrorMessage(t('errors:chat.checkSettings'));
                     setChatState('error');
                     streamBuffer.reset();
                     oldTokenCleanup?.();
@@ -582,7 +585,7 @@ ${contextString}`;
         } catch (error) {
             console.error('[MeetingChat] Error:', error);
             setMessages(prev => prev.filter(msg => msg.id !== assistantMessageId));
-            setErrorMessage("Something went wrong. Please try again.");
+            setErrorMessage(t('errors:chat.somethingWrong'));
             setChatState('error');
         }
     }, [chatState, buildContextString, meetingContext]);
@@ -623,8 +626,8 @@ ${contextString}`;
                         {/* Header with close button */}
                         <div className="flex items-center justify-between px-4 py-3 border-b border-border-subtle shrink-0">
                             <div className="flex items-center gap-2 text-text-tertiary">
-                                <img src={nativelyIcon} className="w-3.5 h-3.5 force-black-icon opacity-50" alt="logo" />
-                                <span className="text-[13px] font-medium">Search this meeting</span>
+                                <img src={nativelyIcon} className="w-3.5 h-3.5 force-black-icon opacity-50" alt={t('launcher:logo.alt')} />
+                                <span className="text-[13px] font-medium">{t('meeting:search.thisMeeting')}</span>
                             </div>
                             <button
                                 onClick={handleClose}

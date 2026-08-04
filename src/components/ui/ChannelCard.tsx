@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { SttErrorCategory } from '../../lib/sttErrorMapper';
 
 interface ChannelCardProps {
@@ -39,6 +40,7 @@ const ChannelCard: React.FC<ChannelCardProps> = ({
     name, status, provider, error, errorCategory,
     iconConnected, iconReconnecting, iconFailed,
 }) => {
+    const { t } = useTranslation(['meeting', 'common']);
     const [copied, setCopied] = useState(false);
 
     const cleanedError = error?.replace(/\s*\(\d+ consecutive errors\):?/gi, '');
@@ -109,7 +111,7 @@ const ChannelCard: React.FC<ChannelCardProps> = ({
                         </p>
                         {label && (
                             <p className="text-[9px] overlay-text-muted opacity-60 mt-0.5">
-                                via {label}
+                                {t('meeting:channel.via')} {label}
                             </p>
                         )}
                     </div>
@@ -132,7 +134,7 @@ const ChannelCard: React.FC<ChannelCardProps> = ({
                     <div className="pt-1.5 border-t border-white/5">
                         <div className="flex items-center justify-between mb-1">
                             <span className="text-[9px] font-medium tracking-wide overlay-text-muted opacity-60">
-                                Details
+                                {t('common:actions.details')}
                             </span>
                             <button
                                 onClick={(e) => {

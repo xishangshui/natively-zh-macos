@@ -13,5 +13,16 @@
   },
   "launcher": {
     "apiNotInitialized": "Error: Electron API not initialized. Check preload script."
+  },
+  "message": {
+    "withDetail": "Error: {{detail}}",
+    "markedWithDetail": "❌ Error: {{detail}}",
+    "startStream": "❌ Error starting stream: {{detail}}",
+    "withCode": "❌ Error ({{code}})"
+  },
+  "chat": {
+    "noResponse": "Couldn't get a response. Please try again.",
+    "checkSettings": "Couldn't get a response. Please check your settings.",
+    "somethingWrong": "Something went wrong. Please try again."
   }
 }
