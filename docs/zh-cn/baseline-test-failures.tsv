@@ -1,0 +1,88 @@
+﻿ActivationPolicyOrdering.test.mjs	non-stealth cold launch stays on accessory until the disguised window is painted
+AudioTestSystemAudioLevelMeter.test.mjs	10. SettingsOverlay.tsx binds the level bar width to `systemAudioLevel`
+AudioTestSystemAudioLevelMeter.test.mjs	8. SettingsOverlay.tsx subscribes to onAudioTestSystemLevel AND onAudioTestSystemError
+AudioTestSystemAudioLevelMeter.test.mjs	9. SettingsOverlay.tsx renders the literal "System Audio Level" label
+AudioTestSystemAudioLevelMeter.test.mjs	UX4: audio test probes system audio in parallel with the mic
+CaptureRestartRegression.test.mjs	D:\\Natively-ZH-Source\\electron\\audio\\__tests__\\CaptureRestartRegression.test.mjs
+CaptureStopAwaitable.test.mjs	D:\\Natively-ZH-Source\\electron\\audio\\__tests__\\CaptureStopAwaitable.test.mjs
+CodexCliService.test.mjs	run: AbortSignal aborts an in-flight call quickly
+CodexCliService.test.mjs	run: timeout is enforced (binary outlives timeoutMs)
+CodexCliService.test.mjs	stream: AbortSignal aborts an in-flight stream and returns without throwing
+CodexCliService.test.mjs	validateExecutable: real --version-capable binary returns success=true
+CodexCliService.test.mjs	validateExecutable: returns resolvedPath on success
+CurlProviderPayloadValidation.test.mjs	curl provider save handlers validate renderer payloads before persistence
+ExternalUrlIpc.test.mjs	open-external IPC only allows known external destinations
+GoogleSTTDropsKeepaliveSilence.test.mjs	D:\\Natively-ZH-Source\\electron\\audio\\__tests__\\GoogleSTTDropsKeepaliveSilence.test.mjs
+HeuristicExtractor.test.mjs	D:\\Natively-ZH-Source\\electron\\services\\__tests__\\HeuristicExtractor.test.mjs
+ImageOptimizer.test.mjs	balanced profile resizes long edge to 1280 and emits JPEG smaller than original
+ImageOptimizer.test.mjs	cache hit returns same OptimizedImage for same key
+ImageOptimizer.test.mjs	cleanupAll removes every temp file owned by the optimizer
+ImageOptimizer.test.mjs	different profile invalidates cache
+ImageOptimizer.test.mjs	fast profile shrinks aggressively below balanced
+ImageOptimizer.test.mjs	getBase64 returns base64-encoded buffer matching file contents
+ImageOptimizer.test.mjs	output JPEG has no EXIF metadata
+ImageOptimizer.test.mjs	technical profile preserves higher resolution than balanced
+IngestResilience.test.mjs	D:\\Natively-ZH-Source\\electron\\services\\__tests__\\IngestResilience.test.mjs
+InterviewerPerspectiveEval.test.mjs	D:\\Natively-ZH-Source\\electron\\services\\__tests__\\InterviewerPerspectiveEval.test.mjs
+InterviewerPerspectiveGrounding.test.mjs	D:\\Natively-ZH-Source\\electron\\services\\__tests__\\InterviewerPerspectiveGrounding.test.mjs
+Issue252WindowsAudioBanner.test.mjs	issue \#252: Open Settings button does not unconditionally fire x-apple.systempreferences
+KnowledgeOrchestratorIngest.test.mjs	D:\\Natively-ZH-Source\\electron\\services\\__tests__\\KnowledgeOrchestratorIngest.test.mjs
+LicenseVerifyPolicy.test.mjs	active Pro (200 ok/has_pro) → active
+LicenseVerifyPolicy.test.mjs	key_not_found / invalid_key_format → revoke (refund/deleted key)
+LicenseVerifyPolicy.test.mjs	plan downgraded to standard (200 has_pro:false) → revoke
+LicenseVerifyPolicy.test.mjs	REGRESSION F4: 5xx server error → keep (fail-open)
+LicenseVerifyPolicy.test.mjs	REGRESSION F4: account_suspended (403 payment hold) → keep (NOT revoke)
+LicenseVerifyPolicy.test.mjs	REGRESSION F4: ip_blocked (429 rate limit) → keep (NOT revoke)
+LicenseVerifyPolicy.test.mjs	REGRESSION F4: network error (status 0) → keep (fail-open)
+LicenseVerifyPolicy.test.mjs	subscription_inactive (403) → revoke
+LicenseVerifyPolicy.test.mjs	transient error takes precedence even if has_pro:false also present
+LicenseVerifyPolicy.test.mjs	unparseable body on 200 → keep (fail-open, avoids false revoke)
+LicenseVerifyPolicy.test.mjs	unrecognized error code → keep (paying-user-safe default)
+LLMHelperNegotiationCoachingGate.test.mjs	D:\\Natively-ZH-Source\\electron\\services\\__tests__\\LLMHelperNegotiationCoachingGate.test.mjs
+LlmStreamAbortController.test.mjs	gemini-chat-stream handler supersedes only the current sender and passes signal to streamChat
+LlmStreamAbortController.test.mjs	streamChat extracts trailing arg as AbortSignal via args[args.length - 1] and instanceof check
+MicrophoneCapturePreWarmFailed.test.mjs	D:\\Natively-ZH-Source\\electron\\audio\\__tests__\\MicrophoneCapturePreWarmFailed.test.mjs
+ModelChangedTargeting.test.mjs	AppState sends model-changed only to current model listeners
+ModelChangedTargeting.test.mjs	model-changed call sites use the targeted helper
+NativeAbiGuardStartupOrder.test.mjs	initializeApp does not request a second single-instance lock
+NativeAbiGuardStartupOrder.test.mjs	main acquires the single-instance lock before native ABI recovery can rebuild or relaunch
+NativelyProSTTBufferReset.test.mjs	D:\\Natively-ZH-Source\\electron\\audio\\__tests__\\NativelyProSTTBufferReset.test.mjs
+NativelyProSTTCloseUpstreamTimers.test.mjs	D:\\Natively-ZH-Source\\electron\\audio\\__tests__\\NativelyProSTTCloseUpstreamTimers.test.mjs
+NativelyProSTTPendingTimer.test.mjs	D:\\Natively-ZH-Source\\electron\\audio\\__tests__\\NativelyProSTTPendingTimer.test.mjs
+NativelyProSTTStaggerTimer.test.mjs	D:\\Natively-ZH-Source\\electron\\audio\\__tests__\\NativelyProSTTStaggerTimer.test.mjs
+NegotiationStickinessAndCircuitBreaker.test.mjs	D:\\Natively-ZH-Source\\electron\\services\\__tests__\\NegotiationStickinessAndCircuitBreaker.test.mjs
+OpenAIRealtimeGAProtocol.test.mjs	does not fall through session.created to transcription_session.created handler
+OpenAIRealtimeGAProtocol.test.mjs	inbound session.created (general-intent event) is inert on transcription session
+OpenAIRealtimeGAProtocol.test.mjs	race / late-arrival safety
+OpenAIRealtimeGAProtocol.test.mjs	sends transcription_session.update not session.update
+OpenAIRealtimeGAProtocol.test.mjs	uses GA input_audio_format field not beta audio.input.format
+OpenAIRealtimeGAProtocol.test.mjs	wire format
+PersonaFabricationFallbackProductionPath.test.mjs	D:\\Natively-ZH-Source\\electron\\services\\__tests__\\PersonaFabricationFallbackProductionPath.test.mjs
+PreWarmGatedAfterTeardown.test.mjs	D:\\Natively-ZH-Source\\electron\\audio\\__tests__\\PreWarmGatedAfterTeardown.test.mjs
+ProfileFactualRecallProductionPath.test.mjs	D:\\Natively-ZH-Source\\electron\\services\\__tests__\\ProfileFactualRecallProductionPath.test.mjs
+ProfileGroundingV2.test.mjs	D:\\Natively-ZH-Source\\electron\\services\\__tests__\\ProfileGroundingV2.test.mjs
+ProfileIntelligenceE2E.test.mjs	D:\\Natively-ZH-Source\\electron\\services\\__tests__\\ProfileIntelligenceE2E.test.mjs
+ProfileUploadEnablesMode.test.mjs	D:\\Natively-ZH-Source\\electron\\services\\__tests__\\ProfileUploadEnablesMode.test.mjs
+RetentionAndHybridRag.test.mjs	Phase 4 — Hybrid RAG default in WhatToAnswerLLM
+RetentionAndHybridRag.test.mjs	WhatToAnswerLLM prefers async hybrid when method exists, falls back to sync
+SecondMeetingStartDeadlock.test.mjs	D:\\Natively-ZH-Source\\electron\\audio\\__tests__\\SecondMeetingStartDeadlock.test.mjs
+SkillCategorization.test.mjs	D:\\Natively-ZH-Source\\electron\\services\\__tests__\\SkillCategorization.test.mjs
+SkillCategorizationIngest.test.mjs	D:\\Natively-ZH-Source\\electron\\services\\__tests__\\SkillCategorizationIngest.test.mjs
+SystemAudioOrphanHandleOnStartFailure.test.mjs	D:\\Natively-ZH-Source\\electron\\audio\\__tests__\\SystemAudioOrphanHandleOnStartFailure.test.mjs
+TokenBatchFlushNoTrailing.test.mjs	intelligence token batch flush cancels its pending setImmediate so trailing tokens cannot land after a final answer
+TranscriptAwareIntentRouting.test.mjs	D:\\Natively-ZH-Source\\electron\\services\\__tests__\\TranscriptAwareIntentRouting.test.mjs
+TranscriptIntentRoutingIntegration.test.mjs	D:\\Natively-ZH-Source\\electron\\services\\__tests__\\TranscriptIntentRoutingIntegration.test.mjs
+VisionProviderFallbackChain.test.mjs	all providers fail → ok=false with failureReason=all_vision_failed
+VisionProviderFallbackChain.test.mjs	custom provider with scope_blocked is skipped with scope_blocked reason
+VisionProviderFallbackChain.test.mjs	empty string output is treated as provider error, chain continues
+VisionProviderFallbackChain.test.mjs	first provider fails → chain falls back to second and succeeds
+VisionProviderFallbackChain.test.mjs	first provider succeeds → chain returns immediately, second never invoked
+VisionProviderFallbackChain.test.mjs	no providers configured → ok=false with failureReason=no_vision_provider
+VisionProviderFallbackChain.test.mjs	OCR modules are not imported by the vision fallback chain source
+VisionProviderFallbackChain.test.mjs	per-provider timeout triggers errorClass=timeout and falls back
+VisionProviderFallbackChain.test.mjs	private_vision skips every non-local provider with privacy_blocked
+VisionProviderFallbackChain.test.mjs	private_vision with no local provider → failureReason=privacy_blocked
+VisionProviderFallbackChain.test.mjs	telemetry callback fires for attempt, success, fallback, failed, skipped
+VisionProviderFallbackChain.test.mjs	text-only provider (supportsVision=false) is skipped with no_vision reason
+WtaHybridRetrievalBudget.test.mjs	a fast hybrid retrieval is used directly (no premature fallback)
+WtaHybridRetrievalBudget.test.mjs	a hanging hybrid retrieval does NOT block the WTA stream (lexical fallback within budget)
