@@ -10,5 +10,24 @@
     "description": "{{count}} meetings used your previous AI provider ({{oldProvider}}) and will not appear in search results under {{newProvider}}.",
     "dismiss": "Dismiss",
     "reindex": "Re-index automatically"
+  },
+  "models": {
+    "noneConnected": "No models connected.",
+    "checkSettings": "Check Settings.",
+    "cloud": "Cloud",
+    "custom": "Custom",
+    "local": "Local",
+    "noCloud": "No cloud providers configured.",
+    "addKeys": "Add API keys in Settings.",
+    "noCustom": "No custom providers.",
+    "manageInSettings": "Manage in Settings",
+    "noOllama": "No Ollama models found.",
+    "ensureOllama": "Ensure Ollama is running."
+  },
+  "reindex": {
+    "doneTitle": "Search index updated",
+    "runningTitle": "Updating search index",
+    "doneDescription": "Your past conversations are searchable again.",
+    "runningDescription": "Re-indexing your past conversations for the upgraded AI model… {{done}}/{{total}}"
   }
 }

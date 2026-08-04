@@ -3,7 +3,8 @@
     "title": "Meeting history"
   },
   "state": {
-    "empty": "No meetings yet"
+    "empty": "No meetings yet",
+    "noRecent": "No recent meetings."
   },
   "summary": {
     "meetingCount": "{{count}} meetings"

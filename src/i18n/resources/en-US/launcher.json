@@ -1,8 +1,55 @@
 {
   "actions": {
-    "newMeeting": "New Meeting"
+    "newMeeting": "New Meeting",
+    "start": "Start Natively"
   },
   "search": {
-    "placeholder": "Search meetings"
+    "placeholder": "Search meetings",
+    "askPlaceholder": "Search or ask anything...",
+    "explore": "Explore",
+    "searchFor": "Search for <q>\"{{query}}\"</q>",
+    "sessions": "Sessions"
+  },
+  "nav": {
+    "settings": "Settings",
+    "myNatively": "My Natively",
+    "refresh": "Refresh State",
+    "profileIntel": "Profile Intelligence",
+    "profileIntelShort": "Profile Intel",
+    "modes": "Modes"
+  },
+  "badge": {
+    "beta": "Beta"
+  },
+  "spotlight": {
+    "profileIntel": "Manage your persona, career history, and active job description.",
+    "modes": "Custom instructions and formulas designed for different meeting contexts.",
+    "whatsNew": "What's New in 2.7",
+    "fundDevelopment": "Fund development",
+    "interested": "Interested",
+    "markInterest": "Mark interest"
+  },
+  "meeting": {
+    "ongoing": "Meeting ongoing"
+  },
+  "logo": {
+    "alt": "Natively logo"
+  },
+  "calendar": {
+    "linked": "Calendar linked",
+    "connected": "Calendar Connected",
+    "linkTitle": "Link your calendar to",
+    "linkSubtitle": "see upcoming events"
+  },
+  "list": {
+    "more": "+{{count}} more"
+  },
+  "refresh": {
+    "done": "Refreshed",
+    "subtitle": "Synced with calendar"
+  },
+  "stealth": {
+    "detectable": "Detectable",
+    "undetectable": "Undetectable"
   }
 }

@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { useTranslation, Trans } from "react-i18next";
 import nativelyLogo from "../assets/logo.webp";
 import { getModifierSymbol } from "../utils/platformUtils";
 
@@ -12,11 +13,14 @@ const GLOSS = (
   <div className="absolute inset-x-1 top-0.5 h-[45%] rounded-full bg-gradient-to-b from-white/20 to-white/0 blur-[0.5px] pointer-events-none" />
 );
 
+// 只存翻译键，展示名在组件内取——数组是模块级的，此处拿不到 t()。
+// 这批 label 曾是硬编码英文，静态扫描未覆盖对象字面量属性，
+// 是运行时读取 DOM 才发现的。
 const hotkeys = [
-  { label: "What should I answer?", icon: <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M2 3.5h5M2 8.5h6" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" /></svg> },
-  { label: "Clarify", icon: <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4.5" stroke="currentColor" strokeWidth="1.2" /><path d="M6 8V6M6 4h.01" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" /></svg> },
-  { label: "Follow up questions", icon: <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M10 6H2M7 3l3 3-3 3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" /></svg> },
-  { label: "Recap", icon: <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M10 6A4 4 0 112 6M10 6l-1.5-1.5M10 6l1.5-1.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" /></svg> },
+  { labelKey: "meeting:card.hotkeys.whatToAnswer", icon: <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M2 3.5h5M2 8.5h6" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" /></svg> },
+  { labelKey: "meeting:card.hotkeys.clarify", icon: <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4.5" stroke="currentColor" strokeWidth="1.2" /><path d="M6 8V6M6 4h.01" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" /></svg> },
+  { labelKey: "meeting:card.hotkeys.followUp", icon: <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M10 6H2M7 3l3 3-3 3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" /></svg> },
+  { labelKey: "meeting:card.hotkeys.recap", icon: <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M10 6A4 4 0 112 6M10 6l-1.5-1.5M10 6l1.5-1.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" /></svg> },
 ];
 
 interface Props {
@@ -33,6 +37,7 @@ interface Props {
 }
 
 const NativelyInterfaceCard = ({ className = "", isMobile = false, isStatic = false, hidePill = false, hideMessages = false, dreamyVariant = false, spreadHotkeys = false }: Props) => {
+  const { t } = useTranslation(['meeting', 'common', 'launcher']);
   const motionProps = isStatic
     ? {
       initial: { opacity: 0, y: 16 },
@@ -65,14 +70,14 @@ const NativelyInterfaceCard = ({ className = "", isMobile = false, isStatic = fa
             {/* Logo */}
             <div className="w-8 h-8 rounded-full flex items-center justify-center relative overflow-hidden" style={DARK_GLASS}>
               {GLOSS}
-              <img src={nativelyLogo} alt="Natively" className="w-[28px] h-[28px] object-contain relative" draggable={false} />
+              <img src={nativelyLogo} alt={t('launcher:logo.alt')} className="w-[28px] h-[28px] object-contain relative" draggable={false} />
             </div>
 
             {/* Hide */}
             <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-white/75 text-[12px] font-medium tracking-[0.02em] relative overflow-hidden" style={DARK_GLASS}>
               {GLOSS}
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="opacity-70 relative"><path d="M3 7.5L6 4.5L9 7.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" /></svg>
-              <span className="relative">Hide</span>
+              <span className="relative">{t('common:actions.hide')}</span>
             </div>
 
             {/* Stop */}
@@ -111,7 +116,7 @@ const NativelyInterfaceCard = ({ className = "", isMobile = false, isStatic = fa
               <div className="relative px-4 py-2 rounded-full text-white text-[13px] font-semibold shadow-[0_8px_20px_rgba(37,99,235,0.35)] border border-white/20"
                 style={{ background: "linear-gradient(160deg, #5B8EF0 0%, #3B6FE8 50%, #2D5FD4 100%)" }}>
                 <div className="absolute top-0.5 left-2 right-2 h-[45%] rounded-full bg-gradient-to-b from-white/70 to-white/5 blur-[0.5px] pointer-events-none" />
-                <span className="relative drop-shadow-sm">What should I answer?</span>
+                <span className="relative drop-shadow-sm">{t('meeting:card.sampleQuestion')}</span>
               </div>
             </div>
           )}
@@ -120,7 +125,7 @@ const NativelyInterfaceCard = ({ className = "", isMobile = false, isStatic = fa
           {!hideMessages && (
             <div className="px-4 pb-2">
               <p className="text-white/90 text-[14px] leading-relaxed font-normal whitespace-pre-wrap">
-                Based on the project requirements and current timeline, I've outlined the critical path for the next sprint.
+                {t('meeting:card.sampleAnswer')}
               </p>
             </div>
           )}
@@ -129,7 +134,7 @@ const NativelyInterfaceCard = ({ className = "", isMobile = false, isStatic = fa
           <div className={`flex items-center px-[18px] pb-0 ${hideMessages ? "pt-5" : "pt-[6px]"} w-full ${spreadHotkeys ? "justify-between gap-1" : "gap-2 overflow-x-auto hide-scrollbar scroll-smooth flex-nowrap"}`}>
             {hotkeys.map((a) => (
               <button
-                key={a.label}
+                key={a.labelKey}
                 className="flex items-center justify-center gap-[5px] px-[12px] py-[6px] rounded-full text-[10px] font-semibold flex-nowrap shrink-0 relative overflow-hidden"
                 style={dreamyVariant ? {
                   background: "rgba(255,255,255,0.08)",
@@ -142,7 +147,7 @@ const NativelyInterfaceCard = ({ className = "", isMobile = false, isStatic = fa
                 }}
               >
                 {!dreamyVariant && <div className="absolute top-0.5 left-2 right-2 h-[45%] rounded-full bg-gradient-to-b from-white/20 to-white/0 blur-[0.5px] pointer-events-none" />}
-                <span className="relative flex items-center gap-[5px] whitespace-pre">{a.icon} {a.label}</span>
+                <span className="relative flex items-center gap-[5px] whitespace-pre">{a.icon} {t(a.labelKey)}</span>
               </button>
             ))}
           </div>
@@ -166,13 +171,18 @@ const NativelyInterfaceCard = ({ className = "", isMobile = false, isStatic = fa
               >
                 {dreamyVariant ? (
                   <span className="flex items-center gap-1.5">
-                    Ask about your screen or conversation, or
-                    <kbd className="bg-white/10 px-1.5 py-0.5 rounded text-[10px] border border-white/10 font-sans">{getModifierSymbol('cmd')}</kbd>
-                    <kbd className="bg-white/10 px-1.5 py-0.5 rounded text-[10px] border border-white/10 font-sans">↵</kbd>
-                    for Assist
+                    {/* 快捷键徽标嵌在句中，用 Trans 保留位置与样式；
+                        中文里「按 ⌘↵ 获取协助」的语序与英文不同，不能拼接片段 */}
+                    <Trans
+                      i18nKey="meeting:card.assistHint"
+                      components={[
+                        <kbd className="bg-white/10 px-1.5 py-0.5 rounded text-[10px] border border-white/10 font-sans" key="cmd">{getModifierSymbol('cmd')}</kbd>,
+                        <kbd className="bg-white/10 px-1.5 py-0.5 rounded text-[10px] border border-white/10 font-sans" key="enter">↵</kbd>,
+                      ]}
+                    />
                   </span>
                 ) : (
-                  "Ask anything — Natively knows your resume and this company..."
+                  t('meeting:card.askAnything')
                 )}
               </div>
             </div>

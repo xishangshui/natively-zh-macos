@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Bell, Rocket } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import mainui from "../UI_comp/mainui.png";
 
 // --- Types ---
@@ -47,6 +48,7 @@ const FEATURES: FeatureSlide[] = [
 // --- Component ---
 
 export const FeatureSpotlight: React.FC = () => {
+    const { t } = useTranslation(['launcher', 'common']);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isPaused, setIsPaused] = useState(false);
 
@@ -304,13 +306,13 @@ export const FeatureSpotlight: React.FC = () => {
                                             >
                                                 <span>
                                                     {isInterested && !isSupport
-                                                        ? 'Interested'
+                                                        ? t('launcher:spotlight.interested')
                                                         : (isSupport ? (
                                                             <span className="flex items-center gap-2">
                                                                 <Rocket size={14} className="text-[#1C1C1E]" strokeWidth={2.5} />
-                                                                Fund development
+                                                                {t('launcher:spotlight.fundDevelopment')}
                                                             </span>
-                                                        ) : (currentFeature.actionLabel || 'Mark interest'))
+                                                        ) : (currentFeature.actionLabel || t('launcher:spotlight.markInterest')))
                                                     }
                                                 </span>
 

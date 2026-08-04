@@ -7,11 +7,21 @@
     "confirm": "确定",
     "delete": "删除",
     "copy": "复制",
-    "edit": "编辑"
+    "edit": "编辑",
+    "dismiss": "忽略",
+    "tryIt": "试试看",
+    "export": "导出",
+    "hide": "隐藏",
+    "show": "显示",
+    "minimize": "最小化",
+    "restore": "还原",
+    "maximize": "最大化"
   },
   "state": {
     "loading": "加载中...",
     "empty": "暂无内容",
-    "indexing": "正在重建会议索引…"
+    "indexing": "正在重建会议索引…",
+    "finalizing": "正在收尾…",
+    "loadingModels": "正在加载模型…"
   }
 }

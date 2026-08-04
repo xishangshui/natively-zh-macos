@@ -8,5 +8,17 @@
       "start": "开启麦克风",
       "stop": "关闭麦克风"
     }
+  },
+  "card": {
+    "sampleQuestion": "我该怎么回答？",
+    "sampleAnswer": "结合项目需求和当前时间线，我梳理了下个冲刺的关键路径。",
+    "assistHint": "询问屏幕内容或对话，或按 <0></0><1></1> 获取协助",
+    "askAnything": "随便问 —— Natively 了解你的简历和这家公司…",
+    "hotkeys": {
+      "whatToAnswer": "我该怎么回答？",
+      "clarify": "追问澄清",
+      "followUp": "后续问题",
+      "recap": "要点回顾"
+    }
   }
 }

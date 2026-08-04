@@ -8,5 +8,17 @@
       "start": "Start microphone",
       "stop": "Stop microphone"
     }
+  },
+  "card": {
+    "sampleQuestion": "What should I answer?",
+    "sampleAnswer": "Based on the project requirements and current timeline, I've outlined the critical path for the next sprint.",
+    "assistHint": "Ask about your screen or conversation, or <0></0><1></1> for Assist",
+    "askAnything": "Ask anything — Natively knows your resume and this company...",
+    "hotkeys": {
+      "whatToAnswer": "What should I answer?",
+      "clarify": "Clarify",
+      "followUp": "Follow up questions",
+      "recap": "Recap"
+    }
   }
 }

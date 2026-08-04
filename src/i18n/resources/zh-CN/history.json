@@ -3,7 +3,8 @@
     "title": "会议历史"
   },
   "state": {
-    "empty": "还没有会议记录"
+    "empty": "还没有会议记录",
+    "noRecent": "暂无最近会议。"
   },
   "summary": {
     "meetingCount": "{{count}} 场会议"

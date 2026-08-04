@@ -4,7 +4,15 @@
   "enforcedFiles": [
     "src/App.tsx",
     "src/components/ErrorBoundary.tsx",
-    "src/components/SettingsOverlay.tsx"
+    "src/components/SettingsOverlay.tsx",
+    "src/components/Launcher.tsx",
+    "src/components/TopSearchPill.tsx",
+    "src/components/ModelSelectorWindow.tsx",
+    "src/components/NativelyInterfaceCard.tsx",
+    "src/components/FeatureSpotlight.tsx",
+    "src/components/WindowControls.tsx",
+    "src/components/ui/ModelSelector.tsx",
+    "src/components/ui/TopPill.tsx"
   ],
   "excluded": []
 }

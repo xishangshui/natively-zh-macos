@@ -7,11 +7,21 @@
     "confirm": "Confirm",
     "delete": "Delete",
     "copy": "Copy",
-    "edit": "Edit"
+    "edit": "Edit",
+    "dismiss": "Dismiss",
+    "tryIt": "Try it out",
+    "export": "Export",
+    "hide": "Hide",
+    "show": "Show",
+    "minimize": "Minimize",
+    "restore": "Restore",
+    "maximize": "Maximize"
   },
   "state": {
     "loading": "Loading...",
     "empty": "Nothing here yet",
-    "indexing": "Re-indexing meetings..."
+    "indexing": "Re-indexing meetings...",
+    "finalizing": "Finalizing...",
+    "loadingModels": "Loading models..."
   }
 }

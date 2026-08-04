@@ -37,6 +37,18 @@ const USER_FACING_CALLS = new Set(['alert', 'confirm', 'toast']);
 const STATE_SETTER_PATTERN = /^set[A-Za-z0-9]*(Error|Message|Status|Title|Label)$/;
 
 /**
+ * 对象字面量里承载用户可见文案的属性名。
+ *
+ * 菜单项、标签页、快捷操作惯用 `const items = [{ label: 'Recap', icon: … }]`
+ * 的写法，这些 label 最终原样渲染给用户，却既不是 JSX 文本也不是属性。
+ * 本项目就在 NativelyInterfaceCard 的 hotkeys 数组里踩到过：静态扫描全绿，
+ * 运行时 DOM 里却是英文。
+ */
+const LABEL_PROPERTIES = new Set([
+    'label', 'title', 'placeholder', 'description', 'heading', 'tooltip', 'ariaLabel',
+]);
+
+/**
  * 判断一段文字是否是「给用户看的英文」。
  *
  * 保守策略：必须含至少一个 2 字母以上的单词；含中日韩字符的直接放行
@@ -209,19 +221,51 @@ export function scanSource(relPath, sourceText) {
             record(node, node.text, 'jsx-text');
         }
 
+        // 1b. JSX 表达式子节点里的字符串字面量
+        //     形如 {cond ? <span>…</span> : "Ask anything…"} —— 这类文案同样
+        //     直接渲染给用户，但它既不是 JsxText 也不是属性，只看前两类会漏掉。
+        //     属性位置的 JsxExpression 父节点是 JsxAttribute，据此区分。
+        if (
+            ts.isJsxExpression(node)
+            && node.parent
+            && (ts.isJsxElement(node.parent) || ts.isJsxFragment(node.parent))
+        ) {
+            for (const found of stringsFromArgument(node.expression)) {
+                record(found.node, found.text, 'jsx-expression');
+            }
+        }
+
         // 2. 文本属性
         if (ts.isJsxAttribute(node) && node.name) {
             const attrName = ts.isIdentifier(node.name)
                 ? node.name.text
                 : node.name.getText(sourceFile);
             if (TEXT_ATTRIBUTES.has(attrName) && node.initializer) {
-                let literal = null;
                 if (ts.isStringLiteral(node.initializer)) {
-                    literal = node.initializer.text;
+                    record(node, node.initializer.text, 'attr:' + attrName);
                 } else if (ts.isJsxExpression(node.initializer)) {
-                    literal = stringFromExpression(node.initializer.expression);
+                    // 属性值同样可能是三元或 || 兜底：
+                    // title={isMaximized ? 'Restore' : 'Maximize'}
+                    for (const found of stringsFromArgument(node.initializer.expression)) {
+                        record(found.node, found.text, 'attr:' + attrName);
+                    }
                 }
-                if (literal !== null) record(node, literal, 'attr:' + attrName);
+            }
+        }
+
+        // 2b. 对象字面量里的 label / title / description 等文案属性
+        if (
+            ts.isPropertyAssignment(node)
+            && (ts.isIdentifier(node.name) || ts.isStringLiteral(node.name))
+        ) {
+            const propName = ts.isIdentifier(node.name) ? node.name.text : node.name.text;
+            if (LABEL_PROPERTIES.has(propName)) {
+                for (const found of stringsFromArgument(node.initializer)) {
+                    // 与调用实参同样要求像散文，避免把 { label: 'gpt-4o' } 这类
+                    // 模型 ID 当成待翻译文案
+                    if (!looksLikeProse(found.text)) continue;
+                    record(found.node, found.text, 'prop:' + propName);
+                }
             }
         }
 

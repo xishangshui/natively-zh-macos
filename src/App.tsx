@@ -821,13 +821,16 @@ const App: React.FC = () => {
                 <div className="flex-1">
                   <h3 className="text-[#E0E0E0] font-medium text-sm">
                     {reindexProgress.done >= reindexProgress.total && reindexProgress.total > 0
-                      ? 'Search index updated'
-                      : 'Updating search index'}
+                      ? t('providers:reindex.doneTitle')
+                      : t('providers:reindex.runningTitle')}
                   </h3>
                   <p className="text-[#A0A0A0] text-xs mt-1 leading-relaxed">
                     {reindexProgress.done >= reindexProgress.total && reindexProgress.total > 0
-                      ? 'Your past conversations are searchable again.'
-                      : `Re-indexing your past conversations for the upgraded AI model… ${reindexProgress.done}/${reindexProgress.total}`}
+                      ? t('providers:reindex.doneDescription')
+                      : t('providers:reindex.runningDescription', {
+                        done: reindexProgress.done,
+                        total: reindexProgress.total,
+                      })}
                   </p>
                   {reindexProgress.total > 0 && (
                     <div className="mt-2 h-1 w-full rounded-full bg-white/10 overflow-hidden">

@@ -10,5 +10,8 @@
     "description": "An unexpected error occurred. Your data is safe — click below to recover.",
     "recover": "Try to recover",
     "reload": "Reload UI"
+  },
+  "launcher": {
+    "apiNotInitialized": "Error: Electron API not initialized. Check preload script."
   }
 }

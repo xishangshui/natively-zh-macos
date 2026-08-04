@@ -10,5 +10,24 @@
     "description": "有 {{count}} 场会议使用的是此前的 AI 供应商（{{oldProvider}}），在 {{newProvider}} 下不会出现在搜索结果中。",
     "dismiss": "忽略",
     "reindex": "自动重建索引"
+  },
+  "models": {
+    "noneConnected": "尚未连接任何模型。",
+    "checkSettings": "请检查设置。",
+    "cloud": "云端",
+    "custom": "自定义",
+    "local": "本地",
+    "noCloud": "尚未配置云端供应商。",
+    "addKeys": "请在设置中添加 API Key。",
+    "noCustom": "没有自定义供应商。",
+    "manageInSettings": "在设置中管理",
+    "noOllama": "未找到 Ollama 模型。",
+    "ensureOllama": "请确认 Ollama 正在运行。"
+  },
+  "reindex": {
+    "doneTitle": "搜索索引已更新",
+    "runningTitle": "正在更新搜索索引",
+    "doneDescription": "过往对话已可重新搜索。",
+    "runningDescription": "正在为升级后的 AI 模型重建过往对话索引… {{done}}/{{total}}"
   }
 }

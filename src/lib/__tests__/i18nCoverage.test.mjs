@@ -153,6 +153,44 @@ describe('门禁工具：扫描行为', () => {
         assert.deepEqual(findings, [], '门禁不得对样式类名、日志和模块路径报警');
     });
 
+    test('JSX 表达式子节点里的字符串会被捕获', () => {
+        // 回归用例：{cond ? <span>…</span> : "Ask anything…"} 这种写法
+        // 同样直接渲染给用户，但它既不是 JsxText 也不是属性。
+        const { findings } = scanFixture({
+            'fixture/Expr.tsx': [
+                'export const A = ({ v }) => (',
+                '  <div>',
+                '    {v ? <span>x</span> : "Ask anything about this company"}',
+                '  </div>',
+                ');',
+            ].join('\n'),
+        });
+        assert.equal(findings.length, 1);
+        assert.equal(findings[0].literal, 'Ask anything about this company');
+        assert.equal(findings[0].kind, 'jsx-expression');
+    });
+
+    test('属性值里的三元与兜底文案会被捕获', () => {
+        // 回归用例：title={isMaximized ? 'Restore' : 'Maximize'}
+        const { findings } = scanFixture({
+            'fixture/AttrCond.tsx':
+                "export const A = ({m}) => <button title={m ? 'Restore window' : 'Maximize window'} />;",
+        });
+        assert.deepEqual(
+            findings.map((f) => f.literal).sort(),
+            ['Maximize window', 'Restore window'],
+        );
+    });
+
+    test('属性位置的表达式不被当作子节点重复报告', () => {
+        const { findings } = scanFixture({
+            'fixture/AttrExpr.tsx':
+                'export const A = () => <input placeholder={"Search meetings"} />;',
+        });
+        assert.equal(findings.length, 1, '同一处文案不应被报告两次');
+        assert.equal(findings[0].kind, 'attr:placeholder');
+    });
+
     test('中文文案不再被报告', () => {
         const { findings } = scanFixture({
             'fixture/Zh.tsx': 'export const A = () => <div>开始会议</div>;',

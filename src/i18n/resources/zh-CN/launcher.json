@@ -1,8 +1,55 @@
 {
   "actions": {
-    "newMeeting": "新建会议"
+    "newMeeting": "新建会议",
+    "start": "启动 Natively"
   },
   "search": {
-    "placeholder": "搜索会议"
+    "placeholder": "搜索会议",
+    "askPlaceholder": "搜索或提问…",
+    "explore": "探索",
+    "searchFor": "搜索 <q>“{{query}}”</q>",
+    "sessions": "会话"
+  },
+  "nav": {
+    "settings": "设置",
+    "myNatively": "我的 Natively",
+    "refresh": "刷新状态",
+    "profileIntel": "画像智能",
+    "profileIntelShort": "画像智能",
+    "modes": "模式"
+  },
+  "badge": {
+    "beta": "测试版"
+  },
+  "spotlight": {
+    "profileIntel": "管理你的人设、职业经历和当前目标职位描述。",
+    "modes": "为不同会议场景预设的自定义指令与公式。",
+    "whatsNew": "2.7 新功能",
+    "fundDevelopment": "资助开发",
+    "interested": "已标记感兴趣",
+    "markInterest": "标记感兴趣"
+  },
+  "meeting": {
+    "ongoing": "会议进行中"
+  },
+  "logo": {
+    "alt": "Natively 标志"
+  },
+  "calendar": {
+    "linked": "日历已关联",
+    "connected": "日历已连接",
+    "linkTitle": "关联你的日历",
+    "linkSubtitle": "查看即将开始的日程"
+  },
+  "list": {
+    "more": "另有 {{count}} 场"
+  },
+  "refresh": {
+    "done": "已刷新",
+    "subtitle": "已与日历同步"
+  },
+  "stealth": {
+    "detectable": "可被检测",
+    "undetectable": "不可被检测"
   }
 }

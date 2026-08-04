@@ -1,0 +1,120 @@
+﻿发现 5 个渲染页面：
+  - file:///D:/Natively-ZH-Source/dist/index.html?window=launcher
+  - file:///D:/Natively-ZH-Source/dist/index.html?window=model-selector
+  - file:///D:/Natively-ZH-Source/dist/index.html?window=settings
+  - file:///D:/Natively-ZH-Source/dist/index.html?window=overlay
+  - file:///D:/Natively-ZH-Source/dist/index.html?window=cropper
+
+======================================================================
+PAGE: file:///D:/Natively-ZH-Source/dist/index.html?window=launcher
+======================================================================
+  i18next.language : null
+  body font-family : -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"
+  可见文本节点数    : 37
+  含中文的文本      : 8
+  纯拉丁文本        : 26
+  --- 中文样本 ---
+    "隐藏"
+    "我该怎么回答？"
+    "结合项目需求和当前时间线，我梳理了下个冲刺的关键路径。"
+    "我该怎么回答？"
+    "追问澄清"
+    "后续问题"
+    "要点回顾"
+    "随便问 —— Natively 了解你的简历和这家公司…"
+  --- 拉丁样本（应为产品名/型号/快捷键） ---
+    "Welcome to Natively"
+    "The ultimate AI meeting assistant"
+    "Continue"
+    "By clicking Continue, you agree to our"
+    "Terms & Conditions"
+    "and"
+    "Privacy Policy"
+    "Hacker News"
+    "AlternativeTo"
+    "Product Hunt"
+    "reddit"
+    "Natively AI"
+    "Real-time meeting assistant,"
+    "always ready to help"
+    "Permissions"
+    "Let's get you set up"
+    "Natively needs a few permissions to capture meetings and transcribe speech."
+    "Microphone"
+    "Required for speech transcription"
+    "Open Settings"
+    "\"Natively\" wants to record the screen."
+    "Enable access in Privacy & Security settings."
+    "Open Settings"
+    "Deny"
+    "Natively"
+
+======================================================================
+PAGE: file:///D:/Natively-ZH-Source/dist/index.html?window=model-selector
+======================================================================
+  i18next.language : null
+  body font-family : -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"
+  可见文本节点数    : 2
+  含中文的文本      : 2
+  纯拉丁文本        : 0
+  --- 中文样本 ---
+    "尚未连接任何模型。"
+    "请检查设置。"
+  --- 拉丁样本（应为产品名/型号/快捷键） ---
+
+======================================================================
+PAGE: file:///D:/Natively-ZH-Source/dist/index.html?window=settings
+======================================================================
+  i18next.language : null
+  body font-family : -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"
+  可见文本节点数    : 10
+  含中文的文本      : 0
+  纯拉丁文本        : 8
+  --- 中文样本 ---
+  --- 拉丁样本（应为产品名/型号/快捷键） ---
+    "Detectable"
+    "Fast Response"
+    "Transcript"
+    "Interview Mode"
+    "Show/Hide"
+    "Ctrl"
+    "Screenshot"
+    "Ctrl"
+
+======================================================================
+PAGE: file:///D:/Natively-ZH-Source/dist/index.html?window=overlay
+======================================================================
+  i18next.language : null
+  body font-family : -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"
+  可见文本节点数    : 19
+  含中文的文本      : 1
+  纯拉丁文本        : 14
+  --- 中文样本 ---
+    "隐藏"
+  --- 拉丁样本（应为产品名/型号/快捷键） ---
+    "STT not configured"
+    "Transcription Not Configured"
+    "No STT provider selected. Open Settings → Audio to pick one."
+    "Open Settings"
+    "What to answer?"
+    "Clarify"
+    "Recap"
+    "Follow Up Question"
+    "Answer"
+    "Ask anything on screen or conversation, or"
+    "Ctrl"
+    "Shift"
+    "for selective screenshot"
+    "Gemini 3.1 Flash Lite"
+
+======================================================================
+PAGE: file:///D:/Natively-ZH-Source/dist/index.html?window=cropper
+======================================================================
+  i18next.language : null
+  body font-family : -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"
+  可见文本节点数    : 0
+  含中文的文本      : 0
+  纯拉丁文本        : 0
+  --- 中文样本 ---
+  --- 拉丁样本（应为产品名/型号/快捷键） ---
+

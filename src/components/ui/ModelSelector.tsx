@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ChevronDown, Check, Cloud, Terminal, Monitor, Server, Plus } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { getCodexCliModelDisplayName, STANDARD_CLOUD_MODELS, prettifyModelId } from '../../utils/modelUtils';
 
 interface ModelSelectorProps {
@@ -14,6 +15,7 @@ interface CustomProvider {
 }
 
 export const ModelSelector: React.FC<ModelSelectorProps> = ({ currentModel, onSelectModel }) => {
+    const { t } = useTranslation(['providers', 'common']);
     const [isOpen, setIsOpen] = useState(false);
     const [activeTab, setActiveTab] = useState<'cloud' | 'custom' | 'local'>('cloud');
     const [ollamaModels, setOllamaModels] = useState<string[]>([]);
@@ -122,19 +124,19 @@ export const ModelSelector: React.FC<ModelSelectorProps> = ({ currentModel, onSe
                             onClick={() => setActiveTab('cloud')}
                             className={`flex-1 py-2 text-[10px] font-bold uppercase tracking-wider transition-colors ${activeTab === 'cloud' ? 'text-accent-primary bg-bg-item-surface border-t-2 border-t-accent-primary' : 'text-text-secondary hover:text-text-primary'}`}
                         >
-                            Cloud
+                            {t('providers:models.cloud')}
                         </button>
                         <button
                             onClick={() => setActiveTab('custom')}
                             className={`flex-1 py-2 text-[10px] font-bold uppercase tracking-wider transition-colors ${activeTab === 'custom' ? 'text-accent-primary bg-bg-item-surface border-t-2 border-t-accent-primary' : 'text-text-secondary hover:text-text-primary'}`}
                         >
-                            Custom
+                            {t('providers:models.custom')}
                         </button>
                         <button
                             onClick={() => setActiveTab('local')}
                             className={`flex-1 py-2 text-[10px] font-bold uppercase tracking-wider transition-colors ${activeTab === 'local' ? 'text-accent-primary bg-bg-item-surface border-t-2 border-t-accent-primary' : 'text-text-secondary hover:text-text-primary'}`}
                         >
-                            Local
+                            {t('providers:models.local')}
                         </button>
                     </div>
 
@@ -146,8 +148,8 @@ export const ModelSelector: React.FC<ModelSelectorProps> = ({ currentModel, onSe
                             <div className="space-y-1">
                                 {cloudModels.length === 0 ? (
                                     <div className="text-center py-6 text-text-tertiary">
-                                        <p className="text-xs mb-2">No cloud providers configured.</p>
-                                        <p className="text-[10px] opacity-70">Add API keys in Settings.</p>
+                                        <p className="text-xs mb-2">{t('providers:models.noCloud')}</p>
+                                        <p className="text-[10px] opacity-70">{t('providers:models.addKeys')}</p>
                                     </div>
                                 ) : (
                                     cloudModels.map((m, idx) => {
@@ -177,8 +179,8 @@ export const ModelSelector: React.FC<ModelSelectorProps> = ({ currentModel, onSe
                             <div className="space-y-1">
                                 {customProviders.length === 0 ? (
                                     <div className="text-center py-6 text-text-tertiary">
-                                        <p className="text-xs mb-2">No custom providers.</p>
-                                        <button className="text-[10px] text-accent-primary hover:underline">Manage in Settings</button>
+                                        <p className="text-xs mb-2">{t('providers:models.noCustom')}</p>
+                                        <button className="text-[10px] text-accent-primary hover:underline">{t('providers:models.manageInSettings')}</button>
                                     </div>
                                 ) : (
                                     customProviders.map(provider => (
@@ -201,8 +203,8 @@ export const ModelSelector: React.FC<ModelSelectorProps> = ({ currentModel, onSe
                             <div className="space-y-1">
                                 {ollamaModels.length === 0 ? (
                                     <div className="text-center py-6 text-text-tertiary">
-                                        <p className="text-xs">No Ollama models found.</p>
-                                        <p className="text-[10px] mt-1 opacity-70">Ensure Ollama is running.</p>
+                                        <p className="text-xs">{t('providers:models.noOllama')}</p>
+                                        <p className="text-[10px] mt-1 opacity-70">{t('providers:models.ensureOllama')}</p>
                                     </div>
                                 ) : (
                                     ollamaModels.map(model => (
