@@ -62,6 +62,12 @@ export interface AppSettings {
     // When true (default) and the active mode is a technical / coding interview, prefer
     // direct vision LLM over structured-extract-then-answer for lowest latency.
     technicalInterviewVisionFirst?: boolean;
+    // 界面语言。与语音识别语言（CredentialsManager 的 sttLanguage，内部键
+    // 'chinese'）和 AI 回复语言（aiResponseLanguage，'Chinese'）是三个互相
+    // 独立的设置——切换界面语言绝不能静默改动另外两个。
+    // 放在这里而非 CredentialsManager，是为了让主进程在启动早期就能读到，
+    // 从而在首帧渲染前完成语言初始化，避免英文闪烁。
+    uiLocale?: 'zh-CN' | 'en-US';
     // Onboarding and gate flags for persistent settings backup
     seenStartup?: boolean;
     seenProfileOnboarding?: boolean;

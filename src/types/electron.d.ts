@@ -177,6 +177,14 @@ export interface ElectronAPI {
   getInputDevices: () => Promise<Array<{ id: string; name: string }>>
   getOutputDevices: () => Promise<Array<{ id: string; name: string }>>
   setRecognitionLanguage: (key: string) => Promise<{ success: boolean; error?: string }>
+  // 界面语言。与语音识别语言、AI 回复语言互相独立，三者不得合并。
+  getUiLocale: () => Promise<'zh-CN' | 'en-US'>
+  setUiLocale: (locale: 'zh-CN' | 'en-US') => Promise<{
+    success: boolean;
+    locale: 'zh-CN' | 'en-US';
+    error?: string;
+  }>
+  onUiLocaleChanged: (listener: (locale: 'zh-CN' | 'en-US') => void) => () => void
   getAiResponseLanguages: () => Promise<Array<{ label: string; code: string }>>
   setAiResponseLanguage: (language: string) => Promise<{ success: boolean; error?: string }>
   getSttLanguage: () => Promise<string>

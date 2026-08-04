@@ -219,6 +219,34 @@ export function initializeIpcHandlers(appState: AppState): void {
     }
   });
 
+  // ── 界面语言 ────────────────────────────────────────────────────────────
+  // 注意：这三个通道只负责 UI 语言。语音识别语言与 AI 回复语言各有独立通道
+  // （set-recognition-language / set-ai-response-language），切换界面语言
+  // 绝不能顺带改动它们。
+  safeHandle('get-ui-locale', async () => {
+    const { getLocaleManager } = require('./i18n/LocaleManager');
+    return getLocaleManager().getLocale();
+  });
+
+  safeHandle('set-ui-locale', async (_, locale: unknown) => {
+    const { getLocaleManager } = require('./i18n/LocaleManager');
+    const manager = getLocaleManager();
+    const previous = manager.getLocale();
+
+    try {
+      const applied = manager.setLocale(locale);
+      // 广播到全部窗口——启动器、设置、会议界面、浮层必须同时切换，
+      // 否则会出现部分窗口停留在旧语言的割裂状态。
+      appState.broadcast('ui-locale-changed', applied);
+      return { success: true, locale: applied };
+    } catch (error) {
+      // 保存失败时不广播：宁可整体停留在原语言，也不要让界面已切换、
+      // 重启后却回退，用户完全无从察觉。
+      console.error('[IPC] set-ui-locale failed:', error);
+      return { success: false, locale: previous, error: 'locale-save-failed' };
+    }
+  });
+
   safeHandle('get-recognition-languages', async () => {
     return RECOGNITION_LANGUAGES;
   });
