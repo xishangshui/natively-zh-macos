@@ -2973,8 +2973,8 @@ export class AppState {
     // Keep the chain alive regardless of this run's outcome so a failure never
     // wedges all future reconfigures.
     this._sttReconfigureChain = run.then(
-      () => undefined,
-      () => undefined,
+      (): void => undefined,
+      (): void => undefined,
     );
     return run;
   }
