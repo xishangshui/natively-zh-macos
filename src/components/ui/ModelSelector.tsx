@@ -54,14 +54,15 @@ export const ModelSelector: React.FC<ModelSelectorProps> = ({ currentModel, onSe
                 const cModels: { id: string; name: string; desc: string; provider: string }[] = [];
 
                 if (creds?.hasNativelyKey) {
-                    cModels.push({ id: 'natively', name: 'Natively API', desc: 'Managed AI • Fast execution', provider: 'natively' });
+                    cModels.push({ id: 'natively', name: 'Natively API', desc: t('providers:models.managedFast'), provider: 'natively' });
                 }
                 for (const [prov, cfg] of Object.entries(STANDARD_CLOUD_MODELS)) {
                     if (!cfg.hasKeyCheck(creds)) continue;
                     cfg.ids.forEach((id, i) => cModels.push({ id, name: cfg.names[i], desc: cfg.descs[i], provider: prov }));
                     const pm = creds?.[cfg.pmKey];
                     if (pm && !cfg.ids.includes(pm)) {
-                        cModels.push({ id: pm, name: prettifyModelId(pm), desc: `${prov.charAt(0).toUpperCase() + prov.slice(1)} • Preferred`, provider: prov });
+                        // 供应商名原样保留，只本地化「首选」标识
+                        cModels.push({ id: pm, name: prettifyModelId(pm), desc: t('providers:models.preferred', { provider: prov.charAt(0).toUpperCase() + prov.slice(1) }), provider: prov });
                     }
                 }
                 setCloudModels(cModels);
@@ -188,7 +189,7 @@ export const ModelSelector: React.FC<ModelSelectorProps> = ({ currentModel, onSe
                                             key={provider.id}
                                             id={provider.id}
                                             name={provider.name}
-                                            desc="Custom cURL"
+                                            desc={t('providers:models.customCurl')}
                                             icon={<Terminal size={14} />}
                                             selected={currentModel === provider.id}
                                             onSelect={() => handleSelect(provider.id)}
@@ -212,7 +213,7 @@ export const ModelSelector: React.FC<ModelSelectorProps> = ({ currentModel, onSe
                                             key={model}
                                             id={`ollama-${model}`}
                                             name={model}
-                                            desc="Local"
+                                            desc={t('providers:models.local')}
                                             icon={<Server size={14} />}
                                             selected={currentModel === `ollama-${model}`}
                                             onSelect={() => handleSelect(`ollama-${model}`)}

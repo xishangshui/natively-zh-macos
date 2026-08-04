@@ -22,7 +22,10 @@
     "noCustom": "No custom providers.",
     "manageInSettings": "Manage in Settings",
     "noOllama": "No Ollama models found.",
-    "ensureOllama": "Ensure Ollama is running."
+    "ensureOllama": "Ensure Ollama is running.",
+    "customCurl": "Custom cURL",
+    "managedFast": "Managed AI • Fast execution",
+    "preferred": "{{provider}} • Preferred"
   },
   "reindex": {
     "doneTitle": "Search index updated",

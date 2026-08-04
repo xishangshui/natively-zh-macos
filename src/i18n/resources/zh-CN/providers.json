@@ -22,7 +22,10 @@
     "noCustom": "没有自定义供应商。",
     "manageInSettings": "在设置中管理",
     "noOllama": "未找到 Ollama 模型。",
-    "ensureOllama": "请确认 Ollama 正在运行。"
+    "ensureOllama": "请确认 Ollama 正在运行。",
+    "customCurl": "自定义 cURL",
+    "managedFast": "托管 AI · 快速执行",
+    "preferred": "{{provider}} · 首选"
   },
   "reindex": {
     "doneTitle": "搜索索引已更新",

@@ -8,39 +8,44 @@ import mainui from "../UI_comp/mainui.png";
 
 interface FeatureSlide {
     id: string;
-    headline: string;
-    subtitle: string;
+    /** i18n 键，非展示文本 */
+    headlineKey: string;
+    subtitleKey: string;
     type?: 'feature' | 'support' | 'premium';
-    actionLabel?: string;
+    actionLabelKey?: string;
     url?: string;
-    eyebrow?: string;
-    bullets?: string[];
-    footer?: string;
+    eyebrowKey?: string;
+    bulletKeys?: string[];
+    footerKey?: string;
 }
 
 // --- Data ---
 
+// 数据表只存翻译键；展示文本在组件内用 t() 解析。
+// 这是模块级常量，此处拿不到 useTranslation 的返回值。
 const FEATURES: FeatureSlide[] = [
     {
         id: 'tailored_answers',
-        headline: 'Upcoming features',
-        subtitle: 'Answers, tailored to you',
-        bullets: ['Repo aware explanations', 'System design interview specialization'],
-        footer: 'Designed to work silently during live interviews.',
+        headlineKey: 'launcher:features.tailored.headline',
+        subtitleKey: 'launcher:features.tailored.subtitle',
+        bulletKeys: [
+            'launcher:features.tailored.bullet1',
+            'launcher:features.tailored.bullet2',
+        ],
+        footerKey: 'launcher:features.tailored.footer',
         type: 'premium',
     },
 
     {
         id: 'support_natively',
-        headline: 'Support development',
-        subtitle: 'Built openly and sustained by users',
-        bullets: [
-            'Development driven by real users',
-            'Faster iteration on features that matter',
-
+        headlineKey: 'launcher:features.support.headline',
+        subtitleKey: 'launcher:features.support.subtitle',
+        bulletKeys: [
+            'launcher:features.support.bullet1',
+            'launcher:features.support.bullet2',
         ],
         type: 'support',
-        actionLabel: 'Contribute to development',
+        actionLabelKey: 'launcher:features.support.action',
         url: 'https://buymeacoffee.com/evinjohnn'
     }
 ];
@@ -164,9 +169,9 @@ export const FeatureSpotlight: React.FC = () => {
                         className="absolute inset-0 z-10 flex flex-col items-center justify-center w-full h-full px-7"
                     >
                         {/* Eyebrow / Label */}
-                        {currentFeature.eyebrow && (
+                        {currentFeature.eyebrowKey && (
                             <div className="mb-2 text-[11px] font-semibold tracking-[0.15em] text-yellow-500/80 uppercase">
-                                {currentFeature.eyebrow}
+                                {t(currentFeature.eyebrowKey)}
                             </div>
                         )}
 
@@ -190,7 +195,7 @@ export const FeatureSpotlight: React.FC = () => {
                                         textShadow: (isPremium || isSupport) ? '0px 1px 1px rgba(0, 0, 0, 0.1)' : 'none',
                                     }}
                                 >
-                                    {currentFeature.headline}
+                                    {t(currentFeature.headlineKey)}
                                 </h2>
 
                                 {/* Subtitle */}
@@ -206,18 +211,18 @@ export const FeatureSpotlight: React.FC = () => {
                                         maxWidth: isSupport ? '380px' : '360px'
                                     }}
                                 >
-                                    {currentFeature.subtitle}
+                                    {t(currentFeature.subtitleKey)}
                                 </p>
 
-                                {currentFeature.bullets && (
+                                {currentFeature.bulletKeys && (
                                     <div className={`flex flex-col w-full max-w-[340px] gap-1 items-center translate-y-2.5`}>
-                                        {currentFeature.bullets.map((bullet, idx) => (
+                                        {currentFeature.bulletKeys.map((bulletKey, idx) => (
                                             <div key={idx} className={`flex items-center justify-center group/item transition-transform duration-200 px-2`}>
                                                 <span
                                                     className={`${isSupport ? 'text-[12px] leading-relaxed font-medium opacity-100' : 'text-[12.5px] leading-snug font-medium'}`}
                                                     style={{ letterSpacing: isSupport ? '0.01em' : '-0.01em', color: '#E6C46A' }}
                                                 >
-                                                    {bullet}
+                                                    {t(bulletKey)}
                                                 </span>
                                             </div>
                                         ))}
@@ -225,7 +230,7 @@ export const FeatureSpotlight: React.FC = () => {
                                 )}
 
                                 {/* Footer: In-flow for equal spacing */}
-                                {currentFeature.footer && (
+                                {currentFeature.footerKey && (
                                     <div className="w-full text-center pointer-events-none mt-2 translate-y-5">
                                         <p
                                             className="opacity-65 font-medium tracking-wide"
@@ -234,7 +239,7 @@ export const FeatureSpotlight: React.FC = () => {
                                                 color: '#F5F7FA'
                                             }}
                                         >
-                                            {currentFeature.footer}
+                                            {t(currentFeature.footerKey)}
                                         </p>
                                     </div>
                                 )}
@@ -312,7 +317,7 @@ export const FeatureSpotlight: React.FC = () => {
                                                                 <Rocket size={14} className="text-[#1C1C1E]" strokeWidth={2.5} />
                                                                 {t('launcher:spotlight.fundDevelopment')}
                                                             </span>
-                                                        ) : (currentFeature.actionLabel || t('launcher:spotlight.markInterest')))
+                                                        ) : (currentFeature.actionLabelKey ? t(currentFeature.actionLabelKey) : t('launcher:spotlight.markInterest')))
                                                     }
                                                 </span>
 

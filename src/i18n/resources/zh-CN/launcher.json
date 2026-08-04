@@ -39,7 +39,8 @@
     "linked": "日历已关联",
     "connected": "日历已连接",
     "linkTitle": "关联你的日历",
-    "linkSubtitle": "查看即将开始的日程"
+    "linkSubtitle": "查看即将开始的日程",
+    "upcomingCount": "{{count}} 个即将开始的日程"
   },
   "list": {
     "more": "另有 {{count}} 场"
@@ -51,5 +52,32 @@
   "stealth": {
     "detectable": "可被检测",
     "undetectable": "不可被检测"
+  },
+  "date": {
+    "today": "今天",
+    "yesterday": "昨天",
+    "justNow": "刚刚",
+    "todayAt": "今天 {{time}}",
+    "tomorrowAt": "明天 {{time}}",
+    "weekdayAt": "{{weekday}} {{time}}"
+  },
+  "localAi": {
+    "settingUp": "正在准备本地 AI 记忆… {{percent}}%"
+  },
+  "features": {
+    "tailored": {
+      "headline": "即将推出的功能",
+      "subtitle": "为你量身定制的回答",
+      "bullet1": "理解代码仓库的讲解",
+      "bullet2": "系统设计面试专项优化",
+      "footer": "设计为在实时面试中静默工作。"
+    },
+    "support": {
+      "headline": "支持项目开发",
+      "subtitle": "开放构建，由用户支持维系",
+      "bullet1": "由真实用户驱动的开发",
+      "bullet2": "让重要功能更快迭代",
+      "action": "为开发出一份力"
+    }
   }
 }

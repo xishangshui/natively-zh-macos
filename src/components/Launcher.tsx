@@ -54,9 +54,13 @@ interface LauncherProps {
     ollamaPullMessage?: string;
 }
 
-// Helper to format date groups
-const getGroupLabel = (dateStr: string) => {
-    if (dateStr === "Today") return "Today"; // Backward compatibility
+// Helper to format date groups.
+// 接收 t 作为参数：这是模块级函数，拿不到 useTranslation 的返回值，
+// 而 "Today" / "Yesterday" 是直接渲染给用户的分组标题。
+// 注意 `dateStr === "Today"` 里的 "Today" 是历史遗留的哨兵值（存储数据），
+// 绝不能翻译；只有 return 出去的标签需要本地化。
+const getGroupLabel = (dateStr: string, t: (key: string) => string) => {
+    if (dateStr === "Today") return t('launcher:date.today'); // Backward compatibility
 
     const date = new Date(dateStr);
     const now = new Date();
@@ -66,15 +70,16 @@ const getGroupLabel = (dateStr: string) => {
 
     const checkDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
-    if (checkDate.getTime() === today.getTime()) return "Today";
-    if (checkDate.getTime() === yesterday.getTime()) return "Yesterday";
+    if (checkDate.getTime() === today.getTime()) return t('launcher:date.today');
+    if (checkDate.getTime() === yesterday.getTime()) return t('launcher:date.yesterday');
 
+    // 日期格式化本身在 Task 13 统一改为跟随 uiLocale
     return date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
 };
 
 // Helper to format time (e.g. 3:14pm)
-const formatTime = (dateStr: string) => {
-    if (dateStr === "Today") return "Just now"; // Legacy
+const formatTime = (dateStr: string, t: (key: string) => string) => {
+    if (dateStr === "Today") return t('launcher:date.justNow'); // Legacy
     const date = new Date(dateStr);
     return date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }).toLowerCase();
 };
@@ -272,7 +277,7 @@ const Launcher: React.FC<LauncherProps> = ({ onStartMeeting, onOpenSettings, onO
 
     // Group meetings
     const groupedMeetings = meetings.reduce((acc, meeting) => {
-        const label = getGroupLabel(meeting.date);
+        const label = getGroupLabel(meeting.date, t);
         if (!acc[label]) acc[label] = [];
         acc[label].push(meeting);
         return acc;
@@ -778,7 +783,7 @@ const Launcher: React.FC<LauncherProps> = ({ onStartMeeting, onOpenSettings, onO
                                                         )}
                                                         <div className="flex flex-col">
                                                             <span className="text-[11px] font-medium text-text-secondary whitespace-nowrap">
-                                                                {ollamaPullStatus === 'downloading' ? `Setting up AI memory... ${ollamaPullPercent}%` : ollamaPullMessage}
+                                                                {ollamaPullStatus === 'downloading' ? t('launcher:localAi.settingUp', { percent: ollamaPullPercent }) : ollamaPullMessage}
                                                             </span>
                                                             {ollamaPullStatus === 'downloading' && (
                                                                 <div className="w-full h-[3px] bg-white/10 rounded-full mt-1 overflow-hidden">
@@ -912,9 +917,9 @@ const Launcher: React.FC<LauncherProps> = ({ onStartMeeting, onOpenSettings, onO
                                             {/* Content Layer */}
                                             {isCalendarConnected ? (() => {
                                                 const eventCount = upcomingMeetings.length;
-                                                const summaryLabel = eventCount === 0
-                                                    ? 'No upcoming events'
-                                                    : `${eventCount} upcoming event${eventCount === 1 ? '' : 's'}`;
+                                                // 数量用插值键，不做「N + 单复数后缀」的拼接——
+                                                // 中文没有复数变化，拼接逻辑在中文下毫无意义
+                                                const summaryLabel = t('launcher:calendar.upcomingCount', { count: eventCount });
 
                                                 const formatTimeLabel = (startTime: string) => {
                                                     const start = new Date(startTime);
@@ -922,10 +927,11 @@ const Launcher: React.FC<LauncherProps> = ({ onStartMeeting, onOpenSettings, onO
                                                     const tomorrow = new Date(now.getTime() + 86400000);
                                                     const isToday = start.toDateString() === now.toDateString();
                                                     const isTomorrow = start.toDateString() === tomorrow.toDateString();
-                                                    const t = start.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
-                                                    return isToday ? `Today at ${t}`
-                                                        : isTomorrow ? `Tomorrow at ${t}`
-                                                        : `${start.toLocaleDateString([], { weekday: 'short' })} at ${t}`;
+                                                    // 原变量名为 t，会遮蔽 useTranslation 的 t，故改名
+                                                    const timeText = start.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+                                                    return isToday ? t('launcher:date.todayAt', { time: timeText })
+                                                        : isTomorrow ? t('launcher:date.tomorrowAt', { time: timeText })
+                                                        : t('launcher:date.weekdayAt', { weekday: start.toLocaleDateString([], { weekday: 'short' }), time: timeText });
                                                 };
 
                                                 // Deterministic avatar palette from email/name
@@ -1094,7 +1100,7 @@ const Launcher: React.FC<LauncherProps> = ({ onStartMeeting, onOpenSettings, onO
 
                                                                         {/* Time Text (Should fade out on hover) */}
                                                                         <span className="text-[13px] text-text-secondary font-medium min-w-[60px] text-right transition-all duration-200 ease-out group-hover:opacity-0 group-hover:translate-x-2 delayed-hover-exit">
-                                                                            {formatTime(m.date)}
+                                                                            {formatTime(m.date, t)}
                                                                         </span>
                                                                     </>
                                                                 )}

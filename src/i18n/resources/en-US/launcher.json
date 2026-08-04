@@ -39,7 +39,8 @@
     "linked": "Calendar linked",
     "connected": "Calendar Connected",
     "linkTitle": "Link your calendar to",
-    "linkSubtitle": "see upcoming events"
+    "linkSubtitle": "see upcoming events",
+    "upcomingCount": "{{count}} upcoming events"
   },
   "list": {
     "more": "+{{count}} more"
@@ -51,5 +52,32 @@
   "stealth": {
     "detectable": "Detectable",
     "undetectable": "Undetectable"
+  },
+  "date": {
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "justNow": "Just now",
+    "todayAt": "Today at {{time}}",
+    "tomorrowAt": "Tomorrow at {{time}}",
+    "weekdayAt": "{{weekday}} at {{time}}"
+  },
+  "localAi": {
+    "settingUp": "Setting up AI memory... {{percent}}%"
+  },
+  "features": {
+    "tailored": {
+      "headline": "Upcoming features",
+      "subtitle": "Answers, tailored to you",
+      "bullet1": "Repo aware explanations",
+      "bullet2": "System design interview specialization",
+      "footer": "Designed to work silently during live interviews."
+    },
+    "support": {
+      "headline": "Support development",
+      "subtitle": "Built openly and sustained by users",
+      "bullet1": "Development driven by real users",
+      "bullet2": "Faster iteration on features that matter",
+      "action": "Contribute to development"
+    }
   }
 }

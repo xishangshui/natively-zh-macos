@@ -7,6 +7,36 @@
       "reason": "产品名，按设计规格 3.2 不翻译"
     },
     {
+      "file": "src/components/ui/ModelSelector.tsx",
+      "literal": "Gemini 3.5 Flash",
+      "reason": "模型名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/ui/ModelSelector.tsx",
+      "literal": "Gemini 3.1 Flash Lite",
+      "reason": "模型名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/ui/ModelSelector.tsx",
+      "literal": "Gemini 3.1 Pro",
+      "reason": "模型名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/ui/ModelSelector.tsx",
+      "literal": "Groq Llama 3.3",
+      "reason": "模型名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/ui/ModelSelector.tsx",
+      "literal": "GPT 5.4",
+      "reason": "模型名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/ui/ModelSelector.tsx",
+      "literal": "Sonnet 4.6",
+      "reason": "模型名，按设计规格 3.2 不翻译"
+    },
+    {
       "file": "src/components/SettingsOverlay.tsx",
       "literal": "Natively",
       "reason": "migrated in Task 9"
@@ -29,11 +59,6 @@
     {
       "file": "src/components/SettingsOverlay.tsx",
       "literal": "Suggestion",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "A good approach would be to use a hash map to cache the intermediate results, which brings the time complexity down from O(n²) to O(n).",
       "reason": "migrated in Task 9"
     },
     {
@@ -73,6 +98,11 @@
     },
     {
       "file": "src/components/SettingsOverlay.tsx",
+      "literal": "Device",
+      "reason": "migrated in Task 9"
+    },
+    {
+      "file": "src/components/SettingsOverlay.tsx",
       "literal": "No devices found",
       "reason": "migrated in Task 9"
     },
@@ -94,6 +124,16 @@
     {
       "file": "src/components/SettingsOverlay.tsx",
       "literal": "Validation failed",
+      "reason": "migrated in Task 9"
+    },
+    {
+      "file": "src/components/SettingsOverlay.tsx",
+      "literal": "Are you sure you want to remove the",
+      "reason": "migrated in Task 9"
+    },
+    {
+      "file": "src/components/SettingsOverlay.tsx",
+      "literal": "API key?",
       "reason": "migrated in Task 9"
     },
     {
@@ -633,7 +673,22 @@
     },
     {
       "file": "src/components/SettingsOverlay.tsx",
+      "literal": "Managed transcription via Natively backend",
+      "reason": "migrated in Task 9"
+    },
+    {
+      "file": "src/components/SettingsOverlay.tsx",
       "literal": "Google Cloud",
+      "reason": "migrated in Task 9"
+    },
+    {
+      "file": "src/components/SettingsOverlay.tsx",
+      "literal": "Saved",
+      "reason": "migrated in Task 9"
+    },
+    {
+      "file": "src/components/SettingsOverlay.tsx",
+      "literal": "gRPC streaming via Service Account",
       "reason": "migrated in Task 9"
     },
     {
@@ -643,7 +698,17 @@
     },
     {
       "file": "src/components/SettingsOverlay.tsx",
+      "literal": "Ultra-fast REST transcription",
+      "reason": "migrated in Task 9"
+    },
+    {
+      "file": "src/components/SettingsOverlay.tsx",
       "literal": "OpenAI Whisper",
+      "reason": "migrated in Task 9"
+    },
+    {
+      "file": "src/components/SettingsOverlay.tsx",
+      "literal": "OpenAI-compatible Whisper API",
       "reason": "migrated in Task 9"
     },
     {
@@ -653,7 +718,17 @@
     },
     {
       "file": "src/components/SettingsOverlay.tsx",
+      "literal": "High-accuracy REST transcription",
+      "reason": "migrated in Task 9"
+    },
+    {
+      "file": "src/components/SettingsOverlay.tsx",
       "literal": "ElevenLabs Scribe",
+      "reason": "migrated in Task 9"
+    },
+    {
+      "file": "src/components/SettingsOverlay.tsx",
+      "literal": "Scribe v2 Realtime API",
       "reason": "migrated in Task 9"
     },
     {
@@ -663,12 +738,27 @@
     },
     {
       "file": "src/components/SettingsOverlay.tsx",
+      "literal": "Microsoft Cognitive Services STT",
+      "reason": "migrated in Task 9"
+    },
+    {
+      "file": "src/components/SettingsOverlay.tsx",
       "literal": "IBM Watson",
       "reason": "migrated in Task 9"
     },
     {
       "file": "src/components/SettingsOverlay.tsx",
+      "literal": "IBM Watson cloud STT service",
+      "reason": "migrated in Task 9"
+    },
+    {
+      "file": "src/components/SettingsOverlay.tsx",
       "literal": "Soniox",
+      "reason": "migrated in Task 9"
+    },
+    {
+      "file": "src/components/SettingsOverlay.tsx",
+      "literal": "60+ languages, multilingual, domain context",
       "reason": "migrated in Task 9"
     },
     {
@@ -683,7 +773,12 @@
     },
     {
       "file": "src/components/SettingsOverlay.tsx",
-      "literal": "V3 Turbo",
+      "literal": "Fastest",
+      "reason": "migrated in Task 9"
+    },
+    {
+      "file": "src/components/SettingsOverlay.tsx",
+      "literal": "Most Accurate",
       "reason": "migrated in Task 9"
     },
     {
@@ -823,11 +918,6 @@
     },
     {
       "file": "src/components/SettingsOverlay.tsx",
-      "literal": "https://api.openai.com (default)",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
       "literal": "Point at any OpenAI-compatible server (e.g. Speaches). Custom servers use REST only — Realtime WebSocket is skipped. Leave blank for default.",
       "reason": "migrated in Task 9"
     },
@@ -853,7 +943,17 @@
     },
     {
       "file": "src/components/SettingsOverlay.tsx",
+      "literal": "Language",
+      "reason": "migrated in Task 9"
+    },
+    {
+      "file": "src/components/SettingsOverlay.tsx",
       "literal": "Select Language",
+      "reason": "migrated in Task 9"
+    },
+    {
+      "file": "src/components/SettingsOverlay.tsx",
+      "literal": "Accent / Region",
       "reason": "migrated in Task 9"
     },
     {
@@ -869,6 +969,11 @@
     {
       "file": "src/components/SettingsOverlay.tsx",
       "literal": "Select the primary language being spoken in the meeting.",
+      "reason": "migrated in Task 9"
+    },
+    {
+      "file": "src/components/SettingsOverlay.tsx",
+      "literal": "Auto mode — detected:",
       "reason": "migrated in Task 9"
     },
     {
@@ -918,12 +1023,22 @@
     },
     {
       "file": "src/components/SettingsOverlay.tsx",
+      "literal": "Input Device",
+      "reason": "migrated in Task 9"
+    },
+    {
+      "file": "src/components/SettingsOverlay.tsx",
       "literal": "Default Microphone",
       "reason": "migrated in Task 9"
     },
     {
       "file": "src/components/SettingsOverlay.tsx",
       "literal": "Input Level",
+      "reason": "migrated in Task 9"
+    },
+    {
+      "file": "src/components/SettingsOverlay.tsx",
+      "literal": "Output Device",
       "reason": "migrated in Task 9"
     },
     {
@@ -989,6 +1104,11 @@
     {
       "file": "src/components/SettingsOverlay.tsx",
       "literal": "Upcoming",
+      "reason": "migrated in Task 9"
+    },
+    {
+      "file": "src/components/SettingsOverlay.tsx",
+      "literal": "· next 7 days",
       "reason": "migrated in Task 9"
     },
     {

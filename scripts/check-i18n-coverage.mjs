@@ -27,8 +27,25 @@ export const ROOT = path.resolve(__dirname, '..');
 export const SCOPE_FILE = path.join(ROOT, 'scripts/i18n-scope.json');
 export const ALLOWLIST_FILE = path.join(ROOT, 'scripts/i18n-allowlist.json');
 
-/** 需要翻译的文本属性。className/href/src 等不在此列。 */
-const TEXT_ATTRIBUTES = new Set(['placeholder', 'title', 'aria-label', 'alt', 'aria-description']);
+/**
+ * 承载用户可见文案的 JSX 属性 / 组件 prop。
+ *
+ * 既包含原生属性（placeholder / title / alt / aria-*），也包含本项目组件
+ * 之间传递文案的 prop（label / desc / badge / subtitle …）。
+ * 勘测发现 `<ModelOption desc="Custom cURL" />`、
+ * `<HelpItem desc="Ultra-fast low latency transcription" />` 这类写法
+ * 承载了大量用户可见描述，此前完全在扫描范围之外。
+ *
+ * className / style / href / src / 颜色 / SVG 几何属性刻意不在此列。
+ */
+const TEXT_ATTRIBUTES = new Set([
+    'placeholder', 'title', 'alt',
+    'aria-label', 'aria-description', 'aria-placeholder', 'aria-roledescription',
+    'label', 'desc', 'description', 'text', 'badge', 'badgeText',
+    'note', 'sublabel', 'sub', 'subtitle', 'headline', 'heading',
+    'actionLabel', 'footer', 'detail', 'caption', 'hint', 'message',
+    'emptyText', 'helperText', 'tooltip', 'confirmLabel', 'cancelLabel',
+]);
 
 /** 直接面向用户的调用。 */
 const USER_FACING_CALLS = new Set(['alert', 'confirm', 'toast']);
@@ -44,9 +61,10 @@ const STATE_SETTER_PATTERN = /^set[A-Za-z0-9]*(Error|Message|Status|Title|Label)
  * 本项目就在 NativelyInterfaceCard 的 hotkeys 数组里踩到过：静态扫描全绿，
  * 运行时 DOM 里却是英文。
  */
-const LABEL_PROPERTIES = new Set([
-    'label', 'title', 'placeholder', 'description', 'heading', 'tooltip', 'ariaLabel',
-]);
+// 与 JSX 属性用同一套名字：无论文案是作为 <X label="…" /> 传下去，
+// 还是写在 const ITEMS = [{ label: '…' }] 里，都是同一类用户可见文本。
+// 两处若各维护一份，迟早漂移。
+const LABEL_PROPERTIES = TEXT_ATTRIBUTES;
 
 /**
  * 判断一段文字是否是「给用户看的英文」。
@@ -68,7 +86,54 @@ export function isUserFacingEnglish(raw) {
     // i18next 语义键本身（含点号、无空格）不算残留文案
     if (/^[a-z][A-Za-z0-9]*(\.[a-z][A-Za-z0-9]*)+$/.test(text)) return false;
 
+    // 样式与代码不是文案
+    if (looksLikeStyling(text)) return false;
+
     return true;
+}
+
+/**
+ * 判断一段字符串是否是**样式或代码**而非文案。
+ *
+ * 这是整个门禁最关键的判别器。勘测全部 57 个 .tsx 后发现：
+ * 「含空格的英文」共 5728 处，其中 2518 处是 Tailwind 类名，
+ * 另有大量 CSS 值、SVG 路径、颜色和日志字符串。
+ * 若按位置逐个开白名单，永远追不完；若默认拒绝，allowlist 会膨胀到数千条。
+ *
+ * 把「样式/代码」识别出来排除掉，才能安全地把扫描位置放宽到
+ * return 语句、数组元素、模板字符串等真正会漏文案的地方。
+ */
+export function looksLikeStyling(raw) {
+    const t = raw.trim();
+    if (t === '') return true;
+
+    // 颜色字面量
+    if (/^#[0-9a-fA-F]{3,8}$/.test(t)) return true;
+    if (/^(rgba?|hsla?)\s*\(/i.test(t)) return true;
+
+    // CSS 函数与渐变
+    if (/\b(linear-gradient|radial-gradient|conic-gradient|cubic-bezier|translate[XYZ]?|scale[XYZ]?|rotate[XYZ]?|calc|var|url|blur|drop-shadow|inset)\s*\(/i.test(t)) return true;
+
+    // 带 CSS 单位的数值
+    if (/(^|\s)-?\d*\.?\d+(px|rem|em|vh|vw|vmin|vmax|%|s|ms|deg|fr)(\s|$|,|\))/.test(t)) return true;
+
+    // `property: value` 形式
+    if (/^[a-z][a-z-]*\s*:\s*\S/.test(t) && !/\s{2,}/.test(t)) return true;
+
+    // SVG 路径数据
+    if (/^[MmLlHhVvCcSsQqTtAaZz][\d\s.,-]/.test(t)) return true;
+
+    // Tailwind / 原子类名：多个 token 且大多带 - 或 : 前缀语义
+    const tokens = t.split(/\s+/);
+    if (tokens.length >= 2) {
+        const styleish = tokens.filter((tok) =>
+            /^(hover|focus|active|group|peer|disabled|dark|sm|md|lg|xl|2xl|first|last|odd|even|before|after|motion-safe|motion-reduce)[:-]/.test(tok)
+            || /^-?(bg|text|border|rounded|p|px|py|pt|pb|pl|pr|m|mx|my|mt|mb|ml|mr|w|h|min|max|gap|space|divide|flex|grid|col|row|items|justify|self|place|absolute|relative|fixed|sticky|static|inset|top|left|right|bottom|z|opacity|shadow|ring|outline|transition|duration|delay|ease|animate|overflow|whitespace|truncate|break|font|leading|tracking|list|align|table|backdrop|blur|brightness|contrast|grayscale|invert|saturate|sepia|scale|translate|rotate|skew|origin|cursor|select|pointer|resize|sr|not|aspect|object|order|float|clear|isolate|mix|filter|will|content|fill|stroke|caret|accent|scroll|snap|touch|appearance)([-/]|$)/.test(tok),
+        );
+        if (styleish.length / tokens.length >= 0.6) return true;
+    }
+
+    return false;
 }
 
 /**
@@ -197,6 +262,16 @@ export function scanSource(relPath, sourceText) {
             out.push({ node, text: direct });
             return out;
         }
+        // 带插值的模板字符串：逐段取字面量文本。
+        // `Re-indexing… ${done}/${total}` 的前半段是真文案，
+        // 而 className 模板的各段会被 looksLikeStyling 挡掉。
+        if (ts.isTemplateExpression(node)) {
+            const spans = [node.head, ...node.templateSpans.map((s) => s.literal)];
+            for (const span of spans) {
+                if (span.text.trim()) out.push({ node, text: span.text });
+            }
+            return out;
+        }
         if (ts.isParenthesizedExpression(node)) {
             stringsFromArgument(node.expression, out);
         } else if (ts.isBinaryExpression(node)) {
@@ -266,6 +341,29 @@ export function scanSource(relPath, sourceText) {
                     if (!looksLikeProse(found.text)) continue;
                     record(found.node, found.text, 'prop:' + propName);
                 }
+            }
+        }
+
+        // 2c. return 语句里的文案
+        //     日期标签这类 helper 惯用 `if (isToday) return 'Today';`，
+        //     它最终原样渲染，却不属于以上任何一类。
+        //     className helper 的返回值由 looksLikeStyling 挡掉。
+        if (ts.isReturnStatement(node) && node.expression) {
+            for (const found of stringsFromArgument(node.expression)) {
+                if (!looksLikeProse(found.text)) continue;
+                record(found.node, found.text, 'return');
+            }
+        }
+
+        // 2d. 数组字面量元素
+        //     形如 const TABS = ['General', 'Audio'] 的 UI 列表。
+        //     供应商名等不翻译项走 allowlist。
+        if (ts.isArrayLiteralExpression(node)) {
+            for (const element of node.elements) {
+                const literal = stringFromExpression(element);
+                if (literal === null) continue;
+                if (!looksLikeProse(literal)) continue;
+                record(element, literal, 'array-elem');
             }
         }
 
