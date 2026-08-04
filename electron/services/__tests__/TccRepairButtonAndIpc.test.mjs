@@ -116,18 +116,26 @@ test('electron.d.ts declares repairTccPermissions with ok:boolean and message:st
 });
 
 test('NativelyInterface.tsx renders a Repair Permissions button gated by isMac', () => {
+  // zh-CN 本地化说明：按钮文案已迁到词典，源码锚点改为语义键。
+  // 守护目标不变——按钮必须存在，且必须留在 isMac 分支内。
   assert.match(
     interfaceTsx,
-    /Repair Permissions/,
-    "expected literal 'Repair Permissions' button label in NativelyInterface.tsx",
+    /meeting:permissions\.repair/,
+    "expected the 'meeting:permissions.repair' button label key in NativelyInterface.tsx",
   );
-  // Locate the *button label* literal (quoted string-literal rendered into
-  // JSX), not earlier occurrences in code comments. Earlier matches may
-  // exist in comments documenting the button (e.g. "Repair Permissions"
-  // in JSDoc). Use the LAST occurrence — the actual rendered label sits
-  // deep in the JSX tree, far below any comment.
-  const allMatches = [...interfaceTsx.matchAll(/Repair Permissions/g)];
-  assert.ok(allMatches.length > 0, "expected a 'Repair Permissions' literal");
+  // 文案本身仍受保护：两种语言都必须定义且非空，否则按钮会渲染成空白。
+  for (const locale of ['zh-CN', 'en-US']) {
+    const catalog = JSON.parse(read(`src/i18n/resources/${locale}/meeting.json`));
+    assert.ok(
+      catalog.permissions?.repair,
+      `expected ${locale} meeting.permissions.repair to be defined and non-empty`,
+    );
+  }
+  // Locate the *button label* key reference, not earlier occurrences in code
+  // comments. Use the LAST occurrence — the actual rendered label sits deep
+  // in the JSX tree, far below any comment.
+  const allMatches = [...interfaceTsx.matchAll(/meeting:permissions\.repair['"]/g)];
+  assert.ok(allMatches.length > 0, "expected a 'meeting:permissions.repair' key reference");
   const labelIdx = allMatches[allMatches.length - 1].index;
   // Walk back a generously sized window — the surrounding JSX block is
   // verbose (handler, className, title attrs all inline). 5000 chars is

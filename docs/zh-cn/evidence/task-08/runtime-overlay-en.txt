@@ -1,0 +1,16 @@
+{
+ "buttons": [
+  "Hide",
+  "Open Settings",
+  "What to answer?",
+  "Clarify",
+  "Recap",
+  "Follow Up Question",
+  "Answer",
+  "Gemini 3.1 Flash Lite"
+ ],
+ "titles": [
+  "Open Audio settings to select a provider",
+  "Dismiss"
+ ]
+}

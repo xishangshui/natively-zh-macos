@@ -7,6 +7,46 @@
       "reason": "键盘按键名，按设计规格 3.2 不翻译"
     },
     {
+      "file": "src/components/NativelyInterface.tsx",
+      "literal": "## STT Diagnostic Report",
+      "reason": "复制到剪贴板的诊断报告标题，供上游维护者排错，整份报告保持英文"
+    },
+    {
+      "file": "src/components/NativelyInterface.tsx",
+      "literal": "Shift",
+      "reason": "键盘按键名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/NativelyInterface.tsx",
+      "literal": "Gemini 3.5 Flash",
+      "reason": "模型名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/NativelyInterface.tsx",
+      "literal": "Gemini 3.1 Flash Lite",
+      "reason": "模型名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/NativelyInterface.tsx",
+      "literal": "Gemini 3.1 Pro",
+      "reason": "模型名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/NativelyInterface.tsx",
+      "literal": "Groq Llama 3.3",
+      "reason": "模型名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/NativelyInterface.tsx",
+      "literal": "GPT 5.4",
+      "reason": "模型名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/NativelyInterface.tsx",
+      "literal": "Sonnet 4.6",
+      "reason": "模型名，按设计规格 3.2 不翻译"
+    },
+    {
       "file": "src/components/FollowUpEmailModal.tsx",
       "literal": "Gmail",
       "reason": "产品名，按设计规格 3.2 不翻译"

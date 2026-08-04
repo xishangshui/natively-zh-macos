@@ -35,7 +35,9 @@
     "reconnecting": "语音识别重连中",
     "listening": "正在等待音频…",
     "healthy": "语音识别正常",
-    "micPrefix": "麦克风 ·",
+    "providerDetail": "{{mic}} 麦克风 · {{system}} 系统音频",
+    "micError": "麦克风：{{detail}}",
+    "systemError": "系统音频：{{detail}}",
     "live": "实时",
     "disconnected": "已断开",
     "listeningShort": "正在聆听…",
@@ -57,24 +59,21 @@
   },
   "screenshot": {
     "attached": "已附加截图",
-    "one": "张截图",
-    "attachedSuffix": "已附加",
-    "alt": "截图",
-    "analyze": "分析这张截图",
-    "selective": "进行区域截图"
+    "attachedCount": "已附加 {{count}} 张截图",
+    "altIndexed": "截图 {{index}}",
+    "analyze": "分析这张截图"
   },
   "answer": {
     "correctedAnswer": "已修正的回答",
+    "correctedAnswerWithNote": "已修正的回答 —— {{note}}",
     "codeBadge": "代码",
     "header": "🎯 **回答：**",
     "verifiedRunning": "已通过运行代码验证",
-    "verifiedPrefix": "已验证 ·",
-    "testCase": "个测试用例",
-    "passed": "通过",
-    "ranTests": "已运行",
-    "testsSucceeded": "个测试用例，全部通过",
+    "verifiedCounts": "已验证 · {{passed}}/{{total}} 个测试用例通过",
+    "ranTestsTitle": "已成功运行 {{total}} 个测试用例",
     "stillFinishing": "上一个回答还在生成，请稍候…",
-    "stillGeneratingHint": "代码提示还在生成，请稍候…"
+    "stillGeneratingHint": "代码提示还在生成，请稍候…",
+    "notReadyYet": "暂时无法生成回答。请在对方说完几秒后再试。"
   },
   "prompts": {
     "whatToSay": "关于这个我该说什么？",
@@ -83,7 +82,7 @@
   },
   "input": {
     "askOrAnswer": "提问，或点击「回答」",
-    "askAnything": "询问屏幕内容或对话，或",
+    "selectiveScreenshotHint": "询问屏幕内容或对话，或按 <0></0> 进行区域截图",
     "askMeAnything": "随便问我…"
   },
   "suggestion": {
@@ -95,8 +94,7 @@
     "reQuestion": "回复：「{{question}}…」"
   },
   "stealth": {
-    "hotkeyInUse": "隐形输入快捷键",
-    "hotkeyInUseDetail": "已被占用。点击输入框激活，或在设置中重新绑定。",
+    "hotkeyConflict": "隐形输入快捷键 <0></0> 已被占用。点击输入框激活，或在设置中重新绑定。",
     "needsAccessibility": "隐形输入需要辅助功能权限。请在系统设置中授予，然后重启 Natively。"
   },
   "permissions": {

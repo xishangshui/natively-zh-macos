@@ -1,6 +1,6 @@
 {
   "_comment": "残留英文门禁的强制范围。每个迁移任务先把目标文件加入 enforcedFiles 触发红灯，再迁移文案，最后保持绿灯。排除项必须逐条写理由，禁止使用 src/** 或 electron/** 级别的宽泛忽略。",
-  "_progress": "Task 8 已迁移会议聊天、建议浮层、跟进邮件、动态动作与通道卡片并纳入门禁。NativelyInterface.tsx 尚未迁移，待其完成后一并纳入。SettingsOverlay.tsx 的存量以 reason=migrated in Task 9 暂放，Task 9 必须全部删除。",
+  "_progress": "Task 8 已完成：会议主界面、会议聊天、建议浮层、跟进邮件、可编辑文本块、动态动作与通道卡片全部纳入门禁。SettingsOverlay.tsx 的存量以 reason=migrated in Task 9 暂放，Task 9 必须全部删除。",
   "enforcedFiles": [
     "src/App.tsx",
     "src/components/ErrorBoundary.tsx",
@@ -13,7 +13,9 @@
     "src/components/WindowControls.tsx",
     "src/components/ui/ModelSelector.tsx",
     "src/components/ui/TopPill.tsx",
+    "src/components/NativelyInterface.tsx",
     "src/components/MeetingChatOverlay.tsx",
+    "src/components/EditableTextBlock.tsx",
     "src/components/GlobalChatOverlay.tsx",
     "src/components/SuggestionOverlay.tsx",
     "src/components/FollowUpEmailModal.tsx",

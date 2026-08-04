@@ -1,4 +1,6 @@
 import { animate, AnimatePresence, motion, useMotionValue, useTransform } from 'framer-motion';
+import { Trans, useTranslation } from 'react-i18next';
+import type { TFunction } from 'i18next';
 import {
   ArrowRight,
   ChevronDown,
@@ -45,6 +47,7 @@ const CardCopyButton = ({
   isModernTheme?: boolean;
   isGlassTheme?: boolean;
 }) => {
+  const { t } = useTranslation(['common']);
   const [copied, setCopied] = useState(false);
   const handleCopy = () => {
     onCopy(text);
@@ -60,7 +63,7 @@ const CardCopyButton = ({
     <button
       onClick={handleCopy}
       className={`p-1 transition-colors duration-200 flex items-center justify-center ${buttonColorClass}`}
-      title="Copy answer"
+      title={t('common:actions.copyAnswer')}
     >
       {copied ? (
         <Check className="w-3.5 h-3.5 text-emerald-400" />
@@ -316,6 +319,7 @@ const HighlightedCode = React.memo(
     isModernTheme,
     isGlassTheme,
   }: HighlightedCodeProps) {
+    const { t } = useTranslation(['meeting']);
     const isSpecialTheme = isModernTheme || isGlassTheme;
     return (
       <div
@@ -330,7 +334,7 @@ const HighlightedCode = React.memo(
           <span
             className={`text-[10px] uppercase tracking-widest font-semibold font-mono ${codeHeaderTextClass}`}
           >
-            {lang || 'CODE'}
+            {lang || t('meeting:answer.codeBadge')}
           </span>
         </div>
         {/* No-wrap horizontal scroll: code line layout stays stable as the
@@ -391,8 +395,10 @@ interface MessageRowProps {
   onCopy: (text: string) => void;
   renderMessageText: (msg: Message) => React.ReactNode;
 }
-const formatProviderLabel = (provider?: string | null): string => {
-  if (!provider) return 'not set';
+// 供应商名本身是产品名，不翻译；只有「未设置」这个占位状态需要本地化。
+// 这两个 helper 在模块作用域，用不了 hook，所以 t 由调用方透传。
+const formatProviderLabel = (t: TFunction, provider?: string | null): string => {
+  if (!provider) return t('common:state.notSet');
   return provider
     .split(/[-_\s]+/)
     .filter(Boolean)
@@ -401,6 +407,7 @@ const formatProviderLabel = (provider?: string | null): string => {
 };
 
 const getSttSummary = (
+  t: TFunction,
   userStatus: 'connected' | 'reconnecting' | 'failed' | 'awaiting-audio',
   interviewerStatus: 'connected' | 'reconnecting' | 'failed' | 'awaiting-audio',
   userProvider: string,
@@ -409,41 +416,49 @@ const getSttSummary = (
   userError?: string | null,
   interviewerError?: string | null,
 ): { label: string; tone: 'ok' | 'warn' | 'error'; detail: string } => {
+  // 两条通道的供应商摘要，四个分支共用。
+  const providerDetail = () =>
+    t('meeting:stt.providerDetail', {
+      mic: formatProviderLabel(t, userProvider),
+      system: formatProviderLabel(t, interviewerProvider),
+    });
+
   if (notConfigured) {
     return {
-      label: 'STT not configured',
+      label: t('meeting:stt.notConfigured'),
       tone: 'error',
-      detail: 'Open Audio settings to select a provider',
+      detail: t('meeting:stt.notConfiguredDetail'),
     };
   }
   if (userStatus === 'failed' || interviewerStatus === 'failed') {
     const parts: string[] = [];
-    if (userStatus === 'failed' && userError) parts.push(`Mic: ${userError}`);
-    if (interviewerStatus === 'failed' && interviewerError) parts.push(`System: ${interviewerError}`);
+    // 供应商原始错误详情保持原文，只本地化通道前缀。
+    if (userStatus === 'failed' && userError) parts.push(t('meeting:stt.micError', { detail: userError }));
+    if (interviewerStatus === 'failed' && interviewerError) parts.push(t('meeting:stt.systemError', { detail: interviewerError }));
     return {
-      label: 'STT needs attention',
+      label: t('meeting:stt.needsAttention'),
       tone: 'error',
-      detail: parts.length > 0 ? parts.join(' · ') : `${formatProviderLabel(userProvider)} mic · ${formatProviderLabel(interviewerProvider)} system`,
+      detail: parts.length > 0 ? parts.join(' · ') : providerDetail(),
     };
   }
   if (userStatus === 'reconnecting' || interviewerStatus === 'reconnecting') {
     return {
-      label: 'STT reconnecting',
+      label: t('meeting:stt.reconnecting'),
       tone: 'warn',
-      detail: `${formatProviderLabel(userProvider)} mic · ${formatProviderLabel(interviewerProvider)} system`,
+      detail: providerDetail(),
     };
   }
   if (userStatus === 'awaiting-audio' || interviewerStatus === 'awaiting-audio') {
     return {
-      label: 'Listening for audio…',
+      label: t('meeting:stt.listening'),
       tone: 'warn',
-      detail: `${formatProviderLabel(userProvider)} mic · ${formatProviderLabel(interviewerProvider)} system`,
+      detail: providerDetail(),
     };
   }
   return {
-    label: 'STT healthy',
+    label: t('meeting:stt.healthy'),
     tone: 'ok',
-    detail: `${formatProviderLabel(userProvider)} mic · ${formatProviderLabel(interviewerProvider)} system`,
+    detail: providerDetail(),
   };
 };
 
@@ -464,6 +479,7 @@ const MessageRow = React.memo(
     onCopy: _onCopy,
     renderMessageText,
   }: MessageRowProps) {
+    const { t } = useTranslation(['meeting']);
     const isCodeMsg = msg.role === 'system' && (msg.isCode || msg.text.includes('```'));
     // bubbleMaxClass: user bubbles are tighter; system + code use the same width.
     const bubbleMaxClass =
@@ -498,7 +514,7 @@ const MessageRow = React.memo(
           >
             {msg.role === 'interviewer' && (
               <div className="flex items-center gap-1.5 mb-1 text-[10px] font-medium uppercase tracking-wider overlay-text-muted">
-                Interviewer
+                {t('meeting:channel.interviewer')}
                 {msg.isStreaming && (
                   <span className="w-1 h-1 bg-green-500 rounded-full animate-pulse" />
                 )}
@@ -509,25 +525,35 @@ const MessageRow = React.memo(
                 className={`flex items-center gap-1 text-[10px] opacity-70 mb-1 border-b pb-1 ${isLightTheme ? 'border-black/10' : 'border-white/10'}`}
               >
                 <Image className="w-2.5 h-2.5" />
-                <span>Screenshot attached</span>
+                <span>{t('meeting:screenshot.attached')}</span>
               </div>
             )}
             {/* Correction header: this message fixes an earlier wrong answer. */}
             {msg.role === 'system' && msg.isCorrection && (
               <div className="flex items-center gap-1.5 mb-1.5 text-[11px] font-medium text-amber-500">
                 <span aria-hidden>↻</span>
-                <span>Corrected answer{msg.correctionNote ? ` — ${msg.correctionNote}` : ''}</span>
+                <span>
+                  {msg.correctionNote
+                    ? t('meeting:answer.correctedAnswerWithNote', { note: msg.correctionNote })
+                    : t('meeting:answer.correctedAnswer')}
+                </span>
               </div>
             )}
             {renderMessageText(msg)}
             {/* Verified badge: the code in this message passed executed tests. */}
             {msg.role === 'system' && msg.codeVerified && (
-              <div className="flex items-center gap-1 mt-1.5 text-[10px] font-medium text-green-500" title={`Ran ${msg.codeVerified.total} test case(s) successfully`}>
+              <div
+                className="flex items-center gap-1 mt-1.5 text-[10px] font-medium text-green-500"
+                title={t('meeting:answer.ranTestsTitle', { total: msg.codeVerified.total })}
+              >
                 <span aria-hidden>✓</span>
                 <span>
                   {msg.codeVerified.language === 'verified'
-                    ? 'verified by running the code'
-                    : `verified · ${msg.codeVerified.passed}/${msg.codeVerified.total} test case${msg.codeVerified.total === 1 ? '' : 's'} passed`}
+                    ? t('meeting:answer.verifiedRunning')
+                    : t('meeting:answer.verifiedCounts', {
+                        passed: msg.codeVerified.passed,
+                        total: msg.codeVerified.total,
+                      })}
                 </span>
               </div>
             )}
@@ -549,6 +575,7 @@ const NativelyInterface: React.FC<NativelyInterfaceProps> = ({
   overlayOpacity = OVERLAY_OPACITY_DEFAULT,
   interfaceTheme = 'default',
 }) => {
+  const { t } = useTranslation(['meeting', 'common', 'errors']);
   const isLightTheme = useResolvedTheme() === 'light';
   const isGlassTheme = interfaceTheme === 'liquid-glass';
   const isModernTheme = interfaceTheme === 'modern';
@@ -780,12 +807,12 @@ const NativelyInterface: React.FC<NativelyInterfaceProps> = ({
     const loadLlmRoute = async () => {
       const config = await window.electronAPI?.getCurrentLlmConfig?.().catch(() => null);
       if (!mounted || !config) return;
-      setLlmProviderLabel(formatProviderLabel(config.provider));
+      setLlmProviderLabel(formatProviderLabel(t, config.provider));
       setLlmPrivacyLabel(
         config.provider === 'ollama' || config.provider === 'codex-cli'
-          ? 'Local/private route'
+          ? t('meeting:privacy.localRoute')
           : config.provider === 'custom'
-            ? 'Custom endpoint route'
+            ? t('meeting:privacy.customRoute')
             : null,
       );
     };
@@ -797,7 +824,9 @@ const NativelyInterface: React.FC<NativelyInterfaceProps> = ({
       mounted = false;
       unsub?.();
     };
-  }, []);
+    // t 进依赖：这两个 label 存在 state 里，切换界面语言时必须重新解析，
+    // 否则会停留在上一种语言。
+  }, [t]);
 
   // Model Selection State
   const [currentModel, setCurrentModel] = useState<string>('gemini-3-flash-preview');
@@ -2346,7 +2375,7 @@ const NativelyInterface: React.FC<NativelyInterfaceProps> = ({
           {
             id: genMessageId(),
             role: 'system',
-            text: `Error: ${err.error}`,
+            text: t('errors:message.withDetail', { detail: err.error }),
           },
         ]);
       }),
@@ -2583,7 +2612,7 @@ const NativelyInterface: React.FC<NativelyInterfaceProps> = ({
           {
             id: genMessageId(),
             role: 'system',
-            text: `🎯 **Answer:**\n\n${data.answer}`,
+            text: `${t('meeting:answer.header')}\n\n${data.answer}`,
           },
         ]);
       }),
@@ -2597,7 +2626,7 @@ const NativelyInterface: React.FC<NativelyInterfaceProps> = ({
           {
             id: genMessageId(),
             role: 'system',
-            text: `❌ Error (${data.mode}): ${data.error}`,
+            text: t('errors:message.withCodeAndDetail', { code: data.mode, detail: data.error }),
           },
         ]);
       }),
@@ -2645,7 +2674,7 @@ const NativelyInterface: React.FC<NativelyInterfaceProps> = ({
       // press is never indistinguishable from a crash / dead hotkey.
       setMessages((prev) => [
         ...prev,
-        { id: genMessageId(), role: 'system', text: 'Still finishing the previous answer — one moment…' },
+        { id: genMessageId(), role: 'system', text: t('meeting:answer.stillFinishing') },
       ]);
       return;
     }
@@ -2670,7 +2699,7 @@ const NativelyInterface: React.FC<NativelyInterfaceProps> = ({
         {
           id: genMessageId(),
           role: 'user',
-          text: 'What should I say about this?',
+          text: t('meeting:prompts.whatToSay'),
           hasScreenshot: true,
           screenshotPreview: currentAttachments[0].preview,
         },
@@ -2699,9 +2728,9 @@ const NativelyInterface: React.FC<NativelyInterfaceProps> = ({
       setLatestVisionModelUsed(result.visionModelUsed);
       setLatestVisionFailureReason(result.visionFailureReason);
       if (result.answer == null) {
-        const feedback =
-          result.error ??
-          'Could not generate an answer yet. Wait a few seconds after speech and try again.';
+        // result.error 是主进程/供应商返回的原始详情，保持原文；
+        // 只有兜底提示是本地化的。
+        const feedback = result.error ?? t('meeting:answer.notReadyYet');
         // CRITICAL ORDERING: clear streaming refs and wipe imperative DOM
         // BEFORE the `setMessages` that commits the null-feedback. The old
         // order called `flushToken()` first — which exits early when
@@ -2739,7 +2768,7 @@ const NativelyInterface: React.FC<NativelyInterfaceProps> = ({
         {
           id: genMessageId(),
           role: 'system',
-          text: `Error: ${err}`,
+          text: t('errors:message.withDetail', { detail: err }),
         },
       ]);
       pinAnswerPanel();
@@ -2765,7 +2794,7 @@ const NativelyInterface: React.FC<NativelyInterfaceProps> = ({
         {
           id: genMessageId(),
           role: 'system',
-          text: `Error: ${err}`,
+          text: t('errors:message.withDetail', { detail: err }),
         },
       ]);
     } finally {
@@ -2789,7 +2818,7 @@ const NativelyInterface: React.FC<NativelyInterfaceProps> = ({
         {
           id: genMessageId(),
           role: 'system',
-          text: `Error: ${err}`,
+          text: t('errors:message.withDetail', { detail: err }),
         },
       ]);
     } finally {
@@ -2813,7 +2842,7 @@ const NativelyInterface: React.FC<NativelyInterfaceProps> = ({
         {
           id: genMessageId(),
           role: 'system',
-          text: `Error: ${err}`,
+          text: t('errors:message.withDetail', { detail: err }),
         },
       ]);
     } finally {
@@ -2837,7 +2866,7 @@ const NativelyInterface: React.FC<NativelyInterfaceProps> = ({
         {
           id: genMessageId(),
           role: 'system',
-          text: `Error: ${err}`,
+          text: t('errors:message.withDetail', { detail: err }),
         },
       ]);
     } finally {
@@ -2853,7 +2882,7 @@ const NativelyInterface: React.FC<NativelyInterfaceProps> = ({
     if (!tryBeginOverlayAction('code_hint')) {
       setMessages((prev) => [
         ...prev,
-        { id: genMessageId(), role: 'system', text: 'Still generating the code hint — one moment…' },
+        { id: genMessageId(), role: 'system', text: t('meeting:answer.stillGeneratingHint') },
       ]);
       return;
     }
@@ -2870,7 +2899,7 @@ const NativelyInterface: React.FC<NativelyInterfaceProps> = ({
         {
           id: genMessageId(),
           role: 'user',
-          text: 'Give me a code hint for this',
+          text: t('meeting:prompts.codeHint'),
           hasScreenshot: true,
           screenshotPreview: currentAttachments[0].preview,
         },
@@ -2891,7 +2920,7 @@ const NativelyInterface: React.FC<NativelyInterfaceProps> = ({
         {
           id: genMessageId(),
           role: 'system',
-          text: `Error: ${err}`,
+          text: t('errors:message.withDetail', { detail: err }),
         },
       ]);
     } finally {
@@ -2916,7 +2945,7 @@ const NativelyInterface: React.FC<NativelyInterfaceProps> = ({
         {
           id: genMessageId(),
           role: 'user',
-          text: 'Brainstorm with this context',
+          text: t('meeting:prompts.brainstormContext'),
           hasScreenshot: true,
           screenshotPreview: currentAttachments[0].preview,
         },
@@ -2937,7 +2966,7 @@ const NativelyInterface: React.FC<NativelyInterfaceProps> = ({
         {
           id: genMessageId(),
           role: 'system',
-          text: `Error: ${err}`,
+          text: t('errors:message.withDetail', { detail: err }),
         },
       ]);
     } finally {
@@ -3041,7 +3070,7 @@ const NativelyInterface: React.FC<NativelyInterfaceProps> = ({
             {
               id: genMessageId(),
               role: 'system',
-              text: `❌ Error: ${error}`,
+              text: t('errors:message.markedWithDetail', { detail: error }),
             },
           ];
         });
@@ -3179,7 +3208,7 @@ const NativelyInterface: React.FC<NativelyInterfaceProps> = ({
               {
                 id: genMessageId(),
                 role: 'system',
-                text: `❌ STT Error: ${sttUserError}`,
+                text: t('meeting:stt.errorPrefix', { detail: sttUserError }),
               },
             ]);
           } else if (sttUserStatus === 'reconnecting') {
@@ -3188,7 +3217,7 @@ const NativelyInterface: React.FC<NativelyInterfaceProps> = ({
               {
                 id: genMessageId(),
                 role: 'system',
-                text: '⏳ STT is reconnecting, try again in a moment.',
+                text: t('meeting:stt.reconnectRetry'),
               },
             ]);
           } else {
@@ -3197,7 +3226,7 @@ const NativelyInterface: React.FC<NativelyInterfaceProps> = ({
               {
                 id: genMessageId(),
                 role: 'system',
-                text: '⚠️ No speech detected. Try speaking closer to your microphone.',
+                text: t('meeting:stt.noSpeech'),
               },
             ]);
           }
@@ -3285,7 +3314,7 @@ Provide only the answer, nothing else.`;
               return prev.slice(0, -1).concat({
                 id: genMessageId(),
                 role: 'system',
-                text: `❌ Error starting stream: ${err}`,
+                text: t('errors:message.startStream', { detail: err }),
               });
             }
             return [
@@ -3293,7 +3322,7 @@ Provide only the answer, nothing else.`;
               {
                 id: genMessageId(),
                 role: 'system',
-                text: `❌ Error: ${err}`,
+                text: t('errors:message.markedWithDetail', { detail: err }),
               },
             ];
           });
@@ -3370,7 +3399,7 @@ Provide only the answer, nothing else.`;
       {
         id: genMessageId(),
         role: 'user',
-        text: userText || (currentAttachments.length > 0 ? 'Analyze this screenshot' : ''),
+        text: userText || (currentAttachments.length > 0 ? t('meeting:screenshot.analyze') : ''),
         hasScreenshot: currentAttachments.length > 0,
         screenshotPreview: currentAttachments[0]?.preview,
       },
@@ -3425,6 +3454,8 @@ Provide only the answer, nothing else.`;
       // Pass imagePath if attached, AND conversation context
       requestStartTimeRef.current = Date.now();
       await window.electronAPI.streamGeminiChat(
+        // 这是发给模型的 prompt，不是界面文案 —— 保持英文原文。
+        // AI 回复语言由 aiResponseLanguage 单独控制，与界面语言无关。
         userText || 'Analyze this screenshot',
         currentAttachments.length > 0 ? currentAttachments.map((s) => s.path) : undefined,
         conversationContext, // Pass context so "answer this" works
@@ -3438,7 +3469,7 @@ Provide only the answer, nothing else.`;
           return prev.slice(0, -1).concat({
             id: genMessageId(),
             role: 'system',
-            text: `❌ Error starting stream: ${err}`,
+            text: t('errors:message.startStream', { detail: err }),
           });
         }
         return [
@@ -3446,7 +3477,7 @@ Provide only the answer, nothing else.`;
           {
             id: genMessageId(),
             role: 'system',
-            text: `❌ Error: ${err}`,
+            text: t('errors:message.markedWithDetail', { detail: err }),
           },
         ];
       });
@@ -4649,6 +4680,7 @@ Provide only the answer, nothing else.`;
     '',
   );
   const sttSummary = getSttSummary(
+    t,
     sttUserStatus,
     sttInterviewerStatus,
     sttUserProvider,
@@ -4816,8 +4848,8 @@ Provide only the answer, nothing else.`;
                       </div>
                       <span>
                         {systemAudioWarning.kind === 'screen-recording-permission'
-                          ? 'Screen Recording Permission Denied'
-                          : 'Audio Capture Issue'}
+                          ? t('meeting:permissions.screenDenied')
+                          : t('meeting:permissions.audioIssue')}
                       </span>
                     </div>
                     <p className="text-[11px] text-yellow-600/70 dark:text-yellow-400/60 leading-snug pl-[26px]">
@@ -4864,16 +4896,16 @@ Provide only the answer, nothing else.`;
                             title={
                               deepLinkUrl
                                 ? wantsMicrophonePane
-                                  ? 'Open macOS Microphone privacy settings'
-                                  : 'Open macOS Screen Recording privacy settings'
-                                : 'Open Natively Settings'
+                                  ? t('meeting:permissions.micSettingsTitle')
+                                  : t('meeting:permissions.screenSettingsTitle')
+                                : t('meeting:permissions.appSettingsTitle')
                             }
                           >
                             {deepLinkUrl
                               ? wantsMicrophonePane
-                                ? 'Open Mic Settings'
-                                : 'Open Screen Settings'
-                              : 'Open Settings'}
+                                ? t('meeting:permissions.openMicSettings')
+                                : t('meeting:permissions.openScreenSettings')
+                              : t('common:actions.openSettings')}
                           </button>
                           {/*
                             UX2: in-app TCC repair button. macOS only.
@@ -4910,9 +4942,11 @@ Provide only the answer, nothing else.`;
                               }}
                               disabled={tccRepairing}
                               className="px-3 py-1.5 rounded-lg bg-yellow-500/10 hover:bg-yellow-500/20 text-yellow-700 dark:text-yellow-500 text-[11px] font-medium transition-all active:scale-95 border border-yellow-500/15 disabled:opacity-60 disabled:cursor-not-allowed"
-                              title="Reset macOS permission entries for Natively (you will need to grant them again after relaunch)"
+                              title={t('meeting:permissions.repairTitle')}
                             >
-                              {tccRepairing ? 'Resetting…' : 'Repair Permissions'}
+                              {tccRepairing
+                                ? t('meeting:permissions.repairing')
+                                : t('meeting:permissions.repair')}
                             </button>
                           )}
                         </>
@@ -4921,7 +4955,7 @@ Provide only the answer, nothing else.`;
                     <button
                       onClick={() => setSystemAudioWarning(null)}
                       className="p-1.5 rounded-full hover:bg-black/5 dark:hover:bg-white/10 text-yellow-600/50 hover:text-yellow-700 dark:text-yellow-500/50 dark:hover:text-yellow-400 transition-colors absolute top-1 right-1 opacity-0 group-hover/warning:opacity-100"
-                      title="Dismiss"
+                      title={t('common:actions.dismiss')}
                     >
                       <X className="w-3 h-3" />
                     </button>
@@ -4949,10 +4983,10 @@ Provide only the answer, nothing else.`;
                           />
                         </svg>
                       </div>
-                      <span>Transcription Not Configured</span>
+                      <span>{t('meeting:stt.titleNotConfigured')}</span>
                     </div>
                     <p className="text-[11px] text-orange-600/70 dark:text-orange-400/60 leading-snug pl-[26px]">
-                      No STT provider selected. Open Settings → Audio to pick one.
+                      {t('meeting:stt.noProvider')}
                     </p>
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
@@ -4962,12 +4996,12 @@ Provide only the answer, nothing else.`;
                       }}
                       className="px-3 py-1.5 rounded-lg bg-orange-500/15 hover:bg-orange-500/25 text-orange-700 dark:text-orange-500 text-[11px] font-semibold transition-all active:scale-95 border border-orange-500/20 shadow-sm"
                     >
-                      Open Settings
+                      {t('common:actions.openSettings')}
                     </button>
                     <button
                       onClick={() => setSttNotConfigured(false)}
                       className="p-1.5 rounded-full hover:bg-black/5 dark:hover:bg-white/10 text-orange-600/50 hover:text-orange-700 dark:text-orange-500/50 dark:hover:text-orange-400 transition-colors absolute top-1 right-1 opacity-0 group-hover/stt-warning:opacity-100"
-                      title="Dismiss"
+                      title={t('common:actions.dismiss')}
                     >
                       <X className="w-3 h-3" />
                     </button>
@@ -5068,7 +5102,9 @@ Provide only the answer, nothing else.`;
                           className="w-2 h-2 bg-emerald-400 rounded-full animate-bounce"
                           style={{ animationDelay: '300ms' }}
                         />
-                        <span className="text-[10px] text-emerald-400/70 ml-1">Listening...</span>
+                        <span className="text-[10px] text-emerald-400/70 ml-1">
+                          {t('meeting:stt.listeningShort')}
+                        </span>
                       </div>
                     </div>
                   )}
@@ -5124,14 +5160,14 @@ Provide only the answer, nothing else.`;
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-medium border transition-all active:scale-95 duration-200 interaction-base interaction-press whitespace-nowrap shrink-0 ${quickActionClass}`}
                   style={appearance.chipStyle}
                 >
-                  <Pencil className="w-3 h-3 opacity-70" /> What to answer?
+                  <Pencil className="w-3 h-3 opacity-70" /> {t('meeting:actions.whatToAnswer')}
                 </button>
                 <button
                   onClick={handleClarify}
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-medium border transition-all active:scale-95 duration-200 interaction-base interaction-press whitespace-nowrap shrink-0 ${quickActionClass}`}
                   style={appearance.chipStyle}
                 >
-                  <MessageSquare className="w-3 h-3 opacity-70" /> Clarify
+                  <MessageSquare className="w-3 h-3 opacity-70" /> {t('meeting:actions.clarify')}
                 </button>
                 <button
                   onClick={actionButtonMode === 'brainstorm' ? handleBrainstorm : handleRecap}
@@ -5140,11 +5176,11 @@ Provide only the answer, nothing else.`;
                 >
                   {actionButtonMode === 'brainstorm' ? (
                     <>
-                      <Lightbulb className="w-3 h-3 opacity-70" /> Brainstorm
+                      <Lightbulb className="w-3 h-3 opacity-70" /> {t('meeting:actions.brainstorm')}
                     </>
                   ) : (
                     <>
-                      <RefreshCw className="w-3 h-3 opacity-70" /> Recap
+                      <RefreshCw className="w-3 h-3 opacity-70" /> {t('meeting:actions.recap')}
                     </>
                   )}
                 </button>
@@ -5153,7 +5189,7 @@ Provide only the answer, nothing else.`;
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-medium border transition-all active:scale-95 duration-200 interaction-base interaction-press whitespace-nowrap shrink-0 ${quickActionClass}`}
                   style={appearance.chipStyle}
                 >
-                  <HelpCircle className="w-3 h-3 opacity-70" /> Follow Up Question
+                  <HelpCircle className="w-3 h-3 opacity-70" /> {t('meeting:actions.followUp')}
                 </button>
                 <button
                   onClick={handleAnswerNow}
@@ -5167,11 +5203,11 @@ Provide only the answer, nothing else.`;
                   {isManualRecording ? (
                     <>
                       <div className="w-1.5 h-1.5 rounded-full bg-red-400 animate-pulse" />
-                      Stop
+                      {t('common:actions.stop')}
                     </>
                   ) : (
                     <>
-                      <Zap className="w-3 h-3 opacity-70" /> Answer
+                      <Zap className="w-3 h-3 opacity-70" /> {t('meeting:actions.answer')}
                     </>
                   )}
                 </button>
@@ -5187,13 +5223,12 @@ Provide only the answer, nothing else.`;
                   >
                     <div className="flex items-center justify-between mb-1.5">
                       <span className="text-[11px] font-medium overlay-text-primary">
-                        {attachedContext.length} screenshot{attachedContext.length > 1 ? 's' : ''}{' '}
-                        attached
+                        {t('meeting:screenshot.attachedCount', { count: attachedContext.length })}
                       </span>
                       <button
                         onClick={() => setAttachedContext([])}
                         className="p-1 rounded-full transition-colors overlay-icon-surface overlay-icon-surface-hover overlay-text-interactive"
-                        title="Remove all"
+                        title={t('common:actions.removeAll')}
                         style={appearance.iconStyle}
                       >
                         <X className="w-3.5 h-3.5" />
@@ -5204,7 +5239,7 @@ Provide only the answer, nothing else.`;
                         <div key={ctx.path} className="relative group/thumb flex-shrink-0">
                           <img
                             src={ctx.preview}
-                            alt={`Screenshot ${idx + 1}`}
+                            alt={t('meeting:screenshot.altIndexed', { index: idx + 1 })}
                             className={`h-10 w-auto rounded border ${isLightTheme ? 'border-black/15' : 'border-white/20'}`}
                           />
                           <button
@@ -5212,7 +5247,7 @@ Provide only the answer, nothing else.`;
                               setAttachedContext((prev) => prev.filter((_, i) => i !== idx))
                             }
                             className="absolute -top-1 -right-1 w-4 h-4 bg-red-500/80 hover:bg-red-500 rounded-full flex items-center justify-center opacity-0 group-hover/thumb:opacity-100 transition-opacity"
-                            title="Remove"
+                            title={t('common:actions.remove')}
                           >
                             <X className="w-2.5 h-2.5 text-white" />
                           </button>
@@ -5220,7 +5255,7 @@ Provide only the answer, nothing else.`;
                       ))}
                     </div>
                     <span className="text-[10px] overlay-text-muted">
-                      Ask a question or click Answer
+                      {t('meeting:input.askOrAnswer')}
                     </span>
                   </div>
                 )}
@@ -5236,23 +5271,31 @@ Provide only the answer, nothing else.`;
                     data-stealth-ignore="true"
                   >
                     <span className="overlay-text-primary flex-1">
-                      Stealth typing hotkey{' '}
-                      <kbd className="px-1 py-0.5 rounded bg-white/10 font-mono text-[10px]">
-                        {stealthHotkeyConflict}
-                      </kbd>{' '}
-                      is already in use. Click the input to activate, or rebind in Settings.
+                      {/* 快捷键徽标嵌在句中，用 Trans 保留位置与样式；
+                          中文语序与英文不同，不能靠拼接前后缀 */}
+                      <Trans
+                        i18nKey="meeting:stealth.hotkeyConflict"
+                        components={[
+                          <kbd
+                            className="px-1 py-0.5 rounded bg-white/10 font-mono text-[10px]"
+                            key="hotkey"
+                          >
+                            {stealthHotkeyConflict}
+                          </kbd>,
+                        ]}
+                      />
                     </span>
                     <button
                       onClick={() => window.electronAPI.openSettingsTab('keybinds')}
                       className="px-2 py-1 rounded-md bg-rose-500/20 hover:bg-rose-500/30 transition-colors text-[11px] font-medium overlay-text-primary whitespace-nowrap"
                       data-stealth-ignore="true"
                     >
-                      Rebind
+                      {t('common:actions.rebind')}
                     </button>
                     <button
                       onClick={() => setStealthHotkeyConflict(null)}
                       className="px-1.5 py-1 rounded-md hover:bg-white/10 transition-colors text-[11px] overlay-text-muted"
-                      aria-label="Dismiss"
+                      aria-label={t('common:actions.dismiss')}
                       data-stealth-ignore="true"
                     >
                       ×
@@ -5272,20 +5315,19 @@ Provide only the answer, nothing else.`;
                     data-stealth-ignore="true"
                   >
                     <span className="overlay-text-primary flex-1">
-                      Stealth typing needs Accessibility access. Grant it in System Settings, then
-                      restart Natively.
+                      {t('meeting:stealth.needsAccessibility')}
                     </span>
                     <button
                       onClick={() => window.electronAPI.stealthTapOpenSettings()}
                       className="px-2 py-1 rounded-md bg-amber-500/20 hover:bg-amber-500/30 transition-colors text-[11px] font-medium overlay-text-primary whitespace-nowrap"
                       data-stealth-ignore="true"
                     >
-                      Open Settings
+                      {t('common:actions.openSettings')}
                     </button>
                     <button
                       onClick={() => setStealthPermissionMissing(false)}
                       className="px-1.5 py-1 rounded-md hover:bg-white/10 transition-colors text-[11px] overlay-text-muted"
-                      aria-label="Dismiss"
+                      aria-label={t('common:actions.dismiss')}
                       data-stealth-ignore="true"
                     >
                       ×
@@ -5327,23 +5369,33 @@ Provide only the answer, nothing else.`;
                   {/* Custom Rich Placeholder */}
                   {!inputValue && (
                     <div className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center gap-1.5 pointer-events-none text-[13px] overlay-text-muted">
-                      <span>Ask anything on screen or conversation, or</span>
-                      <div className="flex items-center gap-1 opacity-80">
-                        {(
-                          shortcuts.selectiveScreenshot || [getModifierSymbol('cmd'), 'Shift', 'H']
-                        ).map((key, i) => (
-                          <React.Fragment key={i}>
-                            {i > 0 && <span className="text-[10px]">+</span>}
-                            <kbd
-                              className="px-1.5 py-0.5 rounded border text-[10px] font-sans min-w-[20px] text-center overlay-control-surface overlay-text-secondary"
-                              style={appearance.controlStyle}
-                            >
-                              {key}
-                            </kbd>
-                          </React.Fragment>
-                        ))}
-                      </div>
-                      <span>for selective screenshot</span>
+                      {/* 快捷键组嵌在句中。中文是「…，或按 <键> 进行区域截图」，
+                          英文是「…, or <keys> for selective screenshot」——语序不同，
+                          所以整句用一个 Trans 键，由译文决定徽标出现的位置。 */}
+                      <Trans
+                        i18nKey="meeting:input.selectiveScreenshotHint"
+                        components={[
+                          <div className="flex items-center gap-1 opacity-80" key="keys">
+                            {(
+                              shortcuts.selectiveScreenshot || [
+                                getModifierSymbol('cmd'),
+                                'Shift',
+                                'H',
+                              ]
+                            ).map((key, i) => (
+                              <React.Fragment key={i}>
+                                {i > 0 && <span className="text-[10px]">+</span>}
+                                <kbd
+                                  className="px-1.5 py-0.5 rounded border text-[10px] font-sans min-w-[20px] text-center overlay-control-surface overlay-text-secondary"
+                                  style={appearance.controlStyle}
+                                >
+                                  {key}
+                                </kbd>
+                              </React.Fragment>
+                            ))}
+                          </div>,
+                        ]}
+                      />
                     </div>
                   )}
 

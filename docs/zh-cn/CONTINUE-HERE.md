@@ -41,7 +41,7 @@ Set-Location -LiteralPath 'D:\Natively-ZH-Source'
 | Rust | `D:\Rust`（1.97.1 MSVC） | 需 `CARGO_HOME`/`RUSTUP_HOME` 环境变量 |
 | MSVC | `D:\BuildTools`（14.44 + Win SDK 22621） | node-gyp 通过 vswhere 自动发现 |
 
-### 三个必然踩到的坑
+### 四个必然踩到的坑
 
 **`ELECTRON_RUN_AS_NODE=1` 预设在终端环境里。** 它让 `electron.exe` 退化成普通
 Node，`require('electron')` 拿不到 `app`，主进程在模块初始化期崩溃。
@@ -63,6 +63,27 @@ Start-Process -FilePath 'D:\Natively-ZH-Source\node_modules\electron\dist\electr
   -WorkingDirectory 'D:\Natively-ZH-Source' -WindowStyle Hidden
 ```
 
+**系统提交内存会耗尽，构建随机崩。** 本机 16 GB 物理内存 + 15 GB 页面文件
+＝ 31 GB 提交上限，而开发机常驻 VS Code（约 5.3 GB）、Chrome、ChatGPT、Telegram，
+可用提交量常只剩 1 GB 上下。esbuild 是 Go 程序，`build-electron.js` 用
+`bundle: true` 同时处理 `electron/**` 全部入口，峰值需求超过余量，表现为：
+
+```
+[vite:esbuild-transpile] The service was stopped: write ENOMEM
+runtime: VirtualAlloc of 31072256 bytes failed with errno=1455   # ERROR_COMMITMENT_LIMIT
+exit=-1073741819                                                 # 0xC0000005 访问违例
+```
+
+**不要去动用户的进程。** 限制 esbuild 并行度即可：
+
+```powershell
+$env:GOMAXPROCS='1'     # build:electron 需要 1；npm run build 用 2 也能过
+```
+
+实测 `npm run build` 在 `=2` 下通过，`build:electron` 在 `=1` 下需重试一次。
+失败是随机的，取决于当时其他应用占了多少——**重试前先改 `GOMAXPROCS`，不要盲目重跑**。
+Task 15 的 `electron-builder` 需求更高，届时可能仍不够。
+
 ### PowerShell 不可用于文本读写
 
 本项目已因此两次损坏文件：
@@ -77,9 +98,11 @@ Start-Process -FilePath 'D:\Natively-ZH-Source\node_modules\electron\dist\electr
 
 ## 3. 当前进度
 
-已完成 Task 1–7、7.5，以及 Task 8 的 7/8。共 11 个提交，工作树 clean。
+已完成 Task 1–7、7.5、8。共 13 个提交，工作树 clean。
 
 ```
+（本次）  feat: 本地化会议主界面                        Task 8（收尾）
+2ae27c9  docs: 补充新会话接手指南并修正门禁范围
 8fda467  feat: 本地化会议聊天、建议浮层与跟进邮件      Task 8（部分）
 3d23693  test: 加固残留英文扫描器，改用样式判别        Task 7.5（计划外插入）
 32db19f  feat: 本地化启动器、窗口壳与模型选择          Task 7
@@ -93,7 +116,7 @@ b31167d  build: 隔离 Natively ZH 发行标识并禁用自动更新 Task 2
 98e0040  fix: 修复上游基线的类型检查与测试脚本
 ```
 
-计划复选框已勾到 Task 7（37/75）。Task 8 的复选框待其全部完成后再勾。
+计划复选框已勾到 Task 8（42/75）。
 
 ---
 
@@ -191,30 +214,20 @@ Compare-Object $base $now | Where-Object { $_.SideIndicator -eq '=>' }   # 必�
 
 ## 6. 剩余工作
 
-### 立即要做：Task 8 收尾
+### 立即要做：Task 9
 
-`src/components/NativelyInterface.tsx` 还有 **95 处**未迁移，是唯一剩余文件。
-它是会议进行中的主界面，用户核心路径。
+Task 8 已完成，证据见 `docs/zh-cn/evidence/task-08/README.md`。
+门禁范围现含 20 个文件；`NativelyInterface.tsx` 新增 8 条永久 allowlist
+（诊断报告标题、`Shift` 按键名、6 个模型名）。
 
-词典键**已经全部准备好**（`meeting` / `errors` / `common` 三个 namespace，
-见上一次提交），直接对照使用即可：
-
-- `meeting:stt.*` 语音识别状态（notConfigured / reconnecting / listening / healthy…）
-- `meeting:actions.*` 操作按钮（whatToAnswer / clarify / brainstorm / recap / followUp / answer）
-- `meeting:screenshot.*`、`meeting:answer.*`、`meeting:prompts.*`、`meeting:input.*`
-- `meeting:permissions.*` 权限提示
-- `errors:message.withDetail` 等——**只本地化前缀，原始错误详情原样保留**
-
-需要进 allowlist 的（本会话已确认，但因文件未入 scope 而移除，届时重新加）：
-
-```
-## STT Diagnostic Report   诊断报告供上游维护者排错，保持英文
-Shift                     键盘按键名
-Gemini 3.5 Flash / Gemini 3.1 Flash Lite / Gemini 3.1 Pro
-Groq Llama 3.3 / GPT 5.4 / Sonnet 4.6        模型名
-```
-
-完成后把该文件加入 `scripts/i18n-scope.json` 的 `enforcedFiles`。
+**迁移中踩到的一类坑，Task 9–12 会反复遇到：**
+上游有若干测试拿**英文字面量**当「结构未被回退」的锚点
+（如 `assert.match(src, /Repair Permissions/)`）。文案迁走后它们必然转红。
+正确处理是**把锚点换成语义键、保留原结构断言、再补一条词典断言**
+（该键在中英两侧都存在且非空），**不是**删断言。
+本次两个实例见 `evidence/task-08/README.md` 末节。
+顺带注意：同类 NEGATIVE 用例（断言某英文字面量**不**出现）迁移后会变成
+空转通过——也要一并换锚点，否则守护能力静默消失。
 
 ### Task 9–15
 
@@ -225,8 +238,14 @@ Groq Llama 3.3 / GPT 5.4 / Sonnet 4.6        模型名
   务必比对基线失败集合
 - **Task 13** 字体栈目前**不含任何中文字体**（运行时实测为 Tailwind 默认值），
   按设计规格 §10 加 `Microsoft YaHei UI` / `PingFang SC` / `Noto Sans CJK SC`
+- **Task 14** 必须处理一个静态扫描**永远扫不到**的残留：
+  `@radix-ui/react-toast` 的 `Viewport` 默认 `label` 是 `"Notifications ({hotkey})"`，
+  五个窗口的 DOM 里都有 `aria-label="Notifications (F8)"`。
+  来源在 node_modules，不在项目源码。修法是给 `src/App.tsx` 的
+  `<ToastViewport />` 显式传 `label`。运行时 DOM 读取才发现，见
+  `evidence/task-08/README.md`
 - **Task 15** 打包前记得清 `ELECTRON_RUN_AS_NODE`；C 盘余量偏低，
-  建议把 `TEMP`/`TMP` 指向 D 盘
+  建议把 `TEMP`/`TMP` 指向 D 盘；提交内存不足时先设 `GOMAXPROCS`（见 §2）
 
 ---
 

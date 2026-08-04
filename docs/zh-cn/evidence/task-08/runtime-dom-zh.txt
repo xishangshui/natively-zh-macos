@@ -1,0 +1,81 @@
+===== TARGET: index.html?window=launcher =====
+font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"
+  Welcome to Natively
+  The ultimate AI meeting assistant
+  Continue
+  By clicking Continue, you agree to our
+  Terms & Conditions
+  and
+  Privacy Policy
+  Hacker News
+  AlternativeTo
+  Product Hunt
+  reddit
+  隐藏
+  我该怎么回答？
+  结合项目需求和当前时间线，我梳理了下个冲刺的关键路径。
+  追问澄清
+  后续问题
+  要点回顾
+  随便问 —— Natively 了解你的简历和这家公司…
+  Natively AI
+  Real-time meeting assistant,
+  always ready to help
+  Permissions
+  Let's get you set up
+  Natively needs a few permissions to capture meetings and transcribe speech.
+  Microphone
+  Required for speech transcription
+  Open Settings
+  "Natively" wants to record the screen.
+  Enable access in Privacy & Security settings.
+  Deny
+  Natively
+  System Settings → Privacy & Security
+  @alt: Natively 标志
+  @alt: Natively
+  @aria-label: Dismiss
+
+===== TARGET: index.html?window=model-selector =====
+font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"
+  尚未连接任何模型。
+  请检查设置。
+  @aria-label: Notifications (F8)
+
+===== TARGET: index.html?window=settings =====
+font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"
+  Detectable
+  Fast Response
+  Transcript
+  Interview Mode
+  Show/Hide
+  Ctrl
+  Screenshot
+  @title: Requires Groq or Natively API key
+  @aria-label: Notifications (F8)
+
+===== TARGET: index.html?window=overlay =====
+font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"
+  隐藏
+  语音识别未配置
+  转写功能尚未配置
+  尚未选择语音识别供应商。打开「设置 → 音频」选择一个。
+  打开设置
+  我该怎么回答？
+  追问澄清
+  要点回顾
+  后续问题
+  回答
+  询问屏幕内容或对话，或按
+  Ctrl
+  Shift
+  进行区域截图
+  Gemini 3.1 Flash Lite
+  @alt: Natively 标志
+  @title: 打开音频设置选择一个供应商
+  @title: 忽略
+  @aria-label: Notifications (F8)
+
+===== TARGET: index.html?window=cropper =====
+font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"
+

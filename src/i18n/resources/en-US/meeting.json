@@ -35,7 +35,9 @@
     "reconnecting": "STT reconnecting",
     "listening": "Listening for audio…",
     "healthy": "STT healthy",
-    "micPrefix": "mic ·",
+    "providerDetail": "{{mic}} mic · {{system}} system",
+    "micError": "Mic: {{detail}}",
+    "systemError": "System: {{detail}}",
     "live": "Live",
     "disconnected": "Disconnected",
     "listeningShort": "listening...",
@@ -57,24 +59,21 @@
   },
   "screenshot": {
     "attached": "Screenshot attached",
-    "one": "screenshot",
-    "attachedSuffix": "attached",
-    "alt": "Screenshot",
-    "analyze": "Analyze this screenshot",
-    "selective": "for selective screenshot"
+    "attachedCount": "{{count}} screenshot(s) attached",
+    "altIndexed": "Screenshot {{index}}",
+    "analyze": "Analyze this screenshot"
   },
   "answer": {
     "correctedAnswer": "Corrected answer",
+    "correctedAnswerWithNote": "Corrected answer — {{note}}",
     "codeBadge": "CODE",
     "header": "🎯 **Answer:**",
     "verifiedRunning": "verified by running the code",
-    "verifiedPrefix": "verified ·",
-    "testCase": "test case",
-    "passed": "passed",
-    "ranTests": "Ran",
-    "testsSucceeded": "test case(s) successfully",
+    "verifiedCounts": "verified · {{passed}}/{{total}} test case(s) passed",
+    "ranTestsTitle": "Ran {{total}} test case(s) successfully",
     "stillFinishing": "Still finishing the previous answer — one moment…",
-    "stillGeneratingHint": "Still generating the code hint — one moment…"
+    "stillGeneratingHint": "Still generating the code hint — one moment…",
+    "notReadyYet": "Could not generate an answer yet. Wait a few seconds after speech and try again."
   },
   "prompts": {
     "whatToSay": "What should I say about this?",
@@ -83,7 +82,7 @@
   },
   "input": {
     "askOrAnswer": "Ask a question or click Answer",
-    "askAnything": "Ask anything on screen or conversation, or",
+    "selectiveScreenshotHint": "Ask anything on screen or conversation, or <0></0> for selective screenshot",
     "askMeAnything": "Ask me anything..."
   },
   "suggestion": {
@@ -95,8 +94,7 @@
     "reQuestion": "Re: \"{{question}}...\""
   },
   "stealth": {
-    "hotkeyInUse": "Stealth typing hotkey",
-    "hotkeyInUseDetail": "is already in use. Click the input to activate, or rebind in Settings.",
+    "hotkeyConflict": "Stealth typing hotkey <0></0> is already in use. Click the input to activate, or rebind in Settings.",
     "needsAccessibility": "Stealth typing needs Accessibility access. Grant it in System Settings, then restart Natively."
   },
   "permissions": {

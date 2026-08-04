@@ -18,7 +18,7 @@
     "withDetail": "错误：{{detail}}",
     "markedWithDetail": "❌ 错误：{{detail}}",
     "startStream": "❌ 启动音频流失败：{{detail}}",
-    "withCode": "❌ 错误（{{code}}）"
+    "withCodeAndDetail": "❌ 错误（{{code}}）：{{detail}}"
   },
   "chat": {
     "noResponse": "没有收到回复，请重试。",

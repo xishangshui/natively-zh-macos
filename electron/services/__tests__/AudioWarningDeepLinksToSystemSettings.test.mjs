@@ -20,6 +20,11 @@
 // button back to a single "Open Settings" -> toggleSettingsWindow wire,
 // silently losing the one-click direct-to-correct-pane UX.
 
+// zh-CN 本地化说明：按钮文案已迁移到 i18n 词典，源码里不再有英文字面量。
+// 本测试守护的是「通道感知的标签切换没有被回退」这一结构，因此锚点改为
+// 两个互不相同的语义键，并额外断言中英词典都定义了它们——
+// 断言强度不降反升：既保结构，也保用户可见文案不为空。
+
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -30,6 +35,13 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '../../..');
 const tsxPath = path.join(root, 'src/components/NativelyInterface.tsx');
 const source = fs.readFileSync(tsxPath, 'utf8');
+
+const readCatalog = (locale, ns) =>
+  JSON.parse(fs.readFileSync(path.join(root, `src/i18n/resources/${locale}/${ns}.json`), 'utf8'));
+const meetingZh = readCatalog('zh-CN', 'meeting');
+const meetingEn = readCatalog('en-US', 'meeting');
+const commonZh = readCatalog('zh-CN', 'common');
+const commonEn = readCatalog('en-US', 'common');
 
 // Locate the SystemAudioWarning type body. The type is a local alias
 // inside the component body, so we scope to its `type ... = { ... };`.
@@ -113,24 +125,42 @@ describe('UX3: audio warning banner deep-links to the correct macOS System Setti
     );
   });
 
-  it('banner JSX renders both "Open Mic Settings" and "Open Screen Settings" labels', () => {
+  it('banner JSX renders distinct mic / screen labels via i18n keys', () => {
+    // 本地化后标签来自词典，源码里锚定的是语义键。
     assert.ok(
-      source.includes("'Open Mic Settings'") || source.includes('"Open Mic Settings"'),
-      'BUG: "Open Mic Settings" label is missing — the channel-aware label switch was reverted (UX3).',
+      source.includes('meeting:permissions.openMicSettings'),
+      'BUG: openMicSettings label key is missing — the channel-aware label switch was reverted (UX3).',
     );
     assert.ok(
-      source.includes("'Open Screen Settings'") || source.includes('"Open Screen Settings"'),
-      'BUG: "Open Screen Settings" label is missing — the channel-aware label switch was reverted (UX3).',
+      source.includes('meeting:permissions.openScreenSettings'),
+      'BUG: openScreenSettings label key is missing — the channel-aware label switch was reverted (UX3).',
     );
+    // 两个键必须在两种语言里都存在、非空、且彼此不同——
+    // 否则通道感知的标签切换在运行时会退化成同一句话。
+    for (const [locale, catalog] of [['zh-CN', meetingZh], ['en-US', meetingEn]]) {
+      const mic = catalog.permissions?.openMicSettings;
+      const screen = catalog.permissions?.openScreenSettings;
+      assert.ok(mic, `BUG: ${locale} meeting.permissions.openMicSettings is missing/empty`);
+      assert.ok(screen, `BUG: ${locale} meeting.permissions.openScreenSettings is missing/empty`);
+      assert.notEqual(
+        mic,
+        screen,
+        `BUG: ${locale} renders the same label for both channels — UX3 distinction lost`,
+      );
+    }
   });
 
-  it('NEGATIVE: no "Open Settings" literal is wired straight to toggleSettingsWindow without channel/deep-link gating', () => {
-    // Find every occurrence of an 'Open Settings' / "Open Settings" string
-    // literal in the source, then walk a window around each one looking
-    // for an adjacent toggleSettingsWindow call. If we find one, require
-    // that there's also an `if` / `?` (ternary) / `deepLinkUrl` token
-    // somewhere in the same window — proving the wiring is gated.
-    const LITERAL_RE = /['"]Open Settings['"]/g;
+  it('NEGATIVE: the generic openSettings label is not wired straight to toggleSettingsWindow without channel/deep-link gating', () => {
+    // Find every occurrence of the generic "open settings" label key in the
+    // source, then walk a window around each one looking for an adjacent
+    // toggleSettingsWindow call. If we find one, require that there's also
+    // an `if` / `?` (ternary) / `deepLinkUrl` token somewhere in the same
+    // window — proving the wiring is gated.
+    assert.ok(
+      commonZh.actions?.openSettings && commonEn.actions?.openSettings,
+      'BUG: common.actions.openSettings must exist in both catalogs for this guard to be meaningful',
+    );
+    const LITERAL_RE = /common:actions\.openSettings/g;
     const WINDOW = 400; // characters on each side
     let match;
     const offenders = [];

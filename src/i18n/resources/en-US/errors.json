@@ -18,7 +18,7 @@
     "withDetail": "Error: {{detail}}",
     "markedWithDetail": "❌ Error: {{detail}}",
     "startStream": "❌ Error starting stream: {{detail}}",
-    "withCode": "❌ Error ({{code}})"
+    "withCodeAndDetail": "❌ Error ({{code}}): {{detail}}"
   },
   "chat": {
     "noResponse": "Couldn't get a response. Please try again.",
