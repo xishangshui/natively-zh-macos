@@ -1,0 +1,10 @@
+{
+  "welcome": {
+    "title": "Welcome to Natively"
+  },
+  "permissions": {
+    "microphone": {
+      "title": "Microphone access"
+    }
+  }
+}

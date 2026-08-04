@@ -1,0 +1,8 @@
+{
+  "provider": {
+    "connectionFailed": "无法连接到 {{provider}}。下方保留了原始英文错误详情，便于排查。"
+  },
+  "locale": {
+    "saveFailed": "界面语言保存失败，请重试。"
+  }
+}

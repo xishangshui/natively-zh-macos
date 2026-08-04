@@ -1,0 +1,10 @@
+{
+  "customBuild": {
+    "title": "Natively ZH 自定义构建",
+    "notice": "此构建不会自动安装官方更新。安装官方版本会替换它并移除中文界面。",
+    "viewUpstream": "查看上游版本"
+  },
+  "progress": {
+    "downloading": "正在下载更新：{{percent}}%"
+  }
+}

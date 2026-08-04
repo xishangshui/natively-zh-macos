@@ -1,0 +1,10 @@
+{
+  "welcome": {
+    "title": "欢迎使用 Natively"
+  },
+  "permissions": {
+    "microphone": {
+      "title": "麦克风权限"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "section": {
+    "title": "Meeting history"
+  },
+  "state": {
+    "empty": "No meetings yet"
+  },
+  "summary": {
+    "meetingCount": "{{count}} meetings"
+  }
+}

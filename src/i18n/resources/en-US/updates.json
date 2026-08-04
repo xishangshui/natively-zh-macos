@@ -1,0 +1,10 @@
+{
+  "customBuild": {
+    "title": "Natively ZH custom build",
+    "notice": "This build never installs official updates automatically. Installing an official release will replace it and remove the Chinese interface.",
+    "viewUpstream": "View upstream releases"
+  },
+  "progress": {
+    "downloading": "Downloading update: {{percent}}%"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "actions": {
+    "newMeeting": "新建会议"
+  },
+  "search": {
+    "placeholder": "搜索会议"
+  }
+}

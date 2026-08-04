@@ -1,0 +1,6 @@
+{
+  "_comment": "残留英文门禁的强制范围。每个迁移任务先把目标文件加入 enforcedFiles 触发红灯，再迁移文案，最后保持绿灯。排除项必须逐条写理由，禁止使用 src/** 或 electron/** 级别的宽泛忽略。",
+  "_progress": "Task 3 建立门禁工具本身，范围暂为空——工具行为由 src/lib/__tests__/i18nCoverage.test.mjs 的内存 fixture 保证。src/App.tsx 与 ErrorBoundary 在 Task 5 纳入，其余组件在 Task 7-11 逐批纳入，Task 14 扩至全部用户界面。",
+  "enforcedFiles": [],
+  "excluded": []
+}

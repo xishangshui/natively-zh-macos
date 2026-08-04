@@ -1,0 +1,8 @@
+{
+  "provider": {
+    "connectionFailed": "Could not connect to {{provider}}. The original error details are kept below for troubleshooting."
+  },
+  "locale": {
+    "saveFailed": "Could not save the interface language. Please try again."
+  }
+}

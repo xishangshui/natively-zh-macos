@@ -1,0 +1,12 @@
+{
+  "audio": {
+    "system": {
+      "start": "Start system audio",
+      "stop": "Stop system audio"
+    },
+    "microphone": {
+      "start": "Start microphone",
+      "stop": "Stop microphone"
+    }
+  }
+}

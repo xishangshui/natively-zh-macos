@@ -1,0 +1,8 @@
+{
+  "actions": {
+    "newMeeting": "New Meeting"
+  },
+  "search": {
+    "placeholder": "Search meetings"
+  }
+}

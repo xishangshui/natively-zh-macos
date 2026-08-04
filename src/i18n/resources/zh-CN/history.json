@@ -1,0 +1,11 @@
+{
+  "section": {
+    "title": "会议历史"
+  },
+  "state": {
+    "empty": "还没有会议记录"
+  },
+  "summary": {
+    "meetingCount": "{{count}} 场会议"
+  }
+}
