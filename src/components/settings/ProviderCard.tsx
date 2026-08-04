@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Trash2, AlertCircle, CheckCircle, ExternalLink, Loader2, ChevronDown, Check, RefreshCw } from 'lucide-react';
 
 interface FetchedModel {
@@ -43,6 +44,7 @@ export const ProviderCard: React.FC<ProviderCardProps> = ({
     keyUrl,
     onPreferredModelChange,
 }) => {
+    const { t } = useTranslation(['providers', 'common']);
     const [fetchedModels, setFetchedModels] = useState<FetchedModel[]>([]);
     const [isFetching, setIsFetching] = useState(false);
     const [fetchError, setFetchError] = useState<string | null>(null);
@@ -114,10 +116,11 @@ export const ProviderCard: React.FC<ProviderCardProps> = ({
                     }
                 }
             } else {
-                setFetchError(result?.error || 'Failed to fetch models');
+                // 供应商返回的原始错误保持原文；仅在没有详情时给中文兜底。
+                setFetchError(result?.error || t('providers:fetch.failed'));
             }
         } catch (e: any) {
-            setFetchError(e.message || 'Failed to fetch models');
+            setFetchError(e.message || t('providers:fetch.failed'));
         } finally {
             setIsFetching(false);
         }
@@ -143,8 +146,12 @@ export const ProviderCard: React.FC<ProviderCardProps> = ({
         <div className="bg-bg-item-surface rounded-xl p-5 border border-border-subtle">
             <div className="mb-2 flex items-center justify-between">
                 <label className="flex items-center text-xs font-medium text-text-primary uppercase tracking-wide">
-                    {providerName} API Key
-                    {hasStoredKey && <span className="ml-2 text-green-500 normal-case">✓ Saved</span>}
+                    {t('providers:apiKey.label', { provider: providerName })}
+                    {hasStoredKey && (
+                        <span className="ml-2 text-green-500 normal-case">
+                            ✓ {t('providers:apiKey.saved')}
+                        </span>
+                    )}
                 </label>
                 <button
                     onClick={() => {
@@ -152,9 +159,9 @@ export const ProviderCard: React.FC<ProviderCardProps> = ({
                         window.electronAPI?.openExternal(keyUrl);
                     }}
                     className="text-xs text-text-tertiary hover:text-text-primary flex items-center gap-1 transition-colors"
-                    title={`Get ${providerName} API Key`}
+                    title={t('providers:apiKey.getTitle', { provider: providerName })}
                 >
-                    <span className="text-[10px] uppercase tracking-wide">Get Key</span>
+                    <span className="text-[10px] uppercase tracking-wide">{t('providers:apiKey.get')}</span>
                     <ExternalLink size={12} />
                 </button>
             </div>
@@ -174,13 +181,17 @@ export const ProviderCard: React.FC<ProviderCardProps> = ({
                         : 'bg-bg-input hover:bg-bg-secondary border border-border-subtle text-text-primary disabled:opacity-50'
                         }`}
                 >
-                    {savingStatus ? 'Saving...' : savedStatus ? 'Saved!' : 'Save'}
+                    {savingStatus
+                        ? t('common:state.saving')
+                        : savedStatus
+                            ? t('common:state.savedExclaim')
+                            : t('common:actions.save')}
                 </button>
                 {hasStoredKey && (
                     <button
                         onClick={onRemoveKey}
                         className="px-2.5 py-2.5 rounded-lg text-xs font-medium text-text-tertiary hover:text-red-500 hover:bg-red-500/10 transition-all"
-                        title="Remove API Key"
+                        title={t('providers:apiKey.remove')}
                     >
                         <Trash2 size={16} strokeWidth={1.5} />
                     </button>
@@ -196,12 +207,12 @@ export const ProviderCard: React.FC<ProviderCardProps> = ({
                         testStatus === 'error' ? 'bg-red-500/10 text-red-500 border-red-500/20' :
                             'bg-bg-input hover:bg-bg-elevated text-text-primary'
                         }`}
-                    title={testError || "Test Connection"}
+                    title={testError || t('providers:test.action')}
                 >
-                    {testStatus === 'testing' ? <><Loader2 size={12} className="animate-spin" /> Testing...</> :
-                        testStatus === 'success' ? <><CheckCircle size={12} /> Connected</> :
-                            testStatus === 'error' ? <><AlertCircle size={12} /> Error</> :
-                                <>{/* No Icon */} Test Connection</>}
+                    {testStatus === 'testing' ? <><Loader2 size={12} className="animate-spin" /> {t('providers:test.testing')}</> :
+                        testStatus === 'success' ? <><CheckCircle size={12} /> {t('providers:test.connected')}</> :
+                            testStatus === 'error' ? <><AlertCircle size={12} /> {t('providers:test.error')}</> :
+                                <>{/* No Icon */} {t('providers:test.action')}</>}
                 </button>
 
                 {/* Inline Model Dropdown */}
@@ -212,7 +223,7 @@ export const ProviderCard: React.FC<ProviderCardProps> = ({
                             className={`w-full bg-bg-input border border-border-subtle rounded-md px-3 py-1.5 text-xs text-text-primary focus:outline-none focus:border-accent-primary flex items-center justify-between transition-colors ${fetchedModels.length > 0 ? 'hover:bg-bg-elevated' : 'opacity-80 cursor-default'}`}
                             type="button"
                         >
-                            <span className="truncate pr-2">{selectedOption ? selectedOption.label : (preferredModel || 'Select model')}</span>
+                            <span className="truncate pr-2">{selectedOption ? selectedOption.label : (preferredModel || t('providers:models.selectPlaceholder'))}</span>
                             <ChevronDown size={14} className={`text-text-secondary transition-transform ${isDropdownOpen ? 'rotate-180' : ''} ${fetchedModels.length === 0 ? 'opacity-50' : ''}`} />
                         </button>
 
@@ -248,9 +259,9 @@ export const ProviderCard: React.FC<ProviderCardProps> = ({
                             }`}
                     >
                         {isFetching ? (
-                            <><Loader2 size={12} className="animate-spin" /> Fetching...</>
+                            <><Loader2 size={12} className="animate-spin" /> {t('providers:fetch.inProgress')}</>
                         ) : (
-                            <><RefreshCw size={12} /> Fetch Models</>
+                            <><RefreshCw size={12} /> {t('providers:fetch.action')}</>
                         )}
                     </button>
                 ) : (
@@ -261,7 +272,12 @@ export const ProviderCard: React.FC<ProviderCardProps> = ({
 
             {/* Error from test or fetch */}
             {testError && <p className="text-[10px] text-red-400 mt-1.5 mb-2">{testError}</p>}
-            {fetchError && <p className="text-[10px] text-red-400 mt-1.5 mb-2">Model fetch error: {fetchError}</p>}
+            {/* 摘要中文、详情保留供应商原文，符合设计规格 3.2 与 11。 */}
+            {fetchError && (
+                <p className="text-[10px] text-red-400 mt-1.5 mb-2">
+                    {t('providers:fetch.errorPrefix')} {fetchError}
+                </p>
+            )}
 
 
         </div>

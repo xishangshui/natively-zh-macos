@@ -87,1129 +87,174 @@
       "reason": "模型名，按设计规格 3.2 不翻译"
     },
     {
+      "file": "src/components/settings/Sidebar.tsx",
+      "literal": "Natively API",
+      "reason": "产品名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/ui/KeyBadge.tsx",
+      "literal": "Ctrl",
+      "reason": "键盘按键名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/ui/KeyBadge.tsx",
+      "literal": "Alt",
+      "reason": "键盘按键名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/ui/KeyBadge.tsx",
+      "literal": "Shift",
+      "reason": "键盘按键名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/LocalWhisperModelPanel.tsx",
+      "literal": "Apple Silicon",
+      "reason": "Apple 芯片平台名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/settings/AIProvidersSettings.tsx",
+      "literal": "codex",
+      "reason": "可执行文件名占位示例，用户需照原样填写命令名"
+    },
+    {
+      "file": "src/components/settings/AIProvidersSettings.tsx",
+      "literal": "gpt-5.5",
+      "reason": "模型 ID，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/settings/AIProvidersSettings.tsx",
+      "literal": "gpt-5.3-codex-spark",
+      "reason": "模型 ID，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/settings/AIProvidersSettings.tsx",
+      "literal": "default",
+      "reason": "Codex 服务层级的 API 取值，翻译会导致填错"
+    },
+    {
+      "file": "src/components/settings/AIProvidersSettings.tsx",
+      "literal": "curl https://api.openai.com/v1/chat/completions ... \"content\": \"{{TEXT}}\"",
+      "reason": "cURL 命令占位示例，用户要照此格式填写，翻译即失效"
+    },
+    {
+      "file": "src/components/settings/AIProvidersSettings.tsx",
+      "literal": "e.g. choices[0].message.content",
+      "reason": "JSON 路径示例，是 API 响应的真实字段路径"
+    },
+    {
+      "file": "src/components/settings/AIProvidersSettings.tsx",
+      "literal": "{{IMAGE_BASE64}}",
+      "reason": "cURL 模板变量名，必须与实现一致"
+    },
+    {
+      "file": "src/components/settings/AIProvidersSettings.tsx",
+      "literal": "{{TEXT}}",
+      "reason": "cURL 模板变量名，必须与实现一致"
+    },
+    {
+      "file": "src/components/settings/AIProvidersSettings.tsx",
+      "literal": "messages",
+      "reason": "OpenAI 请求体字段名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/settings/AIProvidersSettings.tsx",
+      "literal": "curl http://localhost:11434/api/generate -d '",
+      "reason": "Ollama 示例命令，可复制执行，翻译即失效"
+    },
+    {
+      "file": "src/components/settings/AIProvidersSettings.tsx",
+      "literal": "\"model\": \"llama3\", \"prompt\": \"",
+      "reason": "Ollama 示例请求体的 API 字段，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/settings/AIProvidersSettings.tsx",
+      "literal": "curl https://api.openai.com/v1/chat/completions \\\n  -H \"Content-Type: application/json\" \\\n  -H \"Authorization: Bearer YOUR_API_KEY\" \\\n  -d '{\n    \"model\": \"gpt-4o-mini\",\n    \"messages\": [\n      {\"role\": \"system\", \"content\": \"You are a helpful assistant.\"},\n      {\"role\": \"user\", \"content\": \"{{TEXT}}\"}\n    ],\n    \"temperature\": 0.7\n  }'",
+      "reason": "OpenAI 兼容示例命令，可复制执行，含 API 字段与示例 prompt，整段保持原文"
+    },
+    {
       "file": "src/components/SettingsOverlay.tsx",
       "literal": "Natively",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Hide",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Interviewer",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "So how would you optimize the current algorithm?",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Suggestion",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "What to answer?",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Clarify",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Recap",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Follow Up Question",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Answer",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Ask anything on screen or conversation",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Gemini 3 Flash",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Device",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "No devices found",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Recommended",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Select Provider",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Validation failed. Key not saved.",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Validation failed",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Are you sure you want to remove the",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "API key?",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Are you sure you want to remove the Tavily API Key?",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Please enter an API key first",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Connection failed",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Test failed",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Settings",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "General",
-      "reason": "migrated in Task 9"
+      "reason": "产品名，按设计规格 3.2 不翻译"
     },
     {
       "file": "src/components/SettingsOverlay.tsx",
       "literal": "Natively API",
-      "reason": "migrated in Task 9"
+      "reason": "产品名，按设计规格 3.2 不翻译"
     },
     {
       "file": "src/components/SettingsOverlay.tsx",
       "literal": "Natively Pro",
-      "reason": "migrated in Task 9"
+      "reason": "产品名，按设计规格 3.2 不翻译"
     },
     {
       "file": "src/components/SettingsOverlay.tsx",
-      "literal": "AI Providers",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Skills",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Calendar",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Audio",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Keybinds",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Phone Mirror",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Setup & Help",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "About",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Quit Natively",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Close",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Undetectable",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Detectable",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Natively is currently",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "undetectable",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "detectable",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "by screen-sharing.",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Supported apps here",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Mouse Passthrough",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Overlay stays visible but lets all mouse clicks pass through to the app beneath.",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "General settings",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Customize how Natively works for you",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Open Natively when you log in",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Natively will open automatically when you log in to your computer",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Do not save meetings",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "When enabled, live assistance works but transcripts, summaries, and history are discarded when the meeting ends",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Verbose debug logging",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Print detailed audio, STT, and pipeline diagnostics",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Logs →",
-      "reason": "migrated in Task 9"
+      "literal": "Gemini 3 Flash",
+      "reason": "模型名，按设计规格 3.2 不翻译"
     },
     {
       "file": "src/components/SettingsOverlay.tsx",
       "literal": "~/Documents/natively_debug.log",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Open",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Interviewer Transcript",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Show real-time transcription of the interviewer",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Auto Scroll",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Automatically scroll to the latest message as new responses arrive",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Theme",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Customize how Natively looks on your device",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "System",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Light",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Dark",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Meeting Interface Style",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Liquid glass — Apple-inspired transparent overlay",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Modern — polished dark glass with cobalt accents",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Default overlay appearance",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Liquid Glass",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Modern",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Default",
-      "reason": "migrated in Task 9"
+      "reason": "真实日志文件路径，用户要照此定位文件"
     },
     {
       "file": "src/components/SettingsOverlay.tsx",
       "literal": "English",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Mirrors user's language automatically",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Language for AI suggestions and notes",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Auto",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Version",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "You are currently using Natively version",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Checking",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Update",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Up to date",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Error",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Check",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Interface Opacity",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "More Stealth",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Fully Visible",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Controls the visibility of the in-meeting overlay.",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Hold the slider to preview.",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Process Disguise",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Disguise Natively as another application to prevent detection during screen sharing.",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Select a disguise to be automatically applied when Undetectable mode is on.",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "⚠️ Disable Undetectable mode first to change disguise.",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "None (Default)",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Terminal",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "System Settings",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Activity Monitor",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Keyboard shortcuts",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Natively works with these easy to remember commands.",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Restore Default",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Toggle Visibility",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Toggle Mouse Passthrough",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Process Screenshots",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Capture Screen & Ask AI",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Reset / Cancel",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Take Screenshot",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Selective Screenshot",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Chat",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "What to Answer",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Follow Up",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Recap / Brainstorm",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Answer / Record",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Get Code Hint",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Brainstorm Approaches",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Scroll Up",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Scroll Down",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Scroll Left (code block)",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Scroll Right (code block)",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Toggle Stealth Typing",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Window",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Move Window Up",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Move Window Down",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Move Window Left",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Move Window Right",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Speech Provider",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Choose the engine that transcribes audio to text.",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Managed transcription via Natively backend",
-      "reason": "migrated in Task 9"
+      "reason": "界面语言选项以该语言自身的名称显示，与「简体中文」同理，不译"
     },
     {
       "file": "src/components/SettingsOverlay.tsx",
       "literal": "Google Cloud",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Saved",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "gRPC streaming via Service Account",
-      "reason": "migrated in Task 9"
+      "reason": "语音识别供应商与产品名，按设计规格 3.2 不翻译"
     },
     {
       "file": "src/components/SettingsOverlay.tsx",
       "literal": "Groq Whisper",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Ultra-fast REST transcription",
-      "reason": "migrated in Task 9"
+      "reason": "语音识别供应商与产品名，按设计规格 3.2 不翻译"
     },
     {
       "file": "src/components/SettingsOverlay.tsx",
       "literal": "OpenAI Whisper",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "OpenAI-compatible Whisper API",
-      "reason": "migrated in Task 9"
+      "reason": "语音识别供应商与产品名，按设计规格 3.2 不翻译"
     },
     {
       "file": "src/components/SettingsOverlay.tsx",
       "literal": "Deepgram Nova-3",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "High-accuracy REST transcription",
-      "reason": "migrated in Task 9"
+      "reason": "语音识别供应商与产品名，按设计规格 3.2 不翻译"
     },
     {
       "file": "src/components/SettingsOverlay.tsx",
       "literal": "ElevenLabs Scribe",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Scribe v2 Realtime API",
-      "reason": "migrated in Task 9"
+      "reason": "语音识别供应商与产品名，按设计规格 3.2 不翻译"
     },
     {
       "file": "src/components/SettingsOverlay.tsx",
       "literal": "Azure Speech",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Microsoft Cognitive Services STT",
-      "reason": "migrated in Task 9"
+      "reason": "语音识别供应商与产品名，按设计规格 3.2 不翻译"
     },
     {
       "file": "src/components/SettingsOverlay.tsx",
       "literal": "IBM Watson",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "IBM Watson cloud STT service",
-      "reason": "migrated in Task 9"
+      "reason": "语音识别供应商与产品名，按设计规格 3.2 不翻译"
     },
     {
       "file": "src/components/SettingsOverlay.tsx",
       "literal": "Soniox",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "60+ languages, multilingual, domain context",
-      "reason": "migrated in Task 9"
+      "reason": "语音识别供应商与产品名，按设计规格 3.2 不翻译"
     },
     {
       "file": "src/components/SettingsOverlay.tsx",
       "literal": "Local Whisper",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Whisper Model",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Fastest",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Most Accurate",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Service Account JSON",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "No file selected",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Select File",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Required for Google Cloud Speech-to-Text.",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Groq",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "OpenAI STT",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "ElevenLabs",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Azure",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Deepgram",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "API Key",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "This key is separate from your main AI Provider key.",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Enter Groq API key",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Enter OpenAI STT API key",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Enter ElevenLabs API key",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Enter Azure API key",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Enter IBM Watson API key",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Enter Soniox API key",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Enter Deepgram API key",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Saving...",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Saved!",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Save",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Remove API Key",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Region",
-      "reason": "migrated in Task 9"
+      "reason": "语音识别供应商与产品名，按设计规格 3.2 不翻译"
     },
     {
       "file": "src/components/SettingsOverlay.tsx",
       "literal": "e.g. eastus",
-      "reason": "migrated in Task 9"
+      "reason": "Azure 区域 ID 示例，必须照原样填写"
     },
     {
       "file": "src/components/SettingsOverlay.tsx",
       "literal": "e.g. eastus, westeurope, westus2",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Custom Base URL",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "(optional)",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Point at any OpenAI-compatible server (e.g. Speaches). Custom servers use REST only — Realtime WebSocket is skipped. Leave blank for default.",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Testing...",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Connected",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Test Connection",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Get API Key",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Language",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Select Language",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Accent / Region",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Select Region",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Auto mode — language will be detected from the first few seconds of audio.",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Select the primary language being spoken in the meeting.",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Auto mode — detected:",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Audio Configuration",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Manage input and output devices.",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Selected",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "microphone",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "output device",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "couldn't be opened\n                                                        — using",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "no device",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "instead.",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Reset",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Input Device",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Default Microphone",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Input Level",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Output Device",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Default Speakers",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Test Sound",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "SCK Backend",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Alternative",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Use the ScreenCaptureKit backend. An optimized alternative to CoreAudio if you experience any capture issues.",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Visible Calendars",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Upcoming meetings are synchronized from these calendars",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Google Calendar",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Connected as",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "User",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Disconnecting...",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Disconnect",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Upcoming",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "· next 7 days",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "next 7 days from your primary calendar",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Refresh upcoming events",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Nothing scheduled.",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Your week is clear for now.",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Join",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "No meeting link",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "No calendars",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Get started by connecting a Google account.",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Connecting...",
-      "reason": "migrated in Task 9"
-    },
-    {
-      "file": "src/components/SettingsOverlay.tsx",
-      "literal": "Connect Google",
-      "reason": "migrated in Task 9"
+      "reason": "Azure 区域 ID 列表，必须照原样填写"
     }
   ]
 }

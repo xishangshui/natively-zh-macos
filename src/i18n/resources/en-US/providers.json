@@ -25,12 +25,133 @@
     "ensureOllama": "Ensure Ollama is running.",
     "customCurl": "Custom cURL",
     "managedFast": "Managed AI • Fast execution",
-    "preferred": "{{provider}} • Preferred"
+    "preferred": "{{provider}} • Preferred",
+    "selectPlaceholder": "Select model",
+    "noneAvailable": "No models available"
   },
   "reindex": {
     "doneTitle": "Search index updated",
     "runningTitle": "Updating search index",
     "doneDescription": "Your past conversations are searchable again.",
     "runningDescription": "Re-indexing your past conversations for the upgraded AI model… {{done}}/{{total}}"
+  },
+  "apiKey": {
+    "label": "{{provider}} API Key",
+    "saved": "Saved",
+    "get": "Get Key",
+    "getTitle": "Get {{provider}} API Key",
+    "remove": "Remove API Key",
+    "removeConfirm": "Are you sure you want to remove the {{provider}} API key?"
+  },
+  "test": {
+    "action": "Test Connection",
+    "testing": "Testing...",
+    "connected": "Connected",
+    "error": "Error"
+  },
+  "fetch": {
+    "action": "Fetch Models",
+    "inProgress": "Fetching...",
+    "failed": "Failed to fetch models",
+    "errorPrefix": "Model fetch error:"
+  },
+  "defaultModel": {
+    "title": "Default Model for Chat",
+    "description": "Primary model for new chats. Other configured models act as fallbacks.",
+    "activeModel": "Active Model",
+    "activeModelHint": "Applies to new chats instantly."
+  },
+  "fastMode": {
+    "title": "Fast Response Mode",
+    "description": "Super fast responses using the Codex CLI fast model, Groq, or Natively. Turn this off to use the selected normal model.",
+    "requirement": "Requires Groq, Natively API, or Codex CLI to be configured",
+    "requirementSentence": "Requires Groq, Natively API, or Codex CLI to be configured.",
+    "configureFirst": "Please configure Groq, Natively API, or Codex CLI first to enable Fast Response Mode."
+  },
+  "cloud": {
+    "title": "Cloud Providers",
+    "description": "Add API keys to unlock cloud AI models."
+  },
+  "codexCli": {
+    "title": "Local Provider (Codex CLI)",
+    "description": "Route text and screenshot responses through a locally authenticated Codex CLI.",
+    "enable": "Enable Codex CLI",
+    "enableHint": "Adds Codex CLI as a selectable local backend and fallback.",
+    "executable": "Executable",
+    "timeoutMs": "Timeout (ms)",
+    "normalModel": "Normal Model",
+    "fastModel": "Fast Model",
+    "preset": "Preset",
+    "serviceTier": "Service Tier",
+    "serviceTierHint": "Use faster service tier if available. Codex Cloud only.",
+    "reasoningEffort": "Reasoning Effort",
+    "reasoningEffortHint": "How much reasoning effort the model uses. Model-dependent.",
+    "detected": "Codex CLI detected",
+    "test": "Test CLI"
+  },
+  "ollama": {
+    "title": "Local Models (Ollama)",
+    "description": "Run open-source models locally.",
+    "refresh": "Refresh Ollama",
+    "checking": "Checking for Ollama...",
+    "autoFixing": "Attempting to auto-fix connection...",
+    "notDetected": "Ollama not detected",
+    "ensureRunning": "Ensure Ollama is running (`ollama serve`).",
+    "autoFix": "Auto-Fix Connection",
+    "connected": "Ollama connected",
+    "localBadge": "LOCAL",
+    "runningNoModels": "Ollama is running but no models found. Run `ollama pull llama3` to get started."
+  },
+  "custom": {
+    "title": "Custom Providers",
+    "description": "Add your own AI endpoints via cURL.",
+    "add": "Add Provider",
+    "editTitle": "Edit Provider",
+    "newTitle": "New Provider",
+    "nameLabel": "Provider Name",
+    "namePlaceholder": "My Custom LLM",
+    "curlLabel": "cURL Command",
+    "responsePathLabel": "Response JSON Path",
+    "responsePathHint": "Dot notation path to the answer text in the JSON response. If empty, the full JSON is returned.",
+    "visionLabel": "Screenshot / Vision Support",
+    "visionAuto": "Auto-detect (recommended)",
+    "visionAlways": "Always send screenshots",
+    "visionNever": "Never send screenshots (text only)",
+    "visionHint": "Auto-detect enables vision when your cURL uses <0></0> or an OpenAI-style <1></1> body. Choose “Always” only if your endpoint accepts images another way; “Never” keeps this provider out of screenshot analysis.",
+    "guideTitle": "Configuration Guide",
+    "variablesTitle": "Available Variables",
+    "textVarHint": "Combined System + Context + Message (Recommended)",
+    "imageVarHint": "Screenshot data (if available)",
+    "examplesTitle": "Examples",
+    "exampleOllama": "Local (Ollama)",
+    "exampleOpenAi": "OpenAI Compatible",
+    "save": "Save Provider",
+    "empty": "No custom providers added yet.",
+    "deleteConfirm": "Are you sure you want to delete this provider?",
+    "pathPrefix": "path:"
+  },
+  "screenUnderstanding": {
+    "title": "Screen understanding",
+    "description": "Pick how Natively reads what is on your screen. All paths use the vision-capable AI provider directly; OCR is no longer used.",
+    "visionFirst": "Vision first",
+    "visionFirstHint": "Recommended. Try every configured vision provider in order; first success wins.",
+    "visionOnly": "Vision only",
+    "visionOnlyHint": "Stricter. Require a vision-capable provider; never silently drop the screenshot.",
+    "privateVision": "Private vision (local only)",
+    "privateVisionHint": "Use a local vision model (Ollama) only. Never call cloud vision. Clear error if no local provider is configured.",
+    "technicalInterview": "Technical interview direct vision",
+    "technicalInterviewHint": "Use the highest-resolution image profile so code text stays sharp in interview mode."
+  },
+  "dataScopes": {
+    "title": "Cloud provider data scopes",
+    "description": "Control what data cloud AI providers can access. Disabled types are handled locally for privacy.",
+    "transcript": "Transcripts",
+    "screenshots": "Screenshots",
+    "referenceFiles": "Reference files",
+    "profileHistory": "Profile history",
+    "embeddings": "Cloud embeddings",
+    "postCallSummary": "Post-call summaries",
+    "allowAriaLabel": "Allow {{scope}} to cloud providers",
+    "footnote": "When a data type is disabled, Natively falls back to the best available local model to keep that data on-device."
   }
 }

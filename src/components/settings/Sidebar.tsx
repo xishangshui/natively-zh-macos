@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Monitor, Cpu, Info } from 'lucide-react';
 import { NativelyLogoMark } from '../NativelyLogoMark';
 
@@ -9,16 +10,17 @@ interface SidebarProps {
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, onClose }) => {
+    const { t } = useTranslation(['settings', 'common']);
     return (
         <div className="w-64 bg-bg-sidebar flex flex-col border-r border-border-subtle h-full">
             <div className="p-6">
-                <h2 className="font-semibold text-gray-400 text-xs uppercase tracking-wider mb-4">Advanced Settings</h2>
+                <h2 className="font-semibold text-gray-400 text-xs uppercase tracking-wider mb-4">{t('settings:nav.advanced')}</h2>
                 <nav className="space-y-1">
                     <button
                         onClick={() => setActiveTab('general')}
                         className={`w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-3 ${activeTab === 'general' ? 'bg-bg-item-active text-text-primary' : 'text-text-secondary hover:text-text-primary hover:bg-bg-item-active/50'}`}
                     >
-                        <Monitor size={16} /> General
+                        <Monitor size={16} /> {t('settings:nav.general')}
                     </button>
                     <button
                         onClick={() => setActiveTab('natively-api')}
@@ -30,7 +32,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, onClo
                         onClick={() => setActiveTab('ai-providers')}
                         className={`w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-3 ${activeTab === 'ai-providers' ? 'bg-bg-item-active text-text-primary' : 'text-text-secondary hover:text-text-primary hover:bg-bg-item-active/50'}`}
                     >
-                        <Cpu size={16} /> AI Providers
+                        <Cpu size={16} /> {t('settings:nav.aiProviders')}
                     </button>
                     {/* Add more tabs as needed */}
                 </nav>
@@ -41,7 +43,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, onClo
                     onClick={onClose}
                     className="w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-bg-item-active/50 transition-colors flex items-center gap-3"
                 >
-                    Close
+                    {t('common:actions.close')}
                 </button>
             </div>
         </div>

@@ -25,12 +25,133 @@
     "ensureOllama": "请确认 Ollama 正在运行。",
     "customCurl": "自定义 cURL",
     "managedFast": "托管 AI · 快速执行",
-    "preferred": "{{provider}} · 首选"
+    "preferred": "{{provider}} · 首选",
+    "selectPlaceholder": "选择模型",
+    "noneAvailable": "暂无可用模型"
   },
   "reindex": {
     "doneTitle": "搜索索引已更新",
     "runningTitle": "正在更新搜索索引",
     "doneDescription": "过往对话已可重新搜索。",
     "runningDescription": "正在为升级后的 AI 模型重建过往对话索引… {{done}}/{{total}}"
+  },
+  "apiKey": {
+    "label": "{{provider}} API Key",
+    "saved": "已保存",
+    "get": "获取密钥",
+    "getTitle": "获取 {{provider}} API Key",
+    "remove": "移除 API Key",
+    "removeConfirm": "确定要移除 {{provider}} 的 API Key 吗？"
+  },
+  "test": {
+    "action": "测试连接",
+    "testing": "正在测试…",
+    "connected": "已连接",
+    "error": "连接失败"
+  },
+  "fetch": {
+    "action": "获取模型",
+    "inProgress": "正在获取…",
+    "failed": "获取模型列表失败",
+    "errorPrefix": "获取模型出错："
+  },
+  "defaultModel": {
+    "title": "聊天默认模型",
+    "description": "新会话默认使用的模型。其他已配置的模型作为备选。",
+    "activeModel": "当前模型",
+    "activeModelHint": "立即对新会话生效。"
+  },
+  "fastMode": {
+    "title": "快速回答模式",
+    "description": "使用 Codex CLI 的快速模型、Groq 或 Natively 获得极快回答。关闭后改用所选的常规模型。",
+    "requirement": "需要先配置 Groq、Natively API 或 Codex CLI",
+    "requirementSentence": "需要先配置 Groq、Natively API 或 Codex CLI。",
+    "configureFirst": "请先配置 Groq、Natively API 或 Codex CLI，才能启用快速回答模式。"
+  },
+  "cloud": {
+    "title": "云端供应商",
+    "description": "添加 API Key 以解锁云端 AI 模型。"
+  },
+  "codexCli": {
+    "title": "本地供应商（Codex CLI）",
+    "description": "把文字与截图回答交给本机已登录的 Codex CLI 处理。",
+    "enable": "启用 Codex CLI",
+    "enableHint": "把 Codex CLI 加入可选的本地后端与备选链路。",
+    "executable": "可执行文件",
+    "timeoutMs": "超时（毫秒）",
+    "normalModel": "常规模型",
+    "fastModel": "快速模型",
+    "preset": "预设",
+    "serviceTier": "服务层级",
+    "serviceTierHint": "可用时优先使用更快的服务层级。仅 Codex Cloud 支持。",
+    "reasoningEffort": "推理强度",
+    "reasoningEffortHint": "模型投入多少推理算力。具体取决于模型。",
+    "detected": "已检测到 Codex CLI",
+    "test": "测试 CLI"
+  },
+  "ollama": {
+    "title": "本地模型（Ollama）",
+    "description": "在本机运行开源模型。",
+    "refresh": "刷新 Ollama",
+    "checking": "正在检测 Ollama…",
+    "autoFixing": "正在尝试自动修复连接…",
+    "notDetected": "未检测到 Ollama",
+    "ensureRunning": "请确认 Ollama 正在运行（`ollama serve`）。",
+    "autoFix": "自动修复连接",
+    "connected": "Ollama 已连接",
+    "localBadge": "本地",
+    "runningNoModels": "Ollama 正在运行，但没找到模型。执行 `ollama pull llama3` 即可开始。"
+  },
+  "custom": {
+    "title": "自定义供应商",
+    "description": "用 cURL 接入你自己的 AI 端点。",
+    "add": "添加供应商",
+    "editTitle": "编辑供应商",
+    "newTitle": "新建供应商",
+    "nameLabel": "供应商名称",
+    "namePlaceholder": "我的自定义 LLM",
+    "curlLabel": "cURL 命令",
+    "responsePathLabel": "响应 JSON 路径",
+    "responsePathHint": "用点号路径指向 JSON 响应里的回答文本。留空则返回完整 JSON。",
+    "visionLabel": "截图 / 视觉支持",
+    "visionAuto": "自动检测（推荐）",
+    "visionAlways": "总是发送截图",
+    "visionNever": "从不发送截图（仅文字）",
+    "visionHint": "当你的 cURL 用到 <0></0>，或使用 OpenAI 风格的 <1></1> 请求体时，自动检测会启用视觉能力。只有当你的端点用别的方式接收图片时才选「总是」；选「从不」会让这个供应商不参与截图分析。",
+    "guideTitle": "配置指南",
+    "variablesTitle": "可用变量",
+    "textVarHint": "系统提示 + 上下文 + 消息的合并文本（推荐）",
+    "imageVarHint": "截图数据（如果有）",
+    "examplesTitle": "示例",
+    "exampleOllama": "本地（Ollama）",
+    "exampleOpenAi": "OpenAI 兼容",
+    "save": "保存供应商",
+    "empty": "还没有添加自定义供应商。",
+    "deleteConfirm": "确定要删除这个供应商吗？",
+    "pathPrefix": "路径："
+  },
+  "screenUnderstanding": {
+    "title": "屏幕理解",
+    "description": "选择 Natively 如何读取你屏幕上的内容。所有方式都直接调用具备视觉能力的 AI 供应商，不再使用 OCR。",
+    "visionFirst": "视觉优先",
+    "visionFirstHint": "推荐。按顺序尝试每一个已配置的视觉供应商，第一个成功的胜出。",
+    "visionOnly": "仅视觉",
+    "visionOnlyHint": "更严格。必须有具备视觉能力的供应商，绝不静默丢弃截图。",
+    "privateVision": "私有视觉（仅本地）",
+    "privateVisionHint": "只使用本地视觉模型（Ollama），绝不调用云端视觉。没有本地供应商时给出明确报错。",
+    "technicalInterview": "技术面试直连视觉",
+    "technicalInterviewHint": "使用最高分辨率的图像档位，让面试模式下的代码文字保持清晰。"
+  },
+  "dataScopes": {
+    "title": "云端供应商数据范围",
+    "description": "控制云端 AI 供应商可以访问哪些数据。已关闭的类型会在本地处理以保护隐私。",
+    "transcript": "转写文本",
+    "screenshots": "截图",
+    "referenceFiles": "参考文件",
+    "profileHistory": "画像历史",
+    "embeddings": "云端向量化",
+    "postCallSummary": "会后摘要",
+    "allowAriaLabel": "允许向云端供应商发送{{scope}}",
+    "footnote": "某类数据被关闭后，Natively 会改用可用的最佳本地模型，把这类数据留在本机。"
   }
 }

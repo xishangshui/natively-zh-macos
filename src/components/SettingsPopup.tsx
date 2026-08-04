@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { MessageSquare, Camera, Zap, User } from 'lucide-react';
 import { useShortcuts } from '../hooks/useShortcuts';
 import { useResolvedTheme } from '../hooks/useResolvedTheme';
@@ -6,6 +7,7 @@ import { getModifierSymbol } from '../utils/platformUtils';
 import { getMeetingInterfaceTheme, type MeetingInterfaceTheme } from '../lib/meetingInterfaceTheme';
 
 const SettingsPopup = () => {
+    const { t } = useTranslation(['settings', 'meeting']);
     const { shortcuts } = useShortcuts();
     const isLightTheme = useResolvedTheme() === 'light';
     const [isUndetectable, setIsUndetectable] = useState(false);
@@ -234,7 +236,8 @@ const SettingsPopup = () => {
                             stroke={isUndetectable ? "none" : "currentColor"}
                             eyeColor={isUndetectable ? (isDarkBg ? "black" : "white") : (isDarkBg ? "white" : "#334155")}
                         />
-                        <span className={`text-[12px] font-medium transition-colors ${labelColorClass}`}>{isUndetectable ? 'Undetectable' : 'Detectable'}</span>
+                        {/* 只翻译标签文字，开关行为与既有逻辑一字不改。 */}
+                        <span className={`text-[12px] font-medium transition-colors ${labelColorClass}`}>{isUndetectable ? t('settings:popup.undetectable') : t('settings:popup.detectable')}</span>
                     </div>
                     <button
                         onClick={() => {
@@ -253,13 +256,13 @@ const SettingsPopup = () => {
 
 
                 {/* Groq (Fast Text) Toggle — enabled with Groq key OR Natively API key */}
-                <div className={`flex items-center justify-between px-2.5 py-1.5 rounded-md transition-colors duration-200 group ${!(hasStoredKey.groq || hasStoredKey.natively) ? 'opacity-50 grayscale cursor-not-allowed' : `${itemHoverClass} ${glassRowClass} cursor-default`}`} title={!(hasStoredKey.groq || hasStoredKey.natively) ? "Requires Groq or Natively API key" : ""}>
+                <div className={`flex items-center justify-between px-2.5 py-1.5 rounded-md transition-colors duration-200 group ${!(hasStoredKey.groq || hasStoredKey.natively) ? 'opacity-50 grayscale cursor-not-allowed' : `${itemHoverClass} ${glassRowClass} cursor-default`}`} title={!(hasStoredKey.groq || hasStoredKey.natively) ? t('settings:popup.requiresGroqOrNativelyKey') : ""}>
                     <div className="flex items-center gap-2.5">
                         <Zap
                             className={`w-4 h-4 transition-colors ${useGroqFastText ? 'text-orange-500' : inactiveIconColorClass}`}
                             fill={useGroqFastText ? "currentColor" : "none"}
                         />
-                        <span className={`text-[12px] font-medium transition-colors ${labelColorClass}`}>Fast Response</span>
+                        <span className={`text-[12px] font-medium transition-colors ${labelColorClass}`}>{t('settings:popup.fastResponse')}</span>
                     </div>
                     <button
                         onClick={() => {
@@ -280,7 +283,7 @@ const SettingsPopup = () => {
                             className={`w-3.5 h-3.5 transition-colors ${showTranscript ? 'text-emerald-400' : inactiveIconColorClass}`}
                             fill={showTranscript ? "currentColor" : "none"}
                         />
-                        <span className={`text-[12px] font-medium transition-colors ${labelColorClass}`}>Transcript</span>
+                        <span className={`text-[12px] font-medium transition-colors ${labelColorClass}`}>{t('settings:popup.transcript')}</span>
                     </div>
                     <button
                         onClick={() => {
@@ -314,7 +317,7 @@ const SettingsPopup = () => {
                             <circle cx="6" cy="18" r="3" />
                             <path d="M18 9a9 9 0 0 1-9 9" />
                         </svg>
-                        <span className={`text-[12px] font-medium transition-colors ${labelColorClass}`}>Interview Mode</span>
+                        <span className={`text-[12px] font-medium transition-colors ${labelColorClass}`}>{t('settings:popup.interviewMode')}</span>
                     </div>
                     <button
                         onClick={async () => {
@@ -333,13 +336,13 @@ const SettingsPopup = () => {
 
                 {/* Profile Mode Toggle */}
                 {hasProfile && (
-                    <div className={`flex items-center justify-between px-2.5 py-1.5 rounded-md transition-colors duration-200 group ${!isPremium ? 'opacity-50 grayscale cursor-not-allowed' : `${itemHoverClass} ${glassRowClass} cursor-default`}`} title={!isPremium ? 'Requires Pro license to be active' : ''}>
+                    <div className={`flex items-center justify-between px-2.5 py-1.5 rounded-md transition-colors duration-200 group ${!isPremium ? 'opacity-50 grayscale cursor-not-allowed' : `${itemHoverClass} ${glassRowClass} cursor-default`}`} title={!isPremium ? t('settings:popup.requiresProLicense') : ''}>
                         <div className="flex items-center gap-2.5">
                             <User
                                 className={`w-3.5 h-3.5 transition-colors ${profileMode && isPremium ? 'text-accent-primary' : inactiveIconColorClass}`}
                                 fill={profileMode && isPremium ? "currentColor" : "none"}
                             />
-                            <span className={`text-[12px] font-medium transition-colors ${labelColorClass}`}>Profile Mode</span>
+                            <span className={`text-[12px] font-medium transition-colors ${labelColorClass}`}>{t('settings:popup.profileMode')}</span>
                         </div>
                         <button
                             onClick={async () => {
@@ -365,7 +368,7 @@ const SettingsPopup = () => {
                 <div className={`flex items-center justify-between px-2.5 py-1.5 rounded-md transition-colors duration-200 group interaction-base interaction-press ${itemHoverClass} ${glassRowClass}`}>
                     <div className="flex items-center gap-2.5">
                         <MessageSquare className={`w-3.5 h-3.5 transition-colors ${inactiveIconColorClass}`} />
-                        <span className={`text-[12px] transition-colors ${labelColorClass}`}>Show/Hide</span>
+                        <span className={`text-[12px] transition-colors ${labelColorClass}`}>{t('settings:popup.showHide')}</span>
                     </div>
                     <div className="flex gap-1 opacity-60 group-hover:opacity-100 transition-opacity">
                         {/* Dynamic Keys for Toggle Visibility */}
@@ -381,7 +384,7 @@ const SettingsPopup = () => {
                 <div className={`flex items-center justify-between px-2.5 py-1.5 rounded-md transition-colors duration-200 group interaction-base interaction-press ${itemHoverClass} ${glassRowClass}`}>
                     <div className="flex items-center gap-2.5">
                         <Camera className={`w-3.5 h-3.5 transition-colors ${inactiveIconColorClass}`} />
-                        <span className={`text-[12px] transition-colors ${labelColorClass}`}>Screenshot</span>
+                        <span className={`text-[12px] transition-colors ${labelColorClass}`}>{t('settings:popup.screenshot')}</span>
                     </div>
                     <div className="flex gap-1 opacity-60 group-hover:opacity-100 transition-opacity">
                         {/* Dynamic Keys for Take Screenshot */}

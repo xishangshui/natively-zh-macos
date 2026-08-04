@@ -26,7 +26,8 @@
     "stop": "Stop",
     "details": "Details",
     "rebind": "Rebind",
-    "openSettings": "Open Settings"
+    "openSettings": "Open Settings",
+    "refresh": "Refresh"
   },
   "state": {
     "loading": "Loading...",
@@ -34,6 +35,21 @@
     "indexing": "Re-indexing meetings...",
     "finalizing": "Finalizing...",
     "loadingModels": "Loading models...",
-    "notSet": "not set"
+    "notSet": "not set",
+    "saving": "Saving...",
+    "savedExclaim": "Saved!",
+    "none": "None"
+  },
+  "badge": {
+    "beta": "Beta",
+    "new": "NEW",
+    "experimental": "Experimental"
+  },
+  "device": {
+    "mac": "Mac",
+    "pc": "PC"
+  },
+  "label": {
+    "optional": "(Optional)"
   }
 }

@@ -34,8 +34,19 @@ test('SettingsOverlay renders a real do-not-save meetings control', () => {
   assert.match(source, /const \[meetingRetention, setMeetingRetention\]/);
   assert.match(source, /getMeetingRetention\?\.\(\)\.then\(setMeetingRetention\)/);
   assert.match(source, /setMeetingRetention\?\.\(nextRetention\)/);
-  assert.match(source, /Do not save meetings/);
-  assert.match(source, /transcripts, summaries, and history are discarded/);
+  // zh-CN 本地化说明：开关标题与说明文案已迁到 settings 词典。
+  // 锚点改为两个语义键，并断言中英词典都定义了它们且互不相同——
+  // 这个开关决定会议是否落盘，说明文字退化成空白或与标题同句都会误导用户。
+  assert.match(source, /settings:general\.doNotSave/);
+  assert.match(source, /settings:general\.doNotSaveHint/);
+  for (const locale of ['zh-CN', 'en-US']) {
+    const catalog = JSON.parse(read(`src/i18n/resources/${locale}/settings.json`));
+    const title = catalog.general?.doNotSave;
+    const hint = catalog.general?.doNotSaveHint;
+    assert.ok(title, `expected ${locale} settings.general.doNotSave to be defined and non-empty`);
+    assert.ok(hint, `expected ${locale} settings.general.doNotSaveHint to be defined and non-empty`);
+    assert.notEqual(title, hint, `BUG: ${locale} 标题与说明相同，用户看不到「丢弃转写」这层含义`);
+  }
 });
 
 test('launcher startMeeting metadata carries doNotPersist when retention is never', () => {

@@ -6,5 +6,12 @@
   },
   "progress": {
     "downloading": "Downloading update: {{percent}}%"
+  },
+  "status": {
+    "checking": "Checking",
+    "update": "Update",
+    "upToDate": "Up to date",
+    "error": "Error",
+    "check": "Check"
   }
 }

@@ -26,7 +26,8 @@
     "stop": "停止",
     "details": "详情",
     "rebind": "重新绑定",
-    "openSettings": "打开设置"
+    "openSettings": "打开设置",
+    "refresh": "刷新"
   },
   "state": {
     "loading": "加载中...",
@@ -34,6 +35,21 @@
     "indexing": "正在重建会议索引…",
     "finalizing": "正在收尾…",
     "loadingModels": "正在加载模型…",
-    "notSet": "未设置"
+    "notSet": "未设置",
+    "saving": "正在保存…",
+    "savedExclaim": "已保存！",
+    "none": "无"
+  },
+  "badge": {
+    "beta": "测试版",
+    "new": "新",
+    "experimental": "实验性"
+  },
+  "device": {
+    "mac": "Mac",
+    "pc": "电脑"
+  },
+  "label": {
+    "optional": "（可选）"
   }
 }

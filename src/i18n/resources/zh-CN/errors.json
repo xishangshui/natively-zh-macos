@@ -24,5 +24,31 @@
     "noResponse": "没有收到回复，请重试。",
     "checkSettings": "没有收到回复，请检查设置。",
     "somethingWrong": "出了点问题，请重试。"
+  },
+  "skills": {
+    "bridgeMissing": "未检测到技能 IPC 通道（window.electronAPI），preload 可能未加载。",
+    "loadFailed": "无法加载技能。",
+    "openFolderFailed": "无法打开技能文件夹。"
+  },
+  "phoneMirror": {
+    "statusFailed": "无法读取手机镜像状态",
+    "actionFailed": "操作失败"
+  },
+  "localWhisper": {
+    "downloadFailed": "模型下载失败"
+  },
+  "codexCli": {
+    "testFailed": "Codex CLI 测试失败"
+  },
+  "custom": {
+    "nameRequired": "供应商名称不能为空。",
+    "invalidCurl": "cURL 命令无效。"
+  },
+  "stt": {
+    "enterKeyFirst": "请先输入 API Key",
+    "validationFailedNotSaved": "校验失败，密钥未保存。",
+    "validationFailed": "校验失败",
+    "connectionFailed": "连接失败",
+    "testFailed": "测试失败"
   }
 }

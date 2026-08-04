@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Download, Trash2, HardDrive, Check, Loader2, Zap, AlertCircle, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { isMac } from '../utils/platformUtils';
@@ -34,7 +35,25 @@ interface ChannelConfig {
 
 const electronAPI = (window as any).electronAPI;
 
+// 内部枚举带连字符（very-fast / very-high），而词典键名只允许 camelCase，
+// 所以显式映射，不用字符串拼接——拼出来的 `speed.very-fast` 查不到键，
+// 会静默回退成键名本身显示给用户。
+const SPEED_KEY: Record<ModelInfo['speed'], string> = {
+    'very-fast': 'veryFast',
+    fast: 'fast',
+    medium: 'medium',
+    slow: 'slow',
+};
+
+const ACCURACY_KEY: Record<ModelInfo['accuracy'], string> = {
+    decent: 'decent',
+    good: 'good',
+    high: 'high',
+    'very-high': 'veryHigh',
+};
+
 function PremiumSelect({ label, value, options, onChange, placeholder }: any) {
+    const { t } = useTranslation(['settings']);
     const [isOpen, setIsOpen] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -85,7 +104,7 @@ function PremiumSelect({ label, value, options, onChange, placeholder }: any) {
                                 );
                             })}
                             {options.length === 0 && (
-                                <div className="px-3 py-2.5 text-sm text-text-tertiary italic text-center">No models available</div>
+                                <div className="px-3 py-2.5 text-sm text-text-tertiary italic text-center">{t('settings:localWhisper.noModels')}</div>
                             )}
                         </div>
                     </motion.div>
@@ -96,6 +115,7 @@ function PremiumSelect({ label, value, options, onChange, placeholder }: any) {
 }
 
 export function LocalWhisperModelPanel() {
+    const { t } = useTranslation(['settings', 'common', 'errors']);
     const [models, setModels] = useState<ModelInfo[]>([]);
     const [hardware, setHardware] = useState<HardwareInfo | null>(null);
     const [config, setConfig] = useState<ChannelConfig>({
@@ -230,8 +250,8 @@ export function LocalWhisperModelPanel() {
         <div className="space-y-4">
             <div className="bg-bg-card rounded-xl border border-border-subtle p-5 shadow-sm">
                 <div className="mb-5">
-                    <h3 className="text-sm font-semibold text-text-primary">Local Engine Configuration</h3>
-                    <p className="text-xs text-text-secondary mt-1 leading-relaxed">Select the AI models you want to use for Speech-to-Text inference.</p>
+                    <h3 className="text-sm font-semibold text-text-primary">{t('settings:localWhisper.engineTitle')}</h3>
+                    <p className="text-xs text-text-secondary mt-1 leading-relaxed">{t('settings:localWhisper.engineDescription')}</p>
                 </div>
 
                 <label className="flex items-center justify-between p-3.5 rounded-xl border border-border-subtle bg-bg-elevated/30 hover:bg-bg-elevated transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] cursor-pointer group mb-5 active:scale-[0.99]">
@@ -242,8 +262,8 @@ export function LocalWhisperModelPanel() {
                         onChange={(e) => toggleDualChannel(e.target.checked)} 
                     />
                     <div>
-                        <span className="text-sm font-medium text-text-primary block transition-colors group-hover:text-accent-primary">Split Audio Channels</span>
-                        <span className="text-xs text-text-tertiary mt-0.5 block">Use different models for microphone and system audio</span>
+                        <span className="text-sm font-medium text-text-primary block transition-colors group-hover:text-accent-primary">{t('settings:localWhisper.splitChannels')}</span>
+                        <span className="text-xs text-text-tertiary mt-0.5 block">{t('settings:localWhisper.splitChannelsHint')}</span>
                     </div>
                     <div className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-opacity-75 ${config.enabled ? 'bg-accent-primary' : 'bg-border-muted'}`}>
                         <span className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow ring-0 transition duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] ${config.enabled ? 'translate-x-4' : 'translate-x-0'}`} />
@@ -262,18 +282,18 @@ export function LocalWhisperModelPanel() {
                                 className="grid grid-cols-2 gap-4"
                             >
                                 <PremiumSelect
-                                    label="Mic Audio Model"
+                                    label={t('settings:localWhisper.micModelLabel')}
                                     value={config.micModelId}
                                     onChange={setMicModel}
                                     options={availableModels}
-                                    placeholder="Select mic model"
+                                    placeholder={t('settings:localWhisper.micModelPlaceholder')}
                                 />
                                 <PremiumSelect
-                                    label="System Audio Model"
+                                    label={t('settings:localWhisper.systemModelLabel')}
                                     value={config.systemModelId}
                                     onChange={setSystemModel}
                                     options={availableModels}
-                                    placeholder="Select system model"
+                                    placeholder={t('settings:localWhisper.systemModelPlaceholder')}
                                 />
                             </motion.div>
                         ) : (
@@ -285,11 +305,11 @@ export function LocalWhisperModelPanel() {
                                 transition={{ duration: 0.2, ease: "easeOut" }}
                             >
                                 <PremiumSelect
-                                    label="Global Model"
+                                    label={t('settings:localWhisper.globalModelLabel')}
                                     value={config.globalModelId}
                                     onChange={setGlobalModel}
                                     options={availableModels}
-                                    placeholder="Select global model"
+                                    placeholder={t('settings:localWhisper.globalModelPlaceholder')}
                                 />
                             </motion.div>
                         )}
@@ -299,10 +319,13 @@ export function LocalWhisperModelPanel() {
 
             <div className="bg-bg-card rounded-xl border border-border-subtle overflow-hidden shadow-sm relative z-0">
                 <div className="px-5 py-4 bg-bg-elevated/50 border-b border-border-subtle flex justify-between items-center">
-                    <h3 className="text-sm font-semibold text-text-primary">Model Manager</h3>
+                    <h3 className="text-sm font-semibold text-text-primary">{t('settings:localWhisper.managerTitle')}</h3>
                     {hardware?.recommendedModel && (
                         <span className="text-[11px] text-text-tertiary font-medium bg-bg-input px-2 py-1 rounded-md border border-border-subtle">
-                            Recommended for your {isMac ? 'Mac' : 'PC'}: <span className="text-text-primary">{models.find(m => m.id === hardware.recommendedModel)?.name}</span>
+                            {t('settings:localWhisper.recommendedForDevice', {
+                                device: isMac ? t('common:device.mac') : t('common:device.pc'),
+                            })}{' '}
+                            <span className="text-text-primary">{models.find(m => m.id === hardware.recommendedModel)?.name}</span>
                         </span>
                     )}
                 </div>
@@ -320,22 +343,24 @@ export function LocalWhisperModelPanel() {
                                     <div className="flex items-center gap-2 mb-1.5">
                                         <span className="text-sm font-medium text-text-primary truncate tracking-tight">{model.name}</span>
                                         {isRecommended && (
-                                            <span className="px-1.5 py-0.5 rounded-[4px] bg-accent-primary/10 text-accent-primary text-[9px] font-bold uppercase tracking-wider">Recommended</span>
+                                            <span className="px-1.5 py-0.5 rounded-[4px] bg-accent-primary/10 text-accent-primary text-[9px] font-bold uppercase tracking-wider">{t('settings:localWhisper.recommendedBadge')}</span>
                                         )}
                                         {model.requiresAppleSilicon && (
                                             <span className="px-1.5 py-0.5 rounded-[4px] bg-purple-500/10 text-purple-500 text-[9px] font-bold uppercase tracking-wider">Apple Silicon</span>
                                         )}
                                     </div>
                                     <div className="flex items-center gap-3.5 text-xs text-text-tertiary">
-                                        <span className="flex items-center gap-1.5"><HardDrive size={13} className="opacity-70" /> {model.sizeMb} MB</span>
-                                        <span className="flex items-center gap-1.5"><Zap size={13} className="opacity-70" /> {model.speed}</span>
-                                        <span className="flex items-center gap-1.5"><Check size={13} className="opacity-70" /> {model.accuracy} acc</span>
+                                        {/* speed / accuracy 的值是内部枚举（very-fast / high …），
+                                            映射到展示词典，不直接渲染枚举值。 */}
+                                        <span className="flex items-center gap-1.5"><HardDrive size={13} className="opacity-70" /> {t('settings:localWhisper.sizeMb', { size: model.sizeMb })}</span>
+                                        <span className="flex items-center gap-1.5"><Zap size={13} className="opacity-70" /> {t(`settings:localWhisper.speed.${SPEED_KEY[model.speed]}`)}</span>
+                                        <span className="flex items-center gap-1.5"><Check size={13} className="opacity-70" /> {t('settings:localWhisper.accuracyLabel', { level: t(`settings:localWhisper.accuracy.${ACCURACY_KEY[model.accuracy]}`) })}</span>
                                     </div>
                                     
                                     {isDownloading && (
                                         <div className="mt-3.5 pr-8">
                                             <div className="flex justify-between items-center text-[10px] text-text-secondary mb-1.5 uppercase tracking-wider font-semibold">
-                                                <span>Downloading...</span>
+                                                <span>{t('settings:localWhisper.downloading')}</span>
                                                 <span className="text-accent-primary tabular-nums">{Math.round(progress)}%</span>
                                             </div>
                                             <div className="w-full h-1.5 bg-bg-input rounded-full overflow-hidden shadow-inner ring-1 ring-inset ring-black/5 dark:ring-white/5">
@@ -352,7 +377,8 @@ export function LocalWhisperModelPanel() {
                                     {model.status === 'error' && (
                                         <div className="mt-2.5 text-xs text-red-500 flex items-center gap-1.5 font-medium bg-red-500/10 px-2.5 py-1.5 rounded-md inline-flex">
                                             <AlertCircle size={14} />
-                                            {model.errorMessage || 'Failed to download model'}
+                                            {/* 下载失败的原始错误保持原文；无详情时给中文兜底。 */}
+                                            {model.errorMessage || t('errors:localWhisper.downloadFailed')}
                                         </div>
                                     )}
                                 </div>
@@ -364,7 +390,7 @@ export function LocalWhisperModelPanel() {
                                             className="group/btn relative h-[34px] px-4 flex items-center gap-1.5 rounded-[10px] bg-accent-primary/10 hover:bg-accent-primary/20 text-accent-primary text-[13px] font-semibold transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] active:scale-[0.96] shadow-sm"
                                         >
                                             <Download size={14} className="transition-transform duration-300 group-hover/btn:-translate-y-[2px]" /> 
-                                            <span>Install</span>
+                                            <span>{t('settings:localWhisper.install')}</span>
                                         </button>
                                     )}
                                     
@@ -372,7 +398,7 @@ export function LocalWhisperModelPanel() {
                                         <button
                                             onClick={() => handleDelete(model.id)}
                                             className="p-2 rounded-[10px] text-text-tertiary hover:bg-red-500/10 hover:text-red-500 transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] active:scale-[0.96]"
-                                            title="Delete model"
+                                            title={t('settings:localWhisper.deleteModel')}
                                         >
                                             <Trash2 size={16} />
                                         </button>
@@ -388,7 +414,7 @@ export function LocalWhisperModelPanel() {
             {hardware?.tier === 'limited' && (
                 <div className="pt-1 text-center">
                     <p className="text-[10px] font-medium text-amber-500 dark:text-amber-400/80 uppercase tracking-widest">
-                        ⓘ Limited hardware — cloud STT recommended for long sessions
+                        {t('settings:localWhisper.limitedHardware')}
                     </p>
                 </div>
             )}

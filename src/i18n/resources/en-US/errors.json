@@ -24,5 +24,31 @@
     "noResponse": "Couldn't get a response. Please try again.",
     "checkSettings": "Couldn't get a response. Please check your settings.",
     "somethingWrong": "Something went wrong. Please try again."
+  },
+  "skills": {
+    "bridgeMissing": "Skills IPC bridge not detected on window.electronAPI — preload may be missing.",
+    "loadFailed": "Could not load skills.",
+    "openFolderFailed": "Could not open skills folder."
+  },
+  "phoneMirror": {
+    "statusFailed": "Failed to load phone mirror status",
+    "actionFailed": "Action failed"
+  },
+  "localWhisper": {
+    "downloadFailed": "Failed to download model"
+  },
+  "codexCli": {
+    "testFailed": "Codex CLI test failed"
+  },
+  "custom": {
+    "nameRequired": "Provider Name is required.",
+    "invalidCurl": "Invalid cURL command."
+  },
+  "stt": {
+    "enterKeyFirst": "Please enter an API key first",
+    "validationFailedNotSaved": "Validation failed. Key not saved.",
+    "validationFailed": "Validation failed",
+    "connectionFailed": "Connection failed",
+    "testFailed": "Test failed"
   }
 }

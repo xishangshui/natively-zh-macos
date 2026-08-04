@@ -6,5 +6,12 @@
   },
   "progress": {
     "downloading": "正在下载更新：{{percent}}%"
+  },
+  "status": {
+    "checking": "检查中",
+    "update": "更新",
+    "upToDate": "已是最新",
+    "error": "出错",
+    "check": "检查更新"
   }
 }

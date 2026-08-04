@@ -131,7 +131,17 @@ test('preload and renderer types expose provider data scope controls', () => {
 test('AIProvidersSettings renders cloud provider data scope controls wired to real IPC', () => {
   const src = read('src/components/settings/AIProvidersSettings.tsx');
 
-  assert.match(src, /Cloud provider data scopes/);
+  // zh-CN 本地化说明：区块标题已迁到 providers 词典，源码里不再有英文字面量。
+  // 锚点改为语义键，另加词典断言——两种语言都必须定义且非空，
+  // 否则这个隐私开关区会渲染出空白标题。原有 IPC 接线断言全部保留。
+  assert.match(src, /providers:dataScopes\.title/);
+  for (const locale of ['zh-CN', 'en-US']) {
+    const catalog = JSON.parse(read(`src/i18n/resources/${locale}/providers.json`));
+    assert.ok(
+      catalog.dataScopes?.title,
+      `expected ${locale} providers.dataScopes.title to be defined and non-empty`,
+    );
+  }
   assert.match(src, /getProviderDataScopes\?\.\(\)\.then\(setProviderDataScopes\)/);
   assert.match(src, /setProviderDataScopes\?\.\(next\)/);
   assert.match(src, /onProviderDataScopesChanged\(setProviderDataScopes\)/);

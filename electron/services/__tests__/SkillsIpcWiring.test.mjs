@@ -76,7 +76,17 @@ test('SkillsSettings renderer guards against a missing bridge instead of silent 
   // The fix replaces both with explicit guards.
   assert.match(view, /typeof window\.electronAPI\?\.skillsRefresh\s*!==\s*['"]function['"]/);
   assert.match(view, /typeof window\.electronAPI\?\.skillsOpenFolder\s*!==\s*['"]function['"]/);
-  assert.match(view, /Skills IPC bridge not detected/);
+  // zh-CN 本地化说明：守卫命中后展示给用户的提示已迁到 errors 词典。
+  // 锚点改为语义键，并断言中英词典都定义了它——如果这条提示为空，
+  // 守卫虽然还在，用户却只看到一个空错误框，等同于回到「静默失败」。
+  assert.match(view, /errors:skills\.bridgeMissing/);
+  for (const locale of ['zh-CN', 'en-US']) {
+    const catalog = JSON.parse(read(`src/i18n/resources/${locale}/errors.json`));
+    assert.ok(
+      catalog.skills?.bridgeMissing,
+      `expected ${locale} errors.skills.bridgeMissing to be defined and non-empty`,
+    );
+  }
 
   // After each guard, the call is unconditional (no optional chain on the method).
   assert.match(view, /await window\.electronAPI\.skillsRefresh\(\)/);
