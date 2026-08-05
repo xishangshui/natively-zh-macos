@@ -1,1023 +1,323 @@
-> ## ⚠️ 这是非官方的简体中文化 fork / Unofficial Simplified-Chinese fork
->
-> **中文：** 本仓库是 [Natively](https://github.com/Natively-AI-assistant/natively-cluely-ai-assistant)
-> v2.7.0（commit `be7280b`）的**非官方**简体中文本地化分支，仅做界面汉化、
-> 中文语音默认值、构建隔离与更新安全，**不改动**音频采集、转写、LLM、RAG
-> 或数据库的核心逻辑。
->
-> - **与官方无关联。** 本 fork 不由 Natively 官方维护，**不提供**官方的
->   Natively API、Natively Pro 订阅、支付、退款或客户支持。仓库内保留的
->   `termsandcondition.md`、`refund.md`、`PRIVACY.md` 等文件属于**上游官方
->   服务**的条款，与本 fork 无关 —— 请勿据此向本仓库主张任何服务或权利。
-> - **发行标识独立。** 产品名 `Natively ZH`、appId `com.natively.zh.desktop`、
->   用户数据目录 `natively-zh`，与官方安装完全隔离，可并存。
-> - **不会静默覆盖官方版。** 已禁用后台自动下载与退出时自动安装；
->   「关于」页保留手动查看上游版本的入口，但会明确提示安装官方发行版
->   将替换本构建并移除中文界面。
-> - **未签名。** 本构建刻意不做代码签名，不伪装成官方签名发行版。
-> - `premium` 是上游的**私有**子模块，本 fork 无权限、从未初始化。
->   `git submodule update` 会失败，这是预期行为 —— 开源降级路径不依赖它。
-> - 汉化说明、允许保留英文的清单、发布检查清单与回退指南见
->   [`docs/zh-cn/`](docs/zh-cn/)。
->
-> **English:** This is an **unofficial** Simplified-Chinese localization fork of
-> Natively v2.7.0 (`be7280b`). It only localizes the UI, adds Chinese
-> speech/answer defaults, isolates the distribution identity, and disables
-> silent official auto-updates. Core audio/STT/LLM/RAG/database logic is
-> untouched. **Not affiliated with or supported by the Natively project.**
-> It does **not** provide the official Natively API, Pro subscriptions,
-> payments, refunds, or support — the commercial terms files kept in this repo
-> apply to the **upstream** service, not to this fork. The `premium` submodule
-> is upstream-private and intentionally uninitialized.
->
-> Licensed under **AGPL-3.0**, same as upstream. See [LICENSE](LICENSE).
-
----
-
-# [Sponsored by Recall AI - API for desktop recording](https://docs.recall.ai/docs/desktop-sdk?utm_source=github&utm_medium=sponsorship&utm_campaign=evinjohnn-natively-ai-assistant)
-
-If you’re looking for a hosted desktop recording API, consider checking out [Recall.ai](https://docs.recall.ai/docs/desktop-sdk?utm_source=github&utm_medium=sponsorship&utm_campaign=evinjohnn-natively-ai-assistant), an API that records Zoom, Google Meet, Microsoft Teams, in-person meetings, and more.
-
 <div align="center">
-  <img src="assets/icon.png" width="150" alt="Natively AI Assistant Logo">
 
-# Natively — Free, Open-Source AI Interview Copilot & Meeting Assistant
+<img src="assets/icon.png" width="120" alt="Natively ZH">
 
-**The best free alternative to Cluely, Final Round AI, LockedIn AI, and Interview Coder.**
-<br/>
-**Same UI as Cluely. More features. $0. Open source. No data breaches.**
-<br/>
+# Natively ZH
 
-<a href="#" style="pointer-events: none; cursor: default; color: inherit; text-decoration: none;" title="#1 Cluely clone · Free Cluely alternative · Open-source interview copilot · Free Interview Coder alternative · AI coding interview assistant · LeetCode AI solver · HackerRank AI cheat · Final Round AI free alternative · LockedIn AI alternative · Parakeet AI open source · Undetectable interview AI · Stealth mode interview copilot.Cluely clone · Cluely alternative · Free Cluely · Cluely free version · open source Cluely ·
-    Final Round AI clone · Final Round AI alternative · Free Final Round AI · Final Round AI free version ·
-    Interview Coder clone · Interview Coder alternative · Free Interview Coder · open source Interview Coder ·
-    Parakeet AI clone · Parakeet AI alternative · Free Parakeet AI ·
-    Wonsulting AI clone · Wonsulting alternative · Free Wonsulting AI ·
-    Metaview clone · Metaview alternative · Free Metaview ·
-    Sensei AI clone · Sensei AI alternative · interview copilot ·
-    Hirevue AI cheat · Hirevue assistant · Hirevue helper ·
-    AI interview assistant · AI interview copilot · AI interview helper · interview cheating tool · interview AI ·
-    live coding assistant · real-time coding help · screen overlay AI · invisible AI assistant ·
-    coding interview cheat sheet · leetcode helper AI · system design AI assistant ·
-    Claude Code alternative · Claude Code clone · free Claude Code ·
-    Gemini 3.5 assistant · Gemini 3.5 Pro coding · Google Gemini interview tool ·
-    Agent Claw alternative · Agent Claw clone · free Agent Claw ·
-    Molt Bot clone · Molt Bot alternative · free Molt Bot ·
-    Antigravity AI clone · Antigravity alternative ·
-    Devin AI alternative · open source Devin · free Devin AI ·
-    Cursor AI alternative · Cursor clone · free Cursor AI ·
-    GitHub Copilot alternative · free GitHub Copilot · open source Copilot ·
-    Tabnine alternative · free Tabnine · Tabnine clone ·
-    Codeium alternative · free Codeium ·
-    agentic coding assistant · AI pair programmer · AI coding copilot ·
-    real-time interview AI · live interview assistant · hidden interview tool ·
-    open source interview copilot · free interview AI tool · best interview AI 2026"></a>
-
-<br/>
+**完整简体中文化的 AI 会议助手 / 面试副驾** — 界面、托盘、原生对话框全部中文，可一键切回英文。
 
 [![License](https://img.shields.io/badge/License-AGPL--3.0-blue?style=flat-square)](LICENSE)
-[![Platform](https://img.shields.io/badge/Platform-macOS%20%7C%20Windows-blueviolet?style=flat-square)](https://github.com/Natively-AI-assistant/natively-cluely-ai-assistant/releases)
-[![Downloads](https://img.shields.io/github/downloads/evinjohnn/natively-cluely-ai-assistant/total?style=flat-square&color=success)](https://github.com/Natively-AI-assistant/natively-cluely-ai-assistant/releases)
-![Repo Views](https://img.shields.io/badge/Views-341k-orange?style=flat-square)
-[![Stars](https://img.shields.io/github/stars/evinjohnn/natively-cluely-ai-assistant?style=flat-square&color=gold)](https://github.com/Natively-AI-assistant/natively-cluely-ai-assistant)
-![Status](https://img.shields.io/badge/Status-active-success?style=flat-square)
-[![Telegram Chat](https://img.shields.io/badge/Telegram-Chat-229ED9?style=flat-square&logo=telegram&logoColor=white)](https://t.me/nativelyaichat)
-[![LinkedIn Company](https://img.shields.io/badge/LinkedIn-Company-0077B5?style=flat-square&logo=linkedin&logoColor=white)](https://www.linkedin.com/company/nativley-ai)
+[![Platform](https://img.shields.io/badge/Platform-Windows%20x64-blueviolet?style=flat-square)](#安装)
+[![Based on](https://img.shields.io/badge/based%20on-Natively%20v2.7.0-informational?style=flat-square)](https://github.com/Natively-AI-assistant/natively-cluely-ai-assistant)
+[![i18n](https://img.shields.io/badge/i18n-1380%20keys%20%C2%B7%2057%20files-success?style=flat-square)](docs/zh-cn/i18n-allowlist.md)
+[![Unofficial](https://img.shields.io/badge/unofficial-fork-orange?style=flat-square)](#与官方的关系)
 
-> **Competitors charge $20–$149/month, store your data on their servers, and one already breached 83,000 users.** Natively costs $0, runs locally, and has never had a data breach. Your keys, your models, your machine.
-
-<p align="center">
-  <a href="https://natively.software">
-    <img src="https://img.shields.io/badge/Visit%20Website-22C55E?style=for-the-badge&logo=vercel&logoColor=white" />
-  </a>
-</p>
-
-<p align="center">
-  <a href="https://github.com/Natively-AI-assistant/natively-cluely-ai-assistant/releases/latest">
-    <img src="https://img.shields.io/badge/Download-macOS-007AFF?style=for-the-badge&logo=apple&logoColor=white" />
-  </a>
-  <a href="https://github.com/Natively-AI-assistant/natively-cluely-ai-assistant/releases/latest">
-    <img src="https://img.shields.io/badge/Download-Windows-0078D4?style=for-the-badge&logo=windows&logoColor=white" />
-  </a>
-</p>
-
-<small>Requires macOS 12+ (Apple Silicon & Intel) or Windows 10/11</small>
-
-<br/>
-
-**<span style="color: #ef4444">👥 9,000+ Users</span>** &nbsp;·&nbsp; **<span style="color: #f97316">🔥 700+ DAU</span>** &nbsp;·&nbsp; **<span style="color: #22c55e">💸 $0 vs $149/mo rivals</span>** &nbsp;·&nbsp; **<span style="color: #3b82f6">⚡ <500ms latency</span>** &nbsp;·&nbsp; **<span style="color: #a855f7">🛡️ 0 data breaches</span>**
+[安装](#安装) · [从源码运行](#从源码运行) · [汉化范围](#汉化范围) · [与上游的差异](#与上游的差异) · [已知限制](#已知限制) · [English](#english)
 
 </div>
 
 ---
 
-## The Free, Open-Source Cluely Clone
+> [!IMPORTANT]
+> **这是非官方 fork。** 与 Natively 官方无关联，不提供官方的 Natively API、
+> Pro 订阅、支付、退款或客户支持。详见[与官方的关系](#与官方的关系)。
 
-Natively started as a pixel-perfect recreation of Cluely's interface — then kept going. If you've used Cluely, you already know how to use Natively. Same overlay, same workflow, same shortcuts. Except it's free, open-source, runs locally, supports any LLM, and has never breached a single user's data.
+## 这个 fork 解决什么问题
 
-> Looking for a **free Cluely alternative**? A **Cluely open-source clone**? You found it.
+上游 [Natively](https://github.com/Natively-AI-assistant/natively-cluely-ai-assistant)
+是一个开源的实时会议 / 面试助手：本地采集系统音频与麦克风、实时转写、
+把屏幕和对话上下文交给大模型生成建议。功能很强，但**界面只有英文**，
+而且没有国际化基础设施 —— 上游 `ROADMAP.md` 把多语言列为「后续能力」。
 
----
+本 fork 补上这一层，并且**不是硬编码替换**，而是建立了一套可维护的
+i18n 资源层：
 
-## What Users Are Saying
+|  | 上游 v2.7.0 | 本 fork |
+|---|---|---|
+| 界面语言 | 仅英文 | **简体中文 / English 实时切换** |
+| i18n 框架 | 无 | i18next + react-i18next，10 个业务域词典 |
+| 主进程文案（托盘 / 通知 / 对话框） | 英文硬编码 | **独立的极简翻译器**，无需引入 React |
+| 中文字体 | 字体栈**不含任何 CJK 字体** | Microsoft YaHei UI → PingFang SC → Noto Sans CJK SC |
+| 日期 / 数字格式 | 部分写死 `en-US` | 跟随界面语言，`Intl` 格式化 |
+| 语音识别默认值 | 英语 | 中文（`zh-CN` / `chinese`） |
+| 发行标识 | 官方 | **完全隔离**，可与官方版并存 |
+| 官方自动更新 | 启用 | **禁用**，只保留手动查看上游版本 |
 
-> "This is a fantastic piece of software and you should definitely keep up the great work! This is exactly what I was looking for. I started out trying the open-source version, and because it worked so well, I decided to go ahead and buy the full premium license."  
-> — **Oskar Krzak** (⭐⭐⭐⭐⭐ via Gumroad)
+### 三类语言设置互不干扰
 
-> "Natively is significantly faster than Cluely when it comes to response time and screen analysis. The latency is practically non-existent."  
-> — **Premium User**
+这是本地化里最容易做错的一点。应用里有三个**独立**概念，切换任一个都不会
+连带改动另外两个：
 
-> "Just wanted to say thanks! Natively helped me completely crack the first two rounds of my Software Engineering interviews. The responses were incredibly fast and accurate."  
-> — **Private Email Feedback**
+| 设置 | 控制什么 | 中文取值 |
+|---|---|---|
+| `uiLocale` | 界面语言 | `zh-CN` |
+| `sttLanguage` | 语音识别语言 | `chinese`（内部键，映射到 `zh-CN` / `zh`） |
+| `aiResponseLanguage` | AI 回复语言 | `Chinese` |
 
-> "Used the free version of Natively for my interviews and just landed a massive summer internship. It took all the stress out of the live coding and behavioral rounds!"  
-> — **Private Email Feedback**
+切换界面语言**不会**重启语音识别流、**不会**改变 AI 回复语言。设置页另有一个
+「一键切换中文语音与回答」按钮，只在你主动点击时才同时设置后两项。
 
----
+### 多窗口同步
 
-## Why Natively?
+应用同时运行 5 个 `BrowserWindow`（启动器、会议浮层、设置、模型选择、截图裁剪）。
+语言由主进程的 `LocaleManager` 持久化，通过类型化 IPC 广播到全部窗口 ——
+不会出现「设置窗口是中文、浮层还是英文」的割裂状态。托盘不是
+`BrowserWindow`、收不到广播，所以在语言切换后会显式重建。
 
-While other tools act as simple API wrappers, Natively is a complete, native intelligence system designed specifically for high-stakes meetings and interviews.
+每个 React 根节点都是**先取到 locale 再渲染首帧**，所以启动时不会闪一下英文。
 
-- **Native Audio Capture (<500ms):** Built with Rust and Zero-Copy ABI transfers, bypassing generic web-audio limitations for ultra-low latency.
-- **Local Whisper STT (On-Device):** 100% on-device speech-to-text using optimized ONNX models (Moonshine-tiny, Moonshine-base, Whisper-large-v3-turbo, distil-large-v3). Uses hardware acceleration (CoreML/Metal GPU on Apple Silicon, DirectML on Windows, quantized int8 on CPU) with zero cloud fees or data exposure.
-- **Dual-Channel Intelligence:** Distinct pipelines for system audio (what they say) and your microphone (what you dictate) ensuring perfect transcription without room noise.
-- **Battle-Tested Stealth Mode:** Completely undetectable. Hides from the dock, disables popups, and disguises the process during screen sharing.
-- **Modes Manager (7 Personas):** Toggle between 7 tailored personas (General, Technical Interview, Looking for Work, Sales, Recruiting, Team Meet, and Lecture) with custom system prompts and dynamic meeting-note templates.
-- **Custom Context & Notes:** A dedicated free-form notes area to paste instructions, crib sheets, or credentials (up to 8,000 characters), automatically injected into real-time LLM prompts.
-- **Rolling Context:** We don't just transcribe; we maintain a "memory window" of the conversation for smarter answers.
-- **Local RAG Memory:** We embed your meetings locally using SQLite vector search so you can ask, "What did John say about the API last week?"
-- **Reference Files:** Deeply integrate PDFs, DOCX, and TXT files as real-time context.
-- **Rich Dashboard:** A full UI to manage, search, and export your history—not just a floating window.
-- **Fully Offline Capable:** Don't trust the cloud? Run Natively 100% offline using local Ollama models and local Whisper STT.
+## 安装
 
----
+从 [Releases](../../releases) 下载 `Natively-ZH-Setup-*.exe`，运行后
+**手动选择安装目录**（安装器允许改路径）。
 
-## 3 things you should know before choosing an interview AI
+| | 路径 |
+|---|---|
+| 安装目录 | 你自己选，例如 `D:\Natively-ZH` |
+| 用户数据 | `%APPDATA%\natively-zh` |
+| appId | `com.natively.zh.desktop` |
+| 开始菜单 | `Natively ZH` |
 
-1. **Cluely** had a data breach in mid-2025 that exposed 83,000 users' personal info, transcripts, and screenshots — Natively stores everything locally by default with limited anonymous telemetry and has never had a breach.
-2. **Final Round AI** costs $149/month and its taskbar icon is visible to proctoring software — Natively is free, open-source, and has a battle-tested undetectable stealth mode.
-3. **LockedIn AI** charges $55–70/month and locks you into their cloud LLM with no local option — Natively lets you use any model (GPT, Claude, Gemini, Llama) or go fully offline with Ollama.
+**与官方版完全隔离**，两者可以并存，各自的会议数据库互不干扰。
 
----
+<details>
+<summary>装不上？两个常见原因</summary>
 
-<div align="center">
+**1. C 盘空间不足。** 安装包解压后约 2 GB。若 `%TEMP%` 所在盘剩余空间紧张，
+NSIS 会在释放插件 DLL 时失败，报「抽取: 无法写入文件 … WinShell.dll」。
+清理 `%TEMP%` 或临时把它指向别的盘：
 
-### ⭐ Star this repo — it matters
+```powershell
+$env:TEMP='D:\tmp'; $env:TMP='D:\tmp'
+& .\Natively-ZH-Setup-2.7.0-zh.1.exe
+```
 
-Every star pushes Natively higher in GitHub search, helping developers and job seekers find a free, private alternative instead of paying $149/month for tools that store their data on someone else's server.
+**2. 国产安全软件拦截。** 本构建**刻意未做代码签名**（不伪装成官方签名发行版），
+部分安全软件会拦截未签名程序往 `%TEMP%` 释放 DLL。把安装包加入信任区即可。
 
-[![Star Natively](https://img.shields.io/github/stars/evinjohnn/natively-cluely-ai-assistant?style=for-the-badge&color=gold&label=Star%20on%20GitHub)](https://github.com/Natively-AI-assistant/natively-cluely-ai-assistant)
+</details>
 
-</div>
+## 从源码运行
 
----
+### 工具链
 
-## Demo
+| 项 | 版本 | 说明 |
+|---|---|---|
+| Node.js | **20 LTS** | `better-sqlite3` 不支持 Node 26 |
+| Rust | stable MSVC | 编译原生音频模块 |
+| VS Build Tools | Desktop C++ + Windows SDK | `node-gyp` 依赖 |
 
-![Natively AI Assistant Demo - Real-time Interview Helper and Transcription](assets/natively-ai-meeting-assistant-demo.gif)
+### 构建
 
-This demo shows **a complete live meeting scenario**:
+```bash
+npm ci
+npm run build            # ⚠️ 会先 rimraf dist 与 dist-electron
+npm run build:electron   # ⚠️ 必须在 build 之后，顺序不能反
+npm run build:native     # Rust 原生模块
+```
 
-- Real-time transcription as the meeting happens
-- Rolling context awareness across multiple speakers
-- Screenshot analysis of shared slides
-- Instant generation of what to say next
-- Follow-up questions and concise responses
-- All happening live, without recording or post-processing
+> [!WARNING]
+> `npm run build` 的第一步是 `rimraf dist dist-electron`，会删掉
+> `build:electron` 的产物。**顺序反了主进程就是空的。**
 
----
+### 启动
 
-## Full Comparison: Natively vs Cluely vs Final Round AI vs LockedIn AI vs Interview Coder
+```bash
+npm start                # 开发模式（Vite + Electron）
+npm run electron:build   # 生产模式
+```
 
-| Feature                   | Natively                   | Cluely               | Pluely     | LockedIn AI      | Final Round AI         |
-| :------------------------ | :------------------------- | :------------------- | :--------- | :--------------- | :--------------------- |
-| **Price**                 | ✅ Free (BYOK)             | ⚠️ $20/mo            | ✅ Free    | ❌ $55–70/mo     | ❌ $149/mo             |
-| **Open source**           | ✅ AGPL-3.0                | ❌                   | ✅         | ❌               | ❌                     |
-| **Local data / private**  | ✅ Yes                     | ❌ Cloud servers     | ✅ Yes     | ❌ Cloud servers | ❌ Cloud servers       |
-| **Any LLM (BYOK)**        | ✅ Yes                     | ❌ Vendor-locked     | ⚠️ Limited | ❌ Vendor-locked | ❌ Vendor-locked       |
-| **Local AI (Ollama)**     | ✅ Yes                     | ❌                   | ❌         | ❌               | ❌                     |
-| **Local Whisper (On-Device)**| ✅ Yes                   | ❌                   | ❌         | ❌               | ❌                     |
-| **Real-time <500ms**      | ✅ Yes                     | ⚠️ 5–90s lag         | ✅ Yes     | ✅ ~116ms        | ⚠️ Slowest             |
-| **Dual audio channels**   | ✅ System + Mic            | ❌ Single stream     | ❌         | ❌               | ❌                     |
-| **Local RAG memory**      | ✅ SQLite + sqlite-vec     | ❌                   | ❌         | ❌               | ❌                     |
-| **Meeting history**       | ✅ Full dashboard          | ⚠️ Limited           | ❌         | ❌               | ⚠️ Limited             |
-| **Screenshot OCR**        | ✅ Yes                     | ⚠️ Limited           | ❌         | ✅ Yes           | ⚠️ Limited             |
-| **Stealth mode**          | ✅ Undetectable            | ❌                   | ❌         | ❌               | ❌ Visible to proctors |
-| **Process Disguise**      | ✅ Terminal, Settings, etc | ❌                   | ❌         | ❌               | ❌                     |
-| **Resume & context**      | ✅ Pro                     | ❌                   | ❌         | ✅ Yes           | ✅ Yes                 |
-| **Custom Personas/Modes** | ✅ Pro                     | ✅ Yes               | ❌         | ❌               | ⚠️ Limited             |
-| **Custom Context & Notes**| ✅ Pro                     | ❌                   | ❌         | ❌               | ❌                     |
-| **Multi-Key API Pools**   | ✅ Yes                     | ❌                   | ❌         | ❌               | ❌                     |
-| **Profile Intel Router**  | ✅ Yes                     | ❌                   | ❌         | ❌               | ❌                     |
-| **Eager Code Expansion**  | ✅ Yes                     | ❌                   | ❌         | ❌               | ❌                     |
-| **Live Follow-Up Resolver**| ✅ Yes                     | ❌                   | ❌         | ❌               | ❌                     |
-| **Real-Time Latency Trace**| ✅ Yes                    | ❌                   | ❌         | ❌               | ❌                     |
-| **Phone Link Companion**  | ✅ Yes                     | ❌                   | ❌         | ❌               | ❌                     |
-| **Auto-Calendar Sync**    | ✅ Yes                     | ❌                   | ❌         | ❌               | ❌                     |
-| **Smart Task Sync**       | ✅ Yes                     | ❌                   | ❌         | ❌               | ❌                     |
-| **Speaker Diarization**   | ✅ Yes                     | ❌                   | ❌         | ❌               | ❌                     |
-| **Codex CLI Integration** | ✅ Yes                     | ❌                   | ❌         | ❌               | ❌                     |
-| **Offline SLM Mode**      | ✅ Yes                     | ❌                   | ❌         | ❌               | ❌                     |
-| **Data breach history**   | ✅ None                    | ❌ 83k users exposed | ✅ None    | ✅ None          | ✅ None                |
+<details>
+<summary>Windows 上的三个坑</summary>
 
-> **Legend:** ✅ Full support · ⚠️ Partial or limited · ❌ Not available
+```powershell
+# 1. ELECTRON_RUN_AS_NODE 会让 electron.exe 退化成普通 Node，
+#    require('electron') 拿不到 app，主进程在模块初始化期崩溃
+$env:ELECTRON_RUN_AS_NODE = $null
 
----
+# 2. 必须用 Node 20（若全局是别的版本）
+$env:PATH = "D:\Node20;$env:PATH"
 
-## Why Natively wins
+# 3. npm start 硬编码端口 5180。被占用时 Electron 会加载**别的应用的页面**，
+#    不报错、只是内容不对。改 package.json 里的 --port，或用生产模式。
+```
 
-### vs Cluely — breached 83,000 users
+内存紧张时（esbuild 是 Go 程序，峰值较高）限制并行度：
+`$env:GOMAXPROCS='1'`。
 
-The UI is intentionally familiar — if you've used Cluely, there's zero learning curve.
+</details>
 
-Cluely's mid-2025 data breach exposed personal information, full interview transcripts, and screenshots of 83,000 users. Every word spoken during an interview was stored on their servers — and then leaked. They charge $20/month for this privilege.
+### 质量门禁
 
-By default, Natively stores everything on your local machine, with only limited anonymous telemetry (basic GA4 install tracking, zero personal data). Your transcripts, API keys, and screenshots never leave your machine when using your own keys. The entire codebase is open-source (AGPL-3.0) and auditable. Zero breaches — that is the only acceptable standard for a tool that listens to your interviews.
-
-Unlike Cluely's rigid interface, Natively also gives you complete control over the AI: **Custom Persona Modes** (Tech, Sales, Recruiting) to strictly format behavior, and **Reference Files** capabilities to upload PDFs so the AI knows exactly the context of the job or meeting before it starts.
-
-### vs LockedIn AI — $70/month for cloud lock-in
-
-LockedIn AI is the most expensive tool in the category at $55–70/month. It locks you into a single cloud LLM with no option for local inference. Every transcript and response passes through their servers.
-
-Natively supports every major model (Gemini, GPT, Claude, Groq) via bring-your-own-key, and offers 100% offline mode through Ollama. You pay only for the API tokens you actually use — or pay nothing at all by running Llama 3 locally. No subscription, no vendor lock-in.
-
-### vs Final Round AI — $149/month and visible to proctors
-
-Final Round AI is the most expensive option at $149/month, optimized for pre-interview prep and mock interviews but with the slowest live latency in the category. Critically, its taskbar icon is visible to proctoring software, making it detectable during monitored interviews.
-
-Natively delivers <500ms end-to-end latency using Rust-based native audio capture with Zero-Copy ABI Transfers. Its undetectable stealth mode hides from the dock, disguises process names, and syncs state across all windows — battle-tested and hardened across five major releases.
-
-### vs Pluely — lightweight but limited
-
-Pluely is a solid lightweight alternative (~10MB, Tauri-based) and it has Linux support, which Natively does not yet offer. Credit where it is due.
-
-But Pluely is a basic overlay. It has no local RAG, no meeting history, no dual audio channels, and no dashboard. Natively is a complete intelligence system: it remembers your past meetings via local vector search, separates system audio from your microphone, and gives you a full management dashboard with export to Markdown, JSON, and Text.
-
-### vs Interview Coder — More Powerful, Completely Free
-
-Interview Coder is a paid tool focused specifically on coding interview assistance. Natively does everything Interview Coder does — and more — for free:
-
-|                                    |    Natively    | Interview Coder |
-| :--------------------------------- | :------------: | :-------------: |
-| **Price**                          | ✅ Free (BYOK) |     ❌ Paid     |
-| **Open source**                    |       ✅       |       ❌        |
-| **Works on LeetCode / HackerRank** |       ✅       |       ✅        |
-| **Screenshot + OCR analysis**      |       ✅       |       ✅        |
-| **Real-time overlay**              |       ✅       |       ✅        |
-| **Local AI / offline mode**        |   ✅ Ollama    |       ❌        |
-| **Behavioral interview support**   |       ✅       |       ❌        |
-| **System design support**          |       ✅       |       ❌        |
-| **Meeting history & RAG**          |       ✅       |       ❌        |
-| **Any LLM (BYOK)**                 |       ✅       |    ❌ Locked    |
-| **Data stored locally**            |       ✅       |    ❌ Cloud     |
-
-Natively covers the full interview loop — not just the coding round.
-
-### vs Parakeet AI — Memory and History vs Stateless Overlay
-
-Parakeet AI offers basic live meeting assistance but has no persistent memory, no meeting history, and no local vector search. Natively remembers your past meetings via local RAG, lets you ask questions across all your history, and gives you a full dashboard to manage, export, and search everything. Furthermore, Natively includes **Custom Persona Modes** allowing the AI to structure notes and behave optimally for specific flavors of conversations, instead of relying on Parakeet's one-size-fits-all model.
-
----
-
-### Where we're not there yet
-
-- **No Linux support** — we are actively looking for maintainers to help bring Natively to Linux
-- **API key setup overhead** — you need to bring your own API keys (or install Ollama), which adds initial setup friction compared to all-in-one cloud tools
-- **No built-in mock interview mode** — Final Round AI has dedicated mock interview practice; Natively focuses on live, real-time assistance
-
----
-
-## Free AI Coding Interview Assistant — Undetectable on LeetCode, HackerRank & CoderPad
-
-Natively works as a **free, undetectable AI coding interview assistant** for standard online assessments. It captures your screen, analyzes the problem, and gives you real-time hints, solutions, and explanations — all through an invisible overlay that doesn't interfere with your coding environment.
-
-**Works undetected on:**
-
-- LeetCode (including LeetCode contests)
-- HackerRank
-- CoderPad
-- Codility
-- HackerEarth
-- Karat
-- Any browser-based coding environment
-
-**How it works:**
-
-1. Screenshot the problem with a single shortcut
-2. Natively OCRs the question and sends it to your chosen AI (GPT, Claude, Gemini, or local Ollama)
-3. Response appears in the invisible overlay — never on screen share
-
-> ⚠️ **Important:** Natively is not designed to bypass dedicated proctoring software like **Pearson VUE**, **ProctorU**, or **Respondus Lockdown Browser** — these run at the OS level and are a different category entirely. For standard online coding assessments without dedicated proctoring software, Natively's stealth mode is not detectable.
-
----
-
-<div align="center">
-
-[![Natively Website](https://img.shields.io/badge/Natively_Website-natively.software-22C55E?style=flat-square&logo=vercel&logoColor=white)](https://natively.software)
-[![Telegram Chat](https://img.shields.io/badge/Telegram_Chat-nativelyaichat-229ED9?style=flat-square&logo=telegram&logoColor=white)](https://t.me/nativelyaichat)
-[![LinkedIn Company](https://img.shields.io/badge/LinkedIn_Company-nativley--ai-0077B5?style=flat-square&logo=linkedin&logoColor=white)](https://www.linkedin.com/company/nativley-ai)
-
-<br/>
-
-[![Portfolio](https://img.shields.io/badge/Portfolio-evinjohn.vercel.app-blueviolet?style=flat-square&logo=vercel&logoColor=white)](https://evinjohn.vercel.app/)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0077B5?style=flat-square&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/evinjohn/)
-[![X](https://img.shields.io/badge/X-@evinjohnn-black?style=flat-square&logo=x&logoColor=white)](https://x.com/evinjohnn)
-[![Hire Me](https://img.shields.io/badge/Hire_Me-Contact-success?style=flat-square&logo=gmail&logoColor=white)](mailto:evinjohnn@gmail.com?subject=Natively%20-%20Hiring%20Inquiry)
-[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-Support-FFDD00?style=flat-square&logo=buy-me-a-coffee&logoColor=black)](https://www.buymeacoffee.com/evinjohn)
-
-</div>
-
----
-
-## Natively API (Hosted Tier)
-
-**Stop managing four separate services. One key. Zero configuration.**
-
-Are you managing separate accounts for your AI reasoning, live transcription, fast inference, and web search? Juggling multiple API keys, rate limits, and invoices across completely different categories of tools is unnecessary overhead. Natively API replaces all of those categories with **one flat subscription**.
-
-Under the hood, Natively API connects you to the absolute best models for the optimal user experience:
-
-- **Backend AI Models**: Claude, OpenAI, Gemini, and Groq.
-- **Premium STT Models**: Google Chirp 2/3, ElevenLabs Scribe v2, and Deepgram Nova-3.
-
-### 4 Categories → 1 Key
-
-**Your current unbundled stack:**
-
-- **AI Intelligence (GPT/Claude/Gemini):** per-token billing and usage anxiety
-- **Lightning-Fast Inference (Groq/Llama):** strict rate limits to monitor
-- **Real-Time Transcription (Deepgram/Google STT):** separate key + quota
-- **Web Search & Research (Tavily/Perplexity):** yet another subscription
-
-**Replaced by Natively API:**
-
-- **AI chat, transcription & web search** — all included
-- **One flat subscription.** Zero surprise bills. Starts at $8/mo.
-- **Single key.** Zero rotation. Zero configuration.
-
-### API Plan Comparison
-
-| Feature                               | Standard ($8/mo) | Pro ($15/mo) | Max ($25/mo) | Ultra ($35/mo) |
-| :------------------------------------ | :--------------- | :----------- | :----------- | :------------- |
-| **All-in-One Cloud AI Access**        | ✅ Yes           | ✅ Yes       | ✅ Yes       | ✅ Yes         |
-| **Real-Time Transcription**           | ✅ Yes           | ✅ Yes       | ✅ Yes       | ✅ Yes         |
-| **Included Natively Pro Desktop App** | ❌ No            | ✅ Yes       | ✅ Yes       | ✅ Yes         |
-| **Premium Support**                   | ❌ No            | ✅ Yes       | ✅ Yes       | ✅ Yes         |
-| **Higher Monthly Quotas**             | ❌ No            | ✅ Yes       | ✅ Yes       | ✅ Yes         |
-
-**Don't start the long way.** Skip the 20-minute manual setup. One Natively subscription skips all of it — AI, transcription, and web search are ready immediately.
-
-<p align="center">
-  <a href="https://checkout.dodopayments.com/buy/pdt_0NbFixGmD8CSeawb5qvVl">
-    <img src="https://img.shields.io/badge/Standard_Plan-Subscribe_Now-94a3b8?style=for-the-badge&logo=fastapi&logoColor=white" />
-  </a>
-  <a href="https://checkout.dodopayments.com/buy/pdt_0NcM6Aw0IWdspbsgUeCLA">
-    <img src="https://img.shields.io/badge/Pro_Plan-Subscribe_Now-8b5cf6?style=for-the-badge&logo=fastapi&logoColor=white" />
-  </a>
-  <a href="https://checkout.dodopayments.com/buy/pdt_0NcM7JElX4Af6LNVFS1Yf">
-    <img src="https://img.shields.io/badge/Max_Plan-Subscribe_Now-6366f1?style=for-the-badge&logo=fastapi&logoColor=white" />
-  </a>
-  <a href="https://checkout.dodopayments.com/buy/pdt_0NcM7rC2kAb69TFKsZnUU">
-    <img src="https://img.shields.io/badge/Ultra_Plan-Subscribe_Now-fbbf24?style=for-the-badge&logo=fastapi&logoColor=white" />
-  </a>
-</p>
-
----
-
-## Natively Pro
-
-While Natively is **free and open-source forever**, we also offer a **Pro Edition** (available as **Lifetime or Yearly** subscriptions) designed specifically for power users and job seekers. Purchasing a Pro license gives you an edge in the job market, all while directly supporting the continued development of the open-source Natively core!
-
-### 🪙 Unlock Natively Pro with $NAT Token
-
-We've launched the official **$NAT token** on Printr! Holders who maintain a specific balance of `$NAT` tokens in their connected wallet automatically unlock access to all **Natively Pro** features.
-
-👉 **[Trade $NAT on Printr](https://app.printr.money/trade/0xba1e50273ec14ca52b3fa64a5054c39470c2835392c6ecd06876f5bccd597d7b)**
-
-### Free vs Pro Feature Comparison
-
-| Feature                                             | Natively Free | Natively Pro |
-| :-------------------------------------------------- | :-----------: | :----------: |
-| **Bring Your Own Key (BYOK) Models**                |      ✅       |      ✅      |
-| **Local AI Support (Ollama)**                       |      ✅       |      ✅      |
-| **Local Whisper STT (On-Device)**                   |      ✅       |      ✅      |
-| **Real-Time Speech-to-Text (<500ms)**               |      ✅       |      ✅      |
-| **Multi-Key API Pools & Key Rotation**              |      ✅       |      ✅      |
-| **Profile Intelligence Router (v2)**                |      ✅       |      ✅      |
-| **Eager Code UI Expansion**                         |      ✅       |      ✅      |
-| **Live Follow-Up Resolver**                         |      ✅       |      ✅      |
-| **Real-Time Latency Tracing**                       |      ✅       |      ✅      |
-| **Two New Meeting UI Styles (Liquid Glass/Modern)** |      ✅       |      ✅      |
-| **Live Contextual Assistant**                       |      ✅       |      ✅      |
-| **Screenshot & Slide OCR Analysis**                 |      ✅       |      ✅      |
-| **Undetectable & Stealth Modes**                    |      ✅       |      ✅      |
-| **Meeting Dashboard & Offline RAG History**         |      ✅       |      ✅      |
-| **Job Description (JD) & Resume Context Awareness** |      ❌       |      ✅      |
-| **Automated Company Research & Dossiers**           |      ❌       |      ✅      |
-| **Live Salary & Offer Negotiation Copilot**         |      ❌       |      ✅      |
-| **Custom Persona Modes (Sales, Tech, etc.)**        |      ❌       |      ✅      |
-| **Custom Context & Notes**                          |      ❌       |      ✅      |
-| **Reference Files (PDF/DOCX/TXT upload)**           |      ❌       |      ✅      |
-| **Phone Link Companion App**                        |      ❌       |      ✅      |
-| **Auto-Calendar & Task Sync**                       |      ❌       |      ✅      |
-| **Speaker Diarization**                             |      ❌       |      ✅      |
-| **Priority Feature Access & Support**               |      ❌       |      ✅      |
-
-<p align="center">
-  <a href="https://checkout.dodopayments.com/buy/pdt_0NbHo6EnXlNPqNcZ14OTi">
-    <img src="https://img.shields.io/badge/Lifetime_License-Unlock_Premium-facc15?style=for-the-badge&logo=fastapi&logoColor=black" />
-  </a>
-  <a href="https://checkout.dodopayments.com/buy/pdt_0NcM4QBwy0CDcPV9CXaNP">
-    <img src="https://img.shields.io/badge/Yearly_License-Unlock_Premium-black?style=for-the-badge&logo=fastapi&logoColor=white" />
-  </a>
-</p>
-
-### What's New in v2.7.0 (Latest Release)
-
-Version 2.7.0 introduces advanced Profile Intelligence Routing, Live Follow-up resolution, eager Code UI expansion, and robust latency tracing tools:
-
-- **Profile Intelligence Router (v2)**: Automatically parses user queries into target domains (Coding, System Design, Behavioral, Negotiation) and propagates custom answer-type constraints straight to the LLM streaming pipeline.
-- **Answer-Type Constraints & Follow-Up Resolver**: Retains deep conversation histories to resolve follow-up queries contextually, and enforces precise layout constraints (e.g. short, detailed, code-only, bulleted).
-- **Eager Code UI Expansion & Smooth Transitions**: Growth-holds CSS elements to eagerly size the overlay *before* React mounts raw code blocks, preventing annoying visual layout jumps with hardware-accelerated tweens.
-- **Audio Stack Deadlock Protections**: Hardened credentials management by eliminating racing set-provider IPCs to prevent native audio pipeline lockups on Windows and macOS after saving API keys.
-- **Evidence Validator & Live Deadlines**: Cross-validates claims made during meetings and handles real-time countdowns for strict, live coding assessment deadlines.
-- **PI Latency Tracer (PiLatencyTracer)**: Continuous latency profiling mapping exact durations of LLM reasoning, schema validation, and routing tasks to ensure sub-500ms responsiveness.
-
-## Table of Contents
-
-- [The free Cluely clone](#the-free-open-source-cluely-clone)
-- [What Users Are Saying](#what-users-are-saying)
-- [Why Natively?](#why-natively)
-- [3 things to know](#3-things-you-should-know-before-choosing-an-interview-ai)
-- [Demo](#demo)
-- [Full comparison](#full-comparison-natively-vs-cluely-vs-final-round-ai-vs-lockedin-ai-vs-interview-coder)
-- [Why Natively wins](#why-natively-wins)
-- [AI Coding Assistant](#free-ai-coding-interview-assistant-undetectable-on-leetcode-hackerrank--coderpad)
-- [Natively Pro](#natively-pro)
-- [What's New in v2.6.0](#whats-new-in-v260)
-- [Privacy & Security](#privacy--security-core-design-principle)
-- [Installation](#installation-developers--contributors)
-- [AI Providers](#ai-providers)
-- [Key Features](#key-features)
-- [Meeting Intelligence Dashboard](#meeting-intelligence-dashboard)
-- [Roadmap](#roadmap)
-- [Use Cases](#use-cases)
-- [Technical Details](#technical-details)
-- [Known Limitations](#known-limitations)
-- [Responsible Use](#responsible-use)
-- [Contributing](#contributing)
-- [License](#license)
-- [FAQ](#faq)
-- [Alternatives Natively replaces](#alternatives-natively-replaces)
-- [Star History](#star-history)
-
----
-
-## What Is Natively?
-
-**Natively** is a **desktop AI assistant for live situations**:
-
-- Meetings
-- Interviews
-- Presentations
-- Classes
-- Professional conversations
-
-It provides:
-
-- Live answers
-- Rolling conversational context
-- Screenshot and document understanding
-- Real-time speech-to-text
-- Instant suggestions for what to say next
-
-All while remaining **invisible, fast, and privacy-first**.
-
----
-
-## Privacy & Security (Core Design Principle)
-
-- 100% open source (AGPL-3.0)
-- Bring Your Own Keys (BYOK)
-- Local AI option (Ollama)
-- All data stored locally
-- Limited anonymous telemetry (basic GA4 counts)
-- No user data tracking
-- No hidden uploads
-
-You explicitly control:
-
-- What runs locally
-- What uses cloud AI
-- Which providers are enabled
-
----
-
-## Installation (Developers & Contributors)
+```bash
+npm run check:i18n   # 三道：词典完整性 → 残留英文扫描 → 键引用检查
+npm run test:i18n    # 44 项
+npm test             # 全量回归
+```
 
 > [!NOTE]
-> **macOS Users (Both Apple Silicon & Intel Macs supported):**
->
-> 1.  **"Unidentified Developer"**: If you see this, Right-click the app > Select **Open** > Click **Open**.
-> 2.  **"App is Damaged"**: If you see this, run the command in Terminal based on your download:
->
->     **For .zip downloads:**
->
->     ```bash
->     xattr -cr /Applications/Natively.app
->     ```
->
->     **For .dmg downloads:**
->     1. Open Terminal and run:
->        ```bash
->        xattr -cr ~/Downloads/Natively-2.0.2-arm64.dmg # Or your specific filename
->        ```
->     2. Install the natively.dmg
->     3. Open Terminal and run: `xattr -cr /Applications/Natively.app`
+> `npm test` 的判定标准**不是全绿**。上游基线自带 88 条失败（私有 `premium`
+> 子模块缺失、测试自身的 Windows 路径问题、OpenAI Realtime 协议源码与测试
+> 不一致）。判定标准是**失败集合与 `docs/zh-cn/baseline-test-failures.tsv`
+> 逐条一致**。详见 [`docs/zh-cn/CONTINUE-HERE.md`](docs/zh-cn/CONTINUE-HERE.md)。
 
-### Prerequisites
+## 汉化范围
 
-- Node.js (v20+ recommended)
-- Git
-- Rust (required for native audio capture)
+**词典 1380 个键，中英各 10 个业务域：**
 
-### AI Credentials & Speech Providers
+| namespace | 键数 | 覆盖 |
+|---|---|---|
+| `settings` | 513 | 设置全部页签、供应商配置、快捷键、音频、日历 |
+| `help` | 379 | 帮助与配置指南（11 章）、演示样机 |
+| `providers` | 123 | AI 供应商、模型、数据范围 |
+| `meeting` | 92 | 会议主界面、音频状态、建议浮层 |
+| `updates` | 68 | 更新、试用、配额 |
+| `errors` | 52 | 用户可见错误摘要 |
+| `common` | 47 | 通用动作与状态 |
+| `launcher` | 49 | 启动器 |
+| `onboarding` | 38 | 首次启动、权限引导 |
+| `history` | 19 | 历史、会议详情、裁剪器 |
 
-**Natively is 100% free to use with your own keys.**  
-Connect **any** speech provider and **any** LLM. No subscriptions, no markups, no hidden fees. All keys are stored locally.
+### 三道自动门禁
 
-### Unlimited Free Transcription (Whisper, Google, Deepgram)
+1. **词典完整性** — 中英键集合必须完全一致、插值变量一致、值非空、
+   键名必须是语义键而非英文句子
+2. **残留英文扫描** — 用 TypeScript AST（不是正则）扫 `src/` 下全部
+   **57 个 `.tsx`**，覆盖 JSX 文本、表达式子节点、文本属性、组件 prop、
+   对象字面量、`alert`/`confirm`、`set*Error` 实参、`return`、数组元素、
+   带插值的模板字符串
+3. **键引用检查** — 反查源码里每个 `t()` / `<Trans>` 引用的键是否真的存在。
+   前两道都不管这个，而缺键会**静默回退成键名本身显示给用户**
 
-- **Soniox** (API Key) - _Ultra-fast, highly accurate streaming STT_
-- **Google Cloud Speech-to-Text** (Service Account)
-- **Groq** (API Key)
-- **OpenAI Whisper** (API Key)
-- **Deepgram** (API Key)
-- **ElevenLabs** (API Key)
-- **Azure Speech Services** (API Key + Region)
-- **IBM Watson** (API Key + Region)
+### 不翻译什么
 
-### AI Engine Support (Bring Your Own Key)
+**153 条允许名单**，全部永久，逐条写明理由，清单见
+[`docs/zh-cn/i18n-allowlist.md`](docs/zh-cn/i18n-allowlist.md)（由脚本从名单生成，
+不手写，避免文档漂移）：
 
-Connect Natively to **any** leading model or local inference engine.
+产品名与供应商名 · 模型 ID · API 字段名 · 可复制执行的命令 · 密钥前缀 ·
+键盘按键名 · BCP 47 语言代码 · 云区域 ID · 真实联系方式 · 技术栈名称
 
-| Provider                     | Best For                                                    |
-| :--------------------------- | :---------------------------------------------------------- |
-| **Gemini 3.1 Series**        | Recommended: Massive context window (2M tokens) & low cost. |
-| **OpenAI (GPT-5.4 & o3)**    | High reasoning capabilities.                                |
-| **Anthropic (Claude 4.6)**   | Coding & complex nuanced tasks.                             |
-| **Groq (Llama 3.3/Scout 4)** | Insane speed (near-instant answers) & screenshot analysis.  |
-| **Ollama / LocalAI**         | 100% Offline & Private (No API keys needed).                |
-| **OpenAI-Compatible**        | Connect to _any_ custom endpoint (vLLM, LM Studio, etc.)    |
+**过期条目会导致门禁失败** —— 这是有意设计，防止名单膨胀成永远绿灯的挡箭牌。
 
-> **Note:** You only need ONE speech provider to get started. We recommend **Google STT** ,**Groq** or **Deepgram** for the fastest real-time performance.
+运行时产生的内容不进名单也不翻译：第三方供应商返回的原始错误详情
+（界面显示「中文摘要 + 可展开的英文原文」，便于你复制给供应商排错）、
+你上传的文档、会议原始转写、AI 回答正文（由 `aiResponseLanguage` 决定）。
 
----
+## 与上游的差异
 
-#### To Use Google Speech-to-Text (Optional)
+除界面语言外，只改了发行隔离与更新安全，**核心逻辑一律未动**：
 
-Your credentials:
+**改了：**
+- 独立 appId / 产品名 / 用户数据目录 / 开始菜单项
+- 禁用官方后台自动下载与退出时自动安装；移除 `build.publish`
+- 中文字体栈与 `Intl` 日期数字格式化
+- `package.json` 的 `license` 从 `ISC` 改为 `AGPL-3.0`
+  （上游元数据与 LICENSE 文件矛盾）
+- 移除失效的 `react-query` 依赖别名（缺 `npm:` 前缀，是死代码且阻塞打包）
 
-- Never leave your machine
-- Are not logged, proxied, or stored remotely
-- Are used only locally by the app
+**没改：** 音频采集、语音识别、LLM 调用、RAG、数据库结构与算法。
+也**没有**增加、强化或调试任何隐藏窗口、进程伪装、规避录屏检测或反监考能力 ——
+对相关既有代码只翻译了用户可见文字。
 
-What You Need:
+## 已知限制
 
-- Google Cloud account
-- Billing enabled
-- Speech-to-Text API enabled
-- Service Account JSON key
+1. **可执行文件的嵌入元数据仍是 Electron 默认值。** `rcedit` 打包在
+   electron-builder 的 `winCodeSign` 里，而该包含 macOS 符号链接；
+   Windows 上创建符号链接需管理员权限或开启开发者模式。当前构建用
+   `--config.win.signAndEditExecutable=false` 绕过该工具链。
+   影响仅限 exe 图标与版本资源，安装包身份与数据隔离都正常。
+   **用管理员权限重跑一次打包即可修复。**
+2. **`premium` 是上游私有子模块。** 本 fork 无权限、从未初始化，
+   `git submodule update` 会失败 —— 这是预期行为，开源降级路径不依赖它。
+3. **未做代码签名。** 刻意如此，见[与官方的关系](#与官方的关系)。
+4. **仅验证 Windows x64。** macOS 相关代码保留但未构建验证。
 
-Setup Summary:
+## 同步上游
 
-1. Create or select a Google Cloud project
-2. Enable Speech-to-Text API
-3. Create a Service Account
-4. Assign role: `roles/speech.client`
-5. Generate and download a JSON key
-6. Point Natively to the JSON file in settings
-
----
-
-## Development Setup
-
-### Clone the Repository
+上游基线是 tag `v2.7.0`（commit `be7280b`），本 fork 在其之上 27 个提交。
 
 ```bash
-git clone https://github.com/Natively-AI-assistant/natively-cluely-ai-assistant.git
-cd natively-cluely-ai-assistant
+git remote add upstream https://github.com/Natively-AI-assistant/natively-cluely-ai-assistant.git
+git fetch upstream
+git merge upstream/main        # 或某个新 tag
+npm run check:i18n             # 新增的英文文案会在这里红灯
 ```
 
-### Install Dependencies
+合并后请读一遍
+[`docs/zh-cn/CONTINUE-HERE.md`](docs/zh-cn/CONTINUE-HERE.md)
+的「迁移陷阱」一节 —— 里面记了 7 类实际踩过的坑，例如字面量兼作样式判别器、
+模块作用域数据表用不了 hook、局部变量遮蔽翻译函数等。
 
-```bash
-npm install
-```
+## 与官方的关系
 
-### Build Native Audio Module (Rust)
+- **非官方，无关联。** 本 fork 不由 Natively 官方维护。
+- **不提供任何官方服务** —— 没有官方 Natively API、Pro 订阅、支付、退款或客户支持。
+  仓库里保留的 `termsandcondition.md`、`refund.md`、`PRIVACY.md` 约束的是
+  **上游官方服务**，与本 fork 无关，请勿据此向本仓库主张权利。
+- **不伪装成官方发行版。** 刻意不做代码签名，产品名与 appId 全部独立。
+- **不会静默覆盖官方版。** 已禁用后台自动更新；「关于」页保留手动查看上游
+  版本的入口，但会明确提示安装官方发行版将替换本构建并移除中文界面。
+- 想装回官方版？见 [`docs/zh-cn/rollback.md`](docs/zh-cn/rollback.md)。
+  两者数据目录独立，回退不需要删除任何数据。
 
-```bash
-npm run build:native
-```
+## 文档
 
-### Environment Variables
+| 文件 | 内容 |
+|---|---|
+| [`docs/zh-cn/CONTINUE-HERE.md`](docs/zh-cn/CONTINUE-HERE.md) | 开发环境、门禁设计、迁移陷阱（接手必读） |
+| [`docs/zh-cn/i18n-allowlist.md`](docs/zh-cn/i18n-allowlist.md) | 允许保留英文的清单及理由 |
+| [`docs/zh-cn/release-checklist.md`](docs/zh-cn/release-checklist.md) | 发布前检查清单 |
+| [`docs/zh-cn/rollback.md`](docs/zh-cn/rollback.md) | 回退到官方版 |
+| [`docs/zh-cn/evidence/`](docs/zh-cn/evidence/) | 各阶段验证证据（含运行时 DOM 读取记录） |
+| [`README.upstream.md`](README.upstream.md) | 上游原版 README（完整保留） |
 
-Create a `.env` file:
+## 贡献
 
-```env
-# Cloud AI
-GEMINI_API_KEY=your_key
-GROQ_API_KEY=your_key
-OPENAI_API_KEY=your_key
-CLAUDE_API_KEY=your_key
-GOOGLE_APPLICATION_CREDENTIALS=/absolute/path/to/service-account.json
+欢迎报告翻译问题。提 issue 时请附上：
 
-# Speech Providers (Optional - only one needed)
-DEEPGRAM_API_KEY=your_key
-ELEVENLABS_API_KEY=your_key
-AZURE_SPEECH_KEY=your_key
-AZURE_SPEECH_REGION=eastus
-IBM_WATSON_API_KEY=your_key
-IBM_WATSON_REGION=us-south
+- 出问题的界面与路径（例如「设置 → 音频 → 语音识别供应商」）
+- 期望译法与理由（术语建议参考微软或 Apple 的官方中文术语）
+- 界面语言设置（`简体中文` 还是 `English`）
 
-# Local AI (Ollama)
-USE_OLLAMA=true
-OLLAMA_MODEL=llama3.2
-OLLAMA_URL=http://localhost:11434
+改动文案请一并跑 `npm run check:i18n` 与 `npm run test:i18n`。
+新增文案必须同时补中英两侧的键，否则第一道门禁会红灯。
 
-# Default Model Configuration
-DEFAULT_MODEL=gemini-3.1-flash-lite-preview
-```
+## 许可证
 
-### Run (Development)
+**AGPL-3.0**，与上游一致。见 [LICENSE](LICENSE)。
 
-```bash
-npm start
-```
-
-### Build (Production)
-
-```bash
-npm run dist
-```
-
-This runs: Vite build → TypeScript compile → native module build → electron-builder
+原始项目 [Natively](https://github.com/Natively-AI-assistant/natively-cluely-ai-assistant)
+由 Evin John 开发，版权归原作者所有。本 fork 仅做本地化，遵循 AGPL-3.0
+的传染性要求以同一许可证发布，并保留全部原始版权声明。
 
 ---
 
-### AI Providers
-
-- **Custom (BYO Endpoint):** Paste any cURL command to use OpenRouter, DeepSeek, or private endpoints.
-- **Ollama (Local):** Zero-setup detection of local models (Llama 3, Mistral, Gemma).
-- **Dynamic Model Selection:** Preferred models (OpenAI, Anthropic, Google) now automatically appear across the app.
-- **Google Gemini:** First-class support for the Gemini 3.1 series.
-- **OpenAI:** GPT-5.4 and o3 series support with optimized system prompts.
-- **Anthropic:** Claude 4.6 series support with corrected max_tokens.
-- **Groq:** Ultra-fast text inference with Llama 3.3, and screenshot analysis using Llama 4 Scout.
-
----
-
-## Key Features
-
-### Invisible Desktop Assistant
-
-- Always-on-top translucent overlay
-- Instantly hide/show with shortcuts
-- Works across all applications
-
-### Real-time Interview Copilot & Coding Help
-
-- Real-time speech-to-text (**<500ms latency**)
-- **Fast Response Mode**: Ultra-fast text responses using Groq Llama 3.3.
-- **Multilingual Support**: Choose from various response languages, and set speech recognition matching specific accents and dialects.
-- **Anti-Chatbot / Human Persona System**: Refined system prompts and negative constraints ensure responses are concise, conversational, and indistinguishable from a real candidate (no robotic preambles or lectures).
-- Context-aware Memory (RAG) for Past Meetings
-- Instant answers as questions are asked
-- **Interim/Final Bridging**: Manual transcript finalization and interim bridging during recordings for higher accuracy.
-- **Smart Recap & Summaries**: Instant meeting minutes and executive summaries.
-- **TinyPrompts™ Engine**: Specialized prompt architecture for local SLMs (4B-8B params), ensuring instruction following and reasoning parity with cloud models on local hardware.
-- **Dynamic Note Templates**: AI automatically generates structured meeting notes based on your active persona mode (e.g., Tech Interview follow-ups vs Sales action items).
-
-### Instant Screen & Slide Analysis (OCR) — AI Coding Interview Assistant
-
-- Works on **LeetCode, HackerRank, CoderPad, Codility, HackerEarth** and any browser-based coding environment
-- Capture a coding problem with one shortcut — get a full solution, explanation, and complexity analysis instantly
-- **Eager Code Expansion**: Overlay dynamically resizes to accommodate incoming code blocks *before* React mounts the markdown code rows, preventing visual layout jumps.
-- **Hardware-Accelerated Transitions**: Polished, custom cubic-bezier tweens handle UI growth smoothly, preserving candidate stealth and presentation quality.
-- Invisible overlay never appears on screen share or recordings
-- Multiple screenshot support for multi-part problems
-- Smart fallback to Groq Llama 4 Scout if primary vision model fails
-
-### Premium Profile Intelligence
-
-- **Profile Intelligence Router (v2)**: Seamlessly categorizes user questions into distinct domains (Coding, System Design, Behavioral, Negotiation) to apply the most optimal reasoning path.
-- **Answer-Type Constraints & Follow-Up Resolver**: Contextually tracks conversations to answer subsequent queries, and enforces precise layout constraints (such as short, conversational, bulleted, or code-only responses).
-- **Custom Persona Modes**: Seamlessly switch between built-in personas (Technical Interview, Sales, Recruiting) or create your own custom modes tailored to any conversation.
-- **Reference Files & Custom Context**: Upload PDFs, DOCX files, or type custom instructions to give the AI real-time context on your specific situation.
-- **Job Description & Resume Context**: Natively understands your background and the role you're applying for to provide highly tailored, context-aware answers.
-- **Company Research**: Get instant intelligence and dossiers on the company you are interviewing with.
-- **Negotiation Assistance**: Real-time guidance and strategy during offer and salary negotiations.
-- **Evidence Validator & Live Deadlines**: Real-time validation of factual claims and interactive deadline alert tracker during live assessments.
-- **PI Latency Tracer**: Built-in granular latency profiling mapping exact time spent during the routing and LLM inference loop.
-
-### Contextual Actions
-
-- What should I answer?
-- Shorten response
-- Recap conversation
-- Suggest follow-up questions
-- Manual or voice-triggered prompts
-
-### Seamless Integrations & Sync
-
-- **Phone Link:** Use your iOS/Android device as a wireless remote microphone or companion screen.
-- **Calendar Prep:** Auto-syncs with Google Calendar and Outlook to prepare context before meetings.
-- **Smart Task Export:** Send extracted action items directly to Jira, Linear, or Asana.
-- **Speaker Diarization:** Real-time speaker identification tags individual speakers by name automatically.
-- **Codex CLI:** Execute terminal tasks, manage workspace files, and run sandboxed code via native Codex integration.
-
-### Dual-Channel Audio Intelligence
-
-Natively understands that _listening_ to a meeting and _talking_ to an AI are different tasks. We treat them separately:
-
-- **System Audio (The Meeting):** Captures high-fidelity audio directly from your OS (fully supported on both macOS and Windows). It "hears" what your colleagues are saying without interference from your room noise.
-- **Sample Rate Auto-Detection**: Dynamically detects and syncs true hardware sample rates (e.g., automatically handling 48kHz audio interfaces or external microphones without distortion or downsampling artifacts).
-- **Two-Stage Silence Processing**: Combines adaptive RMS thresholds with **WebRTC Machine Learning VAD** to reject typing and fan noise.
-- **Microphone Input (Your Voice):** A dedicated channel for your voice commands and dictation. Toggle it instantly to ask Natively a private question without muting your meeting software.
-
-### Spotlight Search & Customization
-
-- Global activation shortcut (`Cmd+K` / `Ctrl+K`)
-- **Custom Key Bindings**: Customize global shortcuts for easier control.
-- Instant answer overlay
-- Upcoming meeting readiness
-
-### Local RAG & Long-Term Memory
-
-- **Full Offline RAG:** All vector embeddings and retrieval happen locally (SQLite + `sqlite-vec`).
-- **Semantic Search:** innovative "Smart Scope" detects if you are asking about the current meeting or a past one.
-- **Sliding-Window RAG**: 50-token semantic overlap to prevent context loss across chunk boundaries.
-- **Epoch Summarization**: Smarter transcript memory management instead of hard truncation — no more losing early meeting context.
-- **Global Knowledge:** Ask questions across _all_ your past meetings ("What did we decide about the API last month?").
-- **Automatic Indexing:** Meetings are automatically chunked, embedded, and indexed in the background.
-
-### Advanced Privacy & Stealth
-
-- **Undetectable Mode:** Instantly hide from dock/taskbar with visually locked selector to prevent state mismatches.
-- **Cross-Window State Sync**: Real-time state synchronization across Settings, Launcher, and Overlay windows.
-- **Process Disguise (Masquerading):** Instantly change the app to look like Terminal, System Settings, Activity Monitor, or other harmless utilities to completely evade detection during screen sharing.
-- **Security Hardening**: API keys are scrubbed from memory on app quit and credentials manager overwrites key data before disposal.
-- **API Rate Limiting**: Token-bucket algorithm (burst/refill) to prevent 429 errors on free-tier providers.
-- **Local-Only Processing:** All data stays on your machine.
-
----
-
-## Meeting Intelligence Dashboard
-
-Natively includes a powerful, local-first meeting management system to review, search, and manage your entire conversation history.
-
-![Dashboard Preview](assets/dashboard-preview.png)
-
-- **Meeting Archives:** Access full transcripts of every past meeting, searchable by keywords or dates.
-- **Smart Export:** One-click export of transcripts and AI summaries to **Markdown, JSON, or Text**—perfect for pasting into Notion, Obsidian, or Slack.
-- **Usage Statistics:** Track your token usage and API costs in real-time. Know exactly how much you are spending on Gemini, OpenAI, or Claude.
-- **Audio Separation:** Distinct controls for **System Audio** (what they say) vs. **Microphone** (what you dictate).
-- **Session Management:** Rename, organize, or delete past sessions to keep your workspace clean.
-
----
-
-## Roadmap
-
-```mermaid
-timeline
-    title Natively Product Roadmap
-    section Recently Completed
-        Personas : ✅ Custom Modes & Templates
-        Trial : ✅ 10-Minute Free Trial
-    section Short-term (1-3 mos)
-        System Design : Visualization MVP
-        Tokens : Integration POC
-    section Medium-term (3-6 mos)
-        Personas : Persona library expansion
-        System Design : Advanced diagram types
-        Tokens : Community features
-        Platform : Mobile app development
-    section Long-term (6+ mos)
-        Collaboration : Collaborative features
-        Ecosystem : Plugin ecosystem
-        Platform : Multi-language support
-```
-
-<div align="center">
-  <em>For detailed feature descriptions, see our full <a href="ROADMAP.md">ROADMAP.md</a>.</em>
-</div>
-
----
-
-## Use Cases
-
-### Academic & Learning
-
-- **Live Assistance:** Get explanations for complex lecture topics in real-time.
-- **Translation:** Instant language translation during international classes.
-- **Problem Solving:** Immediate help with coding or mathematical problems.
-
-### Professional Meetings
-
-- **Interview Support:** Context-aware prompts to help you navigate technical questions.
-- **Sales & Client Calls:** Real-time clarification of technical specs or previous discussion points.
-- **Meeting Summaries:** Automatically extract action items and core decisions.
-
-### Development & Technical Work
-
-- **Code Insight:** Explain unfamiliar blocks of code or logic on your screen.
-- **Debugging:** Context-aware assistance for resolving logs or terminal errors.
-- **Architecture:** Guidance on system design and integration patterns.
-
----
-
-## Architecture Overview
-
-Natively processes audio, screen context, and user input locally, maintains a rolling context window, and sends only the required prompt data to the selected AI provider (local or cloud).
-
-No raw audio, screenshots, or transcripts are stored or transmitted unless explicitly enabled by the user.
-
----
-
-## Technical Details
-
-### Tech Stack
-
-- **React, Vite, TypeScript, TailwindCSS**
-- **Electron**
-- **Rust** (native audio with **Zero-Copy ABI Transfers** via `napi::Buffer` — enabling continuous audio capture without V8 garbage collection pressure, achieving significantly lower latency and CPU usage than typical Electron-based competitors)
-- **SQLite** (local storage with `sqlite-vec`)
-
-### Supported Models
-
-- **Gemini 3.1 Series**
-- **OpenAI** (GPT-5.4, o3 series)
-- **Claude** (4.6 series)
-- **Ollama** (Llama, Mistral, CodeLlama)
-- **Groq** (Llama 3.3 for text, Llama 4 Scout for OCR)
-
-### System Requirements
-
-- **Minimum:** 4GB RAM
-- **Recommended:** 8GB+ RAM
-- **Optimal:** 16GB+ RAM for local AI
-
----
-
-## Responsible Use
-
-Natively is intended for:
-
-- Learning
-- Productivity
-- Accessibility
-- Professional assistance
-
-Users are responsible for complying with:
-
-- Workplace policies
-- Academic rules
-- Local laws and regulations
-
-This project does not encourage misuse or deception.
-
----
-
-## Known Limitations
-
-- Linux support is limited and actively looking for maintainers
-- Initial setup requires bringing your own API keys or installing Ollama
-- No built-in mock interview mode (focus is on live, real-time assistance)
-
----
-
-## Contributing
-
-Contributions are welcome! Please see our [CONTRIBUTING.md](CONTRIBUTING.md) for full guidelines on how to get started.
-
-- Bug fixes
-- Feature improvements
-- Documentation
-- UI/UX enhancements
-- New AI integrations
-
-Quality pull requests will be reviewed and merged.
-
-### Maintainers
-
-| Maintainer                                 | Role          | Support                                                                                                                                                                     |
-| ------------------------------------------ | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [@evinjohnn](https://github.com/evinjohnn) | macOS Build   | [![Buy Me a Coffee](https://img.shields.io/badge/-buy_me_a_coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://www.buymeacoffee.com/evinjohnn) |
-| [@razllivan](https://github.com/razllivan) | Windows Build | [![Buy Me a Coffee](https://img.shields.io/badge/-buy_me_a_coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://app.lava.top/razllivan)         |
-
----
-
-## License
-
-Licensed under the GNU Affero General Public License v3.0 (AGPL-3.0).
-
-If you run or modify this software over a network, you must provide the full source code under the same license.
-
-This repository contains the open-source core of the project.
-
-Some features available in official releases are part of the
-commercial Premium Edition and are not included in this repository.
-
-> **Note:** This project is available for sponsorships, ads, or partnerships – perfect for companies in the AI, productivity, or developer tools space.
-
----
-
-**Star this repo if Natively helps you succeed in meetings, interviews, or presentations!**
-
----
-
-## FAQ
-
-#### Is Natively really free?
-
-Yes. Natively is an open-source project. You only pay for what you use by bringing your own API keys (Gemini, OpenAI, Anthropic, etc.), or use it **100% free** by connecting to a local Ollama instance.
-
-#### Does Natively work with Zoom, Teams, and Google Meet?
-
-Yes. Natively uses a Rust-based system audio capture that works universally across any desktop application, including Zoom, Microsoft Teams, Google Meet, Slack, and Discord.
-
-#### Is my data safe?
-
-Natively is built on **Privacy-by-Design**. By default, all transcripts, vector embeddings (Local RAG), and keys are stored locally on your machine. We collect only limited anonymous telemetry (no personal user data).
-
-#### Can I use it for technical interviews?
-
-Natively is a powerful assistant for any professional situation. However, users are responsible for complying with their company policies and interview guidelines.
-
-#### How do I use local models?
-
-Simply install **Ollama**, run a model (e.g., `ollama run llama3`), and Natively will automatically detect it. Enable "Ollama" in the AI Providers settings to switch to offline mode.
-
-#### How does Natively compare to Cluely?
-
-Cluely is a $20/month cloud-based tool that stores all data on their servers. In mid-2025, Cluely suffered a data breach that exposed personal information, transcripts, and screenshots of 83,000 users. Natively is free, open-source, and stores everything locally. It supports any LLM (not just one vendor), offers local AI via Ollama, and has battle-tested stealth mode. Natively has never had a data breach because there is no server to breach.
-
-#### Is stealth mode actually undetectable?
-
-Yes. Natively hides from the dock, disguises process names as harmless system utilities (Terminal, Activity Monitor, System Settings), and syncs state across all windows. It has been hardened across five major releases and tested against screen share detection in Zoom, Teams, and Google Meet.
-
-#### Does Natively work on LeetCode and HackerRank?
-
-Yes. Natively's screenshot + OCR captures any visible coding problem and returns a full solution through the invisible overlay. It works on LeetCode, HackerRank, CoderPad, Codility, HackerEarth, Karat, and any browser-based coding environment.
-
-#### Is Natively detectable during coding interviews?
-
-For standard online assessments (LeetCode, HackerRank, CoderPad, etc.), Natively is not detectable — it runs as a disguised system process and the overlay never appears in screen recordings or screen shares. It is **not** designed to bypass dedicated proctoring software like Pearson VUE, ProctorU, or Respondus Lockdown Browser, which operate at the OS level.
-
-#### Is Natively a free alternative to Interview Coder?
-
-Yes. Natively does everything Interview Coder does — screenshot OCR, real-time coding assistance, invisible overlay — and adds behavioral interview support, system design help, local RAG memory, and any-LLM BYOK. All for free.
-
----
-
-## Alternatives Natively Replaces
-
-Natively is a free, open-source alternative to:
-
-| Tool                | What Natively replaces                                                              |
-| :------------------ | :---------------------------------------------------------------------------------- |
-| **Cluely**          | Real-time AI meeting copilot — without the $20/mo fee or data breach risk           |
-| **Final Round AI**  | Live AI interview copilot — without the $149/mo fee or proctor-visible taskbar icon |
-| **LockedIn AI**     | Real-time interview assistant — without cloud lock-in or $70/mo                     |
-| **Interview Coder** | AI coding interview helper — with full meeting context, not just coding rounds      |
-| **Parakeet AI**     | Live meeting assistant — with local RAG memory and full history dashboard           |
-| **Metaview**        | Automated meeting notes — open-source and locally stored                            |
-| **Otter.ai**        | Transcription and meeting summaries — without cloud storage                         |
-| **Fireflies.ai**    | Meeting recorder and AI notetaker — fully local storage                             |
-| **Teal**            | Job search and interview assistant — fully local and free                           |
-
----
-
-`ai-assistant` · `meeting-notes` · `interview-helper` · `cluely-alternative` · `cluely` · `lockhead-ai` · `lockheed-ai` · `parakeet-ai` · `interview-coder` · `final-round-ai` · `metaview-alternative` · `otter-ai-alternative` · `fireflies-alternative` · `local-ai` · `ollama` · `electron` · `privacy-first` · `open-source` · `real-time-transcription` · `interview-copilot` · `ai-meeting-assistant` · `moltbot`
-
----
-
-
-## Star History
-
-<a href="https://star-history.com/#evinjohnn/natively-cluely-ai-assistant&Date">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=evinjohnn/natively-cluely-ai-assistant&type=Date&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=evinjohnn/natively-cluely-ai-assistant&type=Date" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=evinjohnn/natively-cluely-ai-assistant&type=Date" />
- </picture>
-</a>
-
-<!-- SEO: free ai interview copilot · cluely clone · cluely alternative · open source cluely · cluely free version · cluely github · interview coder alternative · interview coder free · interview coder open source · free interview coder · leetcode ai assistant · hackerrank ai helper · coding interview ai · undetectable coding interview ai · ai for leetcode · ai coding interview assistant · final round ai alternative · lockedin ai alternative · parakeet ai alternative · free interview cheating tool · ai interview assistant · real-time interview ai · undetectable interview ai · best ai interview tool 2025 2026 · open source interview ai · stealth interview ai · interview cheating software · ai copilot interview · free interview ai · cluely open source clone · leetcode cheating tool · hackerrank cheat · coding interview cheat sheet ai -->
-
-<sub>
-free-ai-interview-copilot · open-source-cluely · cluely-alternative · cluely-clone · interview-coder-alternative · final-round-ai-alternative · lockedin-ai-alternative · ai-interview-assistant · real-time-interview-ai · undetectable-interview-ai · stealth-mode · local-ai · ollama · byok · rag · electron · rust · privacy-first · meeting-assistant · interview-helper · open-source-interview-ai
-</sub>
+## English
+
+**Natively ZH** is an **unofficial** Simplified-Chinese localization fork of
+[Natively](https://github.com/Natively-AI-assistant/natively-cluely-ai-assistant)
+v2.7.0 (`be7280b`).
+
+It adds a real i18n layer (i18next, 1380 keys across 10 namespaces) covering the
+renderer, the Electron main process (tray, dialogs, notifications), a CJK font
+stack, and locale-aware date/number formatting. UI language switches live between
+`zh-CN` and `en-US` across all five windows.
+
+`uiLocale`, `sttLanguage`, and `aiResponseLanguage` are kept as **three
+independent settings** — switching the UI language never restarts the STT stream
+or changes the AI answer language.
+
+Core audio capture, STT, LLM, RAG, and database logic are **untouched**. No
+stealth, process-masquerading, or screen-share-evasion capability was added,
+strengthened, or debugged — only user-visible strings in existing code were
+translated.
+
+**Not affiliated with or supported by the Natively project.** It provides none of
+the official Natively API, Pro subscriptions, payments, refunds, or support. The
+commercial terms files kept in this repo apply to the **upstream** service, not
+to this fork. This build is intentionally **unsigned** and uses an isolated
+appId, product name, and user-data directory, so it coexists with an official
+install and never silently replaces it.
+
+Licensed under **AGPL-3.0**, same as upstream. Original work © Evin John.
