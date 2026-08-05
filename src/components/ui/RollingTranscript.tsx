@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface ChannelStatus {
     status: 'connected' | 'reconnecting' | 'failed' | 'awaiting-audio';
@@ -18,6 +19,7 @@ const RollingTranscript: React.FC<RollingTranscriptProps> = ({
     text, isActive = true, surfaceStyle,
     interviewerChannel, microphoneChannel,
 }) => {
+    const { t } = useTranslation(['meeting']);
     const containerRef = useRef<HTMLDivElement>(null);
 
     const intStatus = interviewerChannel?.status ?? 'connected';
@@ -52,7 +54,7 @@ const RollingTranscript: React.FC<RollingTranscriptProps> = ({
                     >
                         {showTranscriptText && (
                             <span className="inline-flex items-center text-[13px] italic leading-7 text-[var(--overlay-text-muted)] transition-all duration-300">
-                                {text || 'Listening…'}
+                                {text || t('meeting:stt.listening')}
                                 {isActive && isNormal && (
                                     <span className="inline-flex items-center ml-2">
                                         <span className="w-[3px] h-[3px] bg-emerald-400/70 rounded-full animate-pulse" />

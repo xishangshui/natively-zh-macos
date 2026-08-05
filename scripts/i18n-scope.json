@@ -1,6 +1,6 @@
 {
   "_comment": "残留英文门禁的强制范围。每个迁移任务先把目标文件加入 enforcedFiles 触发红灯，再迁移文案，最后保持绿灯。排除项必须逐条写理由，禁止使用 src/** 或 electron/** 级别的宽泛忽略。",
-  "_progress": "Task 10 已完成：会议详情、画像智能与截图裁剪器纳入门禁。Task 9 已完成（设置总览、设置弹窗、本地 Whisper、AI 供应商、Natively API/Pro、手机镜像、供应商卡片、侧栏、技能、模式与快捷键），Task 6 遗留的 225 条暂放 allowlist 条目已全部删除，allowlist 现已无任何暂放条目。",
+  "_progress": "Task 14 已完成：门禁覆盖 src/ 下全部 57 个 .tsx（排除 __tests__）。渲染层再无未纳入扫描的用户界面文件。允许名单已冻结，由 scripts/gen-i18n-allowlist-doc.mjs 生成 docs/zh-cn/i18n-allowlist.md。",
   "enforcedFiles": [
     "src/App.tsx",
     "src/components/ErrorBoundary.tsx",
@@ -49,7 +49,21 @@
     "src/components/trial/FreeTrialModal.tsx",
     "src/components/trial/TrialPromoToaster.tsx",
     "src/components/ui/ConnectCalendarButton.tsx",
-    "src/components/settings/HelpSettings.tsx"
+    "src/components/settings/HelpSettings.tsx",
+    "src/components/NativelyLogoMark.tsx",
+    "src/components/ui/card.tsx",
+    "src/components/ui/dialog.tsx",
+    "src/components/ui/GlassEffectLayer.tsx",
+    "src/components/ui/RollingTranscript.tsx",
+    "src/components/ui/toast.tsx",
+    "src/main.tsx",
+    "src/premium/index.tsx",
+    "src/types/index.tsx"
   ],
-  "excluded": []
+  "excluded": [
+    {
+      "pattern": "src/**/__tests__/**",
+      "reason": "测试文件不是用户界面，其中的英文是断言锚点与夹具，翻译会破坏测试"
+    }
+  ]
 }
