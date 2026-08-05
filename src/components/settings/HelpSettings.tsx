@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Trans, useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     Command, Monitor, Mic, Settings, Zap, Key, User, Play, Image, ArrowUp, FileText, Sparkles, Search, ChevronUp, Copy,
@@ -17,12 +18,13 @@ import nativelyIcon from '../icon.png';
 // ----------------------
 
 const CMD_SYMBOL = getModifierSymbol('cmd');
+// 模块作用域用不了 hook，label 存词典键，渲染时再 t()。
 const MOCK_BUTTONS = [
-    { icon: Pencil, label: 'What to answer?', kbd: `${CMD_SYMBOL}1`, color: 'blue' },
-    { icon: MessageSquare, label: 'Clarify', kbd: `${CMD_SYMBOL}2`, color: 'indigo' },
-    { icon: RefreshCw, label: 'Recap', kbd: `${CMD_SYMBOL}7`, color: 'amber' },
-    { icon: HelpCircle, label: 'Follow Up Question', kbd: `${CMD_SYMBOL}4`, color: 'teal' },
-    { icon: Zap, label: 'Answer', kbd: `${CMD_SYMBOL}5`, color: 'emerald' },
+    { icon: Pencil, labelKey: 'meeting:actions.whatToAnswer', kbd: `${CMD_SYMBOL}1`, color: 'blue' },
+    { icon: MessageSquare, labelKey: 'meeting:actions.clarify', kbd: `${CMD_SYMBOL}2`, color: 'indigo' },
+    { icon: RefreshCw, labelKey: 'meeting:actions.recap', kbd: `${CMD_SYMBOL}7`, color: 'amber' },
+    { icon: HelpCircle, labelKey: 'meeting:actions.followUp', kbd: `${CMD_SYMBOL}4`, color: 'teal' },
+    { icon: Zap, labelKey: 'meeting:actions.answer', kbd: `${CMD_SYMBOL}5`, color: 'emerald' },
 ] as const;
 
 const colorMap: Record<string, string> = {
@@ -34,6 +36,7 @@ const colorMap: Record<string, string> = {
 };
 
 const MockAppInterface = () => {
+    const { t } = useTranslation(['help', 'common', 'settings', 'meeting', 'providers', 'history']);
     const [activeBtn, setActiveBtn] = useState(0);
     const isLight = useResolvedTheme() === 'light';
 
@@ -60,7 +63,7 @@ const MockAppInterface = () => {
                         {/* Center Segment */}
                         <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-bg-item-surface text-text-primary text-[12px] font-medium border border-border-muted">
                             <ChevronUp className="w-3.5 h-3.5 opacity-70" />
-                            <span className="tracking-wide opacity-80">Hide</span>
+                            <span className="tracking-wide opacity-80">{t('common:actions.hide')}</span>
                         </div>
                         {/* Stop Button */}
                         <div className="w-8 h-8 rounded-full flex items-center justify-center bg-bg-item-active text-text-primary border border-border-muted">
@@ -79,7 +82,7 @@ const MockAppInterface = () => {
                             style={{ maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)' }}
                         >
                             <span className="text-text-secondary inline-flex items-center text-[13px] italic leading-7 opacity-60">
-                                ...and I'd also consider a distributed cache layer for horizontal scaling
+                                {t('help:demo.transcriptTail')}
                                 <span className="inline-flex items-center ml-2">
                                     <span className="w-1 h-1 bg-green-500/60 rounded-full animate-pulse" />
                                 </span>
@@ -92,14 +95,14 @@ const MockAppInterface = () => {
                         <div className="flex justify-start">
                             <div className="max-w-[85%] px-4 py-3 text-[14px] leading-relaxed font-normal text-text-primary">
                                 <div className="flex items-center gap-1.5 mb-1 text-[10px] font-medium uppercase tracking-wider text-text-secondary opacity-70">
-                                    Interviewer
+                                    {t('meeting:channel.interviewer')}
                                 </div>
-                                <span className="text-text-secondary italic">So how would you optimize the current algorithm?</span>
+                                <span className="text-text-secondary italic">{t('help:demo.interviewerLine')}</span>
                             </div>
                         </div>
                         <div className="flex justify-end">
                             <div className="max-w-[72.25%] px-[13.6px] py-[10.2px] text-[14px] leading-relaxed whitespace-pre-wrap bg-blue-500/10 border border-blue-500/20 text-blue-500 rounded-[20px] rounded-tr-[4px] shadow-sm font-medium">
-                                <span className="font-semibold text-emerald-500 block mb-1 text-[12px]">🎯 Answer</span>
+                                <span className="font-semibold text-emerald-500 block mb-1 text-[12px]">{t('help:demo.answerChip')}</span>
                                 A good approach would be to use a hash map to cache intermediate results and reduce time complexity to O(N).
                             </div>
                         </div>
@@ -112,7 +115,7 @@ const MockAppInterface = () => {
                             const isActive = activeBtn === idx;
                             return (
                                 <button key={idx} className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-medium border transition-all duration-300 whitespace-nowrap shrink-0 ${isActive ? colorMap[btn.color] : 'bg-bg-item-surface text-text-primary border-border-subtle'}`}>
-                                    <Icon className="w-3 h-3 opacity-70" /> {btn.label}
+                                    <Icon className="w-3 h-3 opacity-70" /> {t(btn.labelKey)}
                                 </button>
                             );
                         })}
@@ -123,7 +126,7 @@ const MockAppInterface = () => {
                         <div className="relative">
                             <div className="w-full border border-border-subtle rounded-xl pl-3 pr-10 py-2.5 text-[13px] leading-relaxed bg-bg-input shadow-inner flex items-center h-[46px]">
                                 <div className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center gap-1.5 pointer-events-none text-[13px] text-text-secondary opacity-60">
-                                    <span className="hidden sm:inline">Ask anything on screen or conversation, or</span>
+                                    <span className="hidden sm:inline">{t('help:demo.inputHintLead')}</span>
                                     <div className="flex items-center gap-1 opacity-80 sm:ml-0.5">
                                         <kbd className="px-1.5 py-0.5 rounded border text-[10px] font-sans min-w-[20px] text-center bg-bg-item-surface border-border-subtle text-text-primary shadow-sm">{getModifierSymbol('cmd')}</kbd>
                                         <span className="text-[10px]">+</span>
@@ -131,7 +134,7 @@ const MockAppInterface = () => {
                                         <span className="text-[10px]">+</span>
                                         <kbd className="px-1.5 py-0.5 rounded border text-[10px] font-sans min-w-[20px] text-center bg-bg-item-surface border-border-subtle text-text-primary shadow-sm">H</kbd>
                                     </div>
-                                    <span className="hidden sm:inline">for selective screenshot</span>
+                                    <span className="hidden sm:inline">{t('help:demo.inputHintTail')}</span>
                                 </div>
                             </div>
                             <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1 opacity-20 text-text-primary">
@@ -166,6 +169,7 @@ const MockAppInterface = () => {
 };
 
 const MockMeetingInterfaceAnim = () => {
+    const { t } = useTranslation(['help', 'common', 'settings', 'meeting', 'providers', 'history']);
     const [tab, setTab] = useState('summary');
 
     useEffect(() => {
@@ -180,8 +184,8 @@ const MockMeetingInterfaceAnim = () => {
 
             {/* Header */}
             <div className="px-6 pt-5 pb-0 shrink-0">
-                <div className="text-xs text-text-tertiary font-medium mb-0.5">Today · 47 min</div>
-                <h1 className="text-xl font-bold text-text-primary tracking-tight">System Design Interview</h1>
+                <div className="text-xs text-text-tertiary font-medium mb-0.5">{t('help:demo.meetingMeta')}</div>
+                <h1 className="text-xl font-bold text-text-primary tracking-tight">{t('help:demo.meetingTitle')}</h1>
             </div>
 
             {/* Tabs row */}
@@ -194,7 +198,7 @@ const MockMeetingInterfaceAnim = () => {
                     ))}
                 </div>
                 <div className="flex items-center gap-1.5 text-xs font-medium text-text-secondary opacity-70">
-                    <Copy size={12} /> Copy full {tab}
+                    <Copy size={12} /> {t('help:demo.copyFullTab', { tab })}
                 </div>
             </div>
 
@@ -205,13 +209,13 @@ const MockMeetingInterfaceAnim = () => {
                         <motion.div key="summary" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
                             {/* Overview — plain paragraph + border-b, matches MeetingDetails prose block */}
                             <div className="mb-5 pb-5 border-b border-border-subtle">
-                                <p className="text-sm text-text-secondary leading-relaxed">Discussed microservice architecture for the new payment gateway. Analyzed Redis vs Memcached for caching with a focus on data persistence to prevent race conditions during checkout.</p>
+                                <p className="text-sm text-text-secondary leading-relaxed">{t('help:demo.meetingSummary')}</p>
                             </div>
                             {/* Action Items — h2 heading + dot-bullet list, matches MeetingDetails exactly */}
                             <section className="mb-6">
-                                <h2 className="text-base font-semibold text-text-primary mb-3">Action Items</h2>
+                                <h2 className="text-base font-semibold text-text-primary mb-3">{t('help:demo.actionItems')}</h2>
                                 <ul className="space-y-3">
-                                    {['Draft Redis implementation constraints doc.', 'Schedule follow-up on Memcached benchmarks.'].map((item, i) => (
+                                    {[t('help:demo.actionItem1'), t('help:demo.actionItem2')].map((item, i) => (
                                         <li key={i} className="flex items-start gap-3">
                                             <div className="mt-2 w-1.5 h-1.5 rounded-full bg-text-secondary shrink-0" />
                                             <p className="text-sm text-text-secondary leading-relaxed">{item}</p>
@@ -221,9 +225,9 @@ const MockMeetingInterfaceAnim = () => {
                             </section>
                             {/* Key Points */}
                             <section>
-                                <h2 className="text-base font-semibold text-text-primary mb-3">Key Points</h2>
+                                <h2 className="text-base font-semibold text-text-primary mb-3">{t('help:demo.keyPoints')}</h2>
                                 <ul className="space-y-3">
-                                    {['Redis chosen for sorted set support enabling O(log N) rate limiting.', 'Horizontal scaling via distributed cache layer discussed.'].map((item, i) => (
+                                    {[t('help:demo.keyPoint1'), t('help:demo.keyPoint2')].map((item, i) => (
                                         <li key={i} className="flex items-start gap-3">
                                             <div className="mt-2 w-1.5 h-1.5 rounded-full bg-text-secondary shrink-0" />
                                             <p className="text-sm text-text-secondary leading-relaxed">{item}</p>
@@ -237,8 +241,8 @@ const MockMeetingInterfaceAnim = () => {
                         <motion.div key="transcript" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }} className="space-y-6">
                             {/* Matches MeetingDetails: speaker + timestamp inline, then text below — no card/border */}
                             {[
-                                { speaker: 'Them', time: '10:32', text: 'Why did you use Redis over Memcached for the cart session?' },
-                                { speaker: 'Me', time: '10:33', text: 'Because we needed sorted sets for rate limiting and automatic expiry without custom cron jobs.' },
+                                { speaker: 'Them', time: '10:32', text: t('help:demo.qaQuestion') },
+                                { speaker: 'Me', time: '10:33', text: t('help:demo.qaAnswer') },
                             ].map((entry, i) => (
                                 <div key={i}>
                                     <div className="flex items-center gap-2 mb-1">
@@ -254,7 +258,7 @@ const MockMeetingInterfaceAnim = () => {
                         <motion.div key="usage" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.2 }} className="space-y-4">
                             <div className="flex justify-end pt-2">
                                 <div className="bg-accent-primary text-white px-4 py-2 rounded-2xl rounded-tr-sm max-w-[75%] text-xs leading-relaxed shadow-sm">
-                                    Could you elaborate on the Redis rate limiting?
+                                    {t('help:demo.chatQuestion')}
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">
@@ -262,8 +266,8 @@ const MockMeetingInterfaceAnim = () => {
                                     <img src={nativelyIcon} alt="AI" className="w-3 h-3 opacity-50 object-contain force-black-icon" />
                                 </div>
                                 <div>
-                                    <div className="text-[10px] text-text-tertiary mb-1 font-medium">10:35 AM</div>
-                                    <p className="text-xs text-text-secondary leading-relaxed">You mentioned Redis Sorted Sets for the sliding rate window — efficient because it auto-expires stale records while keeping operations strictly O(log N).</p>
+                                    <div className="text-[10px] text-text-tertiary mb-1 font-medium">{t('help:demo.chatTime')}</div>
+                                    <p className="text-xs text-text-secondary leading-relaxed">{t('help:demo.chatAnswer')}</p>
                                 </div>
                             </div>
                         </motion.div>
@@ -274,7 +278,7 @@ const MockMeetingInterfaceAnim = () => {
             {/* Floating ask bar */}
             <div className="absolute bottom-0 left-0 right-0 p-4 flex justify-center">
                 <div className="w-full max-w-[440px] flex items-center relative">
-                    <div className="w-full pl-4 pr-11 py-2.5 bg-bg-item-surface shadow-sm border border-border-subtle rounded-full text-xs text-text-tertiary/70">Ask about this meeting...</div>
+                    <div className="w-full pl-4 pr-11 py-2.5 bg-bg-item-surface shadow-sm border border-border-subtle rounded-full text-xs text-text-tertiary/70">{t('help:demo.chatPlaceholder')}</div>
                     <div className="absolute right-2 p-1.5 rounded-full bg-bg-item-active text-text-primary border border-border-subtle shadow-sm">
                         <ArrowUp size={13} className="rotate-45" />
                     </div>
@@ -285,13 +289,14 @@ const MockMeetingInterfaceAnim = () => {
 };
 
 const MockMeetingChatAnim = () => {
+    const { t } = useTranslation(['help', 'common', 'settings', 'meeting', 'providers', 'history']);
     return (
         <div className="w-full bg-bg-secondary rounded-[20px] border border-border-subtle overflow-hidden flex flex-col select-none pointer-events-none shadow-lg max-h-[280px]">
             {/* Header */}
             <div className="flex items-center justify-between px-4 py-3 border-b border-border-subtle shrink-0">
                 <div className="flex items-center gap-2 text-text-tertiary">
-                    <img src={nativelyIcon} className="w-3.5 h-3.5 force-black-icon opacity-50" alt="logo" />
-                    <span className="text-[13px] font-medium">Search this meeting</span>
+                    <img src={nativelyIcon} className="w-3.5 h-3.5 force-black-icon opacity-50" alt={t('help:demo.logoAlt')} />
+                    <span className="text-[13px] font-medium">{t('help:demo.searchTitle')}</span>
                 </div>
                 <X size={16} className="text-text-tertiary" />
             </div>
@@ -300,15 +305,15 @@ const MockMeetingChatAnim = () => {
             <div className="p-5 space-y-5">
                 <div className="flex justify-end">
                     <div className="bg-accent-primary text-white px-4 py-2.5 rounded-2xl rounded-tr-sm max-w-[75%] text-sm leading-relaxed shadow-sm">
-                        What API dependencies did they mention?
+                        {t('help:demo.searchQuery')}
                     </div>
                 </div>
                 <div className="flex flex-col items-start">
                     <p className="text-sm text-text-primary leading-relaxed max-w-[85%]">
-                        Based on the transcript near 10:45 AM, they explicitly mentioned integrating <code className="bg-bg-tertiary px-1.5 py-0.5 rounded text-[12px] font-mono text-text-primary border border-border-subtle">Stripe Payment Intents</code> to handle the recurring tier logic securely.
+                        {t('help:demo.searchAnswerLead')} <code className="bg-bg-tertiary px-1.5 py-0.5 rounded text-[12px] font-mono text-text-primary border border-border-subtle">Stripe Payment Intents</code> {t('help:demo.searchAnswerTail')}
                     </p>
                     <div className="flex items-center gap-2 mt-2.5 text-xs text-text-tertiary">
-                        <Copy size={13} /> Copy message
+                        <Copy size={13} /> {t('help:demo.copyMessage')}
                     </div>
                 </div>
             </div>
@@ -317,6 +322,7 @@ const MockMeetingChatAnim = () => {
 };
 
 const MockSearchPillAnim = () => {
+    const { t } = useTranslation(['help', 'common', 'settings', 'meeting', 'providers', 'history']);
     const isLight = useResolvedTheme() === 'light';
     return (
         <div className="flex justify-center flex-col items-center py-10 rounded-[26px] border border-border-subtle relative overflow-hidden h-[340px] bg-bg-card">
@@ -332,7 +338,7 @@ const MockSearchPillAnim = () => {
                         <Search size={14} className="text-text-tertiary" />
                     </div>
                     <div className="w-full bg-transparent pl-9 pr-4 py-2.5 text-[13px] text-text-primary outline-none flex items-center h-[38px]">
-                        <span className="opacity-90">System</span><motion.span animate={{ opacity: [1, 0, 1] }} transition={{ repeat: Infinity, duration: 1 }} className="w-[1.5px] h-3.5 bg-blue-500 ml-[2px] inline-block" />
+                        <span className="opacity-90">{t('help:demo.systemQuery')}</span><motion.span animate={{ opacity: [1, 0, 1] }} transition={{ repeat: Infinity, duration: 1 }} className="w-[1.5px] h-3.5 bg-blue-500 ml-[2px] inline-block" />
                     </div>
                 </div>
 
@@ -342,7 +348,7 @@ const MockSearchPillAnim = () => {
                         {/* Explore Section */}
                         <div className="px-3 py-1">
                             <div className="text-[10px] font-semibold text-text-tertiary uppercase tracking-wider mb-1">
-                                Explore
+                                {t('help:demo.explore')}
                             </div>
 
                             <div className="w-full flex items-center gap-3 px-2 py-1.5 rounded-lg text-left bg-bg-item-active transition-colors">
@@ -350,7 +356,7 @@ const MockSearchPillAnim = () => {
                                     <Sparkles size={12} className="text-white" />
                                 </div>
                                 <span className="text-[13px] text-text-primary truncate">
-                                    System
+                                    {t('help:demo.systemQuery')}
                                 </span>
                             </div>
 
@@ -359,7 +365,11 @@ const MockSearchPillAnim = () => {
                                     <Search size={12} className="text-text-secondary" />
                                 </div>
                                 <span className="text-[13px] text-text-secondary">
-                                    Search for <span className="text-text-primary">"System"</span>
+                                    <Trans
+                                        i18nKey="help:demo.searchForQuery"
+                                        values={{ query: t('help:demo.systemQuery') }}
+                                        components={[<span className="text-text-primary" key="q" />]}
+                                    />
                                 </span>
                             </div>
                         </div>
@@ -367,7 +377,7 @@ const MockSearchPillAnim = () => {
                         {/* Sessions Section */}
                         <div className="px-3 py-1 mt-1">
                             <div className="text-[10px] font-semibold text-text-tertiary uppercase tracking-wider mb-1">
-                                Sessions
+                                {t('help:demo.sessions')}
                             </div>
 
                             <div className="w-full flex items-center gap-3 px-2 py-1.5 rounded-lg text-left hover:bg-bg-item-hover transition-colors">
@@ -376,10 +386,10 @@ const MockSearchPillAnim = () => {
                                 </div>
                                 <div className="flex-1 min-w-0">
                                     <div className="text-[13px] text-text-primary truncate">
-                                        System Design Interview
+                                        {t('help:demo.meetingTitle')}
                                     </div>
                                     <div className="text-[11px] text-text-tertiary">
-                                        Jan 12
+                                        {t('help:demo.date1')}
                                     </div>
                                 </div>
                             </div>
@@ -390,10 +400,10 @@ const MockSearchPillAnim = () => {
                                 </div>
                                 <div className="flex-1 min-w-0">
                                     <div className="text-[13px] text-text-primary truncate">
-                                        System Architecture Sync
+                                        {t('help:demo.sessionTitle2')}
                                     </div>
                                     <div className="text-[11px] text-text-tertiary">
-                                        Jan 08
+                                        {t('help:demo.date2')}
                                     </div>
                                 </div>
                             </div>
@@ -406,6 +416,7 @@ const MockSearchPillAnim = () => {
 };
 
 const MockPermissionsAnim = () => {
+    const { t } = useTranslation(['help', 'common', 'settings', 'meeting', 'providers', 'history']);
     const [toggled, setToggled] = useState(false);
     useEffect(() => {
         const i = setInterval(() => setToggled(t => !t), 2500);
@@ -419,7 +430,7 @@ const MockPermissionsAnim = () => {
                     <div className="w-8 h-8 rounded-full bg-blue-500/20 text-blue-500 flex items-center justify-center">
                         <Monitor className="w-4 h-4" />
                     </div>
-                    <div className="font-semibold text-sm text-text-primary">Screen Recording</div>
+                    <div className="font-semibold text-sm text-text-primary">{t('onboarding:permissions.screenRecording')}</div>
                 </div>
                 <div className="flex justify-between items-center">
                     <div className="flex items-center gap-2">
@@ -442,14 +453,15 @@ const MockPermissionsAnim = () => {
             </div>
             <div className="text-xs text-text-secondary text-center max-w-[280px]">
                 {isMac
-                    ? 'Natively requires Accessibility and Screen Recording permissions to analyze screen context.'
-                    : 'Natively will ask for microphone access the first time you start a meeting.'}
+                    ? t('help:demo.permHintMac')
+                    : t('help:demo.permHintWin')}
             </div>
         </div>
     );
 };
 
 const MockPillControlsAnim = () => {
+    const { t } = useTranslation(['help', 'common', 'settings', 'meeting', 'providers', 'history']);
     const [windowShowing, setWindowShowing] = useState(true);
 
     useEffect(() => {
@@ -459,12 +471,12 @@ const MockPillControlsAnim = () => {
 
     return (
         <div className="mt-4 space-y-2.5">
-            <div className="text-[10px] font-semibold text-text-tertiary uppercase tracking-wider px-1 mb-3">Pill Controls</div>
+            <div className="text-[10px] font-semibold text-text-tertiary uppercase tracking-wider px-1 mb-3">{t('help:demo.pillControls')}</div>
 
             {/* Logo → Launcher */}
             <div className="flex items-center gap-3 p-3 bg-bg-elevated border border-border-subtle rounded-xl">
                 <div className="w-8 h-8 rounded-full bg-bg-item-active flex items-center justify-center border border-border-muted shrink-0 shadow-sm">
-                    <img src={nativelyIcon} alt="Logo" className="w-[18px] h-[18px] object-contain force-black-icon opacity-90" />
+                    <img src={nativelyIcon} alt={t('help:demo.logoAlt2')} className="w-[18px] h-[18px] object-contain force-black-icon opacity-90" />
                 </div>
                 <ArrowRight className="w-3.5 h-3.5 text-text-tertiary shrink-0" />
                 <div className="flex items-center gap-2 flex-1 min-w-0">
@@ -477,9 +489,9 @@ const MockPillControlsAnim = () => {
                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60" />
                             <span className="relative inline-flex rounded-full h-[7px] w-[7px] bg-emerald-400" />
                         </span>
-                        <span className="text-[11px] font-medium text-emerald-500">Meeting ongoing</span>
+                        <span className="text-[11px] font-medium text-emerald-500">{t('help:demo.meetingOngoing')}</span>
                     </motion.div>
-                    <span className="text-[11px] text-text-secondary leading-snug">— clicking this brings you right back</span>
+                    <span className="text-[11px] text-text-secondary leading-snug">{t('help:demo.clickToReturn')}</span>
                 </div>
             </div>
 
@@ -489,7 +501,7 @@ const MockPillControlsAnim = () => {
                     <motion.div animate={{ rotate: windowShowing ? 0 : 180 }} transition={{ duration: 0.35, ease: 'easeInOut' }}>
                         <ChevronUp className="w-3 h-3 text-text-secondary" />
                     </motion.div>
-                    <span className="text-[11px] text-text-secondary font-medium">{windowShowing ? 'Hide' : 'Show'}</span>
+                    <span className="text-[11px] text-text-secondary font-medium">{windowShowing ? t('common:actions.hide') : t('common:actions.show')}</span>
                 </div>
                 <ArrowRight className="w-3.5 h-3.5 text-text-tertiary shrink-0" />
                 <div className="flex items-center gap-3 flex-1 min-w-0">
@@ -509,7 +521,7 @@ const MockPillControlsAnim = () => {
                             <EyeOff className="w-3.5 h-3.5 text-text-tertiary" />
                         </motion.div>
                     </div>
-                    <span className="text-[11px] text-text-secondary leading-snug">Toggles entire window — keeps you <strong className="text-text-primary">purely stealth</strong></span>
+                    <span className="text-[11px] text-text-secondary leading-snug">{t('help:demo.togglesWindowLead')} <strong className="text-text-primary">{t('help:demo.purelyStealth')}</strong></span>
                 </div>
             </div>
 
@@ -525,9 +537,9 @@ const MockPillControlsAnim = () => {
                         transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
                         className="text-[11px] text-red-400 font-medium shrink-0"
                     >
-                        Session ends instantly
+                        {t('help:demo.sessionEnds')}
                     </motion.span>
-                    <span className="text-[11px] text-text-tertiary">— returns to launcher</span>
+                    <span className="text-[11px] text-text-tertiary">{t('help:demo.returnsToLauncher')}</span>
                 </div>
             </div>
 
@@ -536,6 +548,7 @@ const MockPillControlsAnim = () => {
 };
 
 const MockFastModeAnim = () => {
+    const { t } = useTranslation(['help', 'common', 'settings', 'meeting', 'providers', 'history']);
     return (
         <div className="flex justify-center items-center py-8 bg-bg-card rounded-xl border border-border-subtle relative overflow-hidden h-[240px]">
             <div className="flex flex-col items-center gap-4 z-10">
@@ -547,7 +560,7 @@ const MockFastModeAnim = () => {
                     <Zap className="w-8 h-8 text-white" />
                 </motion.div>
                 <div className="text-center">
-                    <div className="font-bold text-lg text-text-primary">Fast Mode Enabled</div>
+                    <div className="font-bold text-lg text-text-primary">{t('help:demo.fastModeEnabled')}</div>
                     <div className="text-xs text-text-secondary mt-1">Routing via Groq LPU (Response &lt; 0.5s)</div>
                 </div>
             </div>
@@ -592,6 +605,7 @@ const getIconStyle = (color?: string, isSelectedItem: boolean = false) => {
 };
 
 const MockProviderSelectionAnim = () => {
+    const { t } = useTranslation(['help', 'common', 'settings', 'meeting', 'providers', 'history']);
     const isLight = useResolvedTheme() === 'light';
     const [isOpen, setIsOpen] = useState(false);
     useEffect(() => {
@@ -600,20 +614,20 @@ const MockProviderSelectionAnim = () => {
     }, []);
 
     const options = [
-        { id: 'natively', label: 'Natively API', badge: '', recommended: true, desc: 'Ultra-fast low latency transcription', color: 'indigo', icon: <img src={nativelyIcon} className={`w-[14px] h-[14px] object-contain opacity-80 ${isLight ? '' : 'filter brightness-0 invert'}`} alt="Natively" /> },
-        { id: 'deepgram', label: 'Deepgram Nova-3', badge: 'Saved', recommended: false, desc: 'High-accuracy REST transcription', color: 'purple', icon: <Mic size={14} /> },
-        { id: 'google', label: 'Google Cloud', badge: 'Saved', recommended: false, desc: 'gRPC streaming via Service Account', color: 'blue', icon: <Mic size={14} /> },
-        { id: 'groq', label: 'Groq Whisper', badge: '', recommended: false, desc: 'Fast LPU whisper transcription', color: 'orange', icon: <Mic size={14} /> },
-        { id: 'azure', label: 'Azure Speech', badge: '', recommended: false, desc: 'Enterprise tier transcription', color: 'teal', icon: <Mic size={14} /> },
-        { id: 'soniox', label: 'Soniox', badge: '', recommended: false, desc: 'Medical-grade transcription', color: 'cyan', icon: <Mic size={14} /> },
-        { id: 'ibm', label: 'IBM Watson', badge: '', recommended: false, desc: 'Watson Speech-to-Text', color: 'indigo', icon: <Mic size={14} /> },
+        { id: 'natively', label: 'Natively API', badge: '', recommended: true, desc: t('help:demo.sttDescNatively'), color: 'indigo', icon: <img src={nativelyIcon} className={`w-[14px] h-[14px] object-contain opacity-80 ${isLight ? '' : 'filter brightness-0 invert'}`} alt="Natively" /> },
+        { id: 'deepgram', label: 'Deepgram Nova-3', badge: t('providers:apiKey.saved'), recommended: false, desc: t('settings:stt.desc.deepgram'), color: 'purple', icon: <Mic size={14} /> },
+        { id: 'google', label: 'Google Cloud', badge: t('providers:apiKey.saved'), recommended: false, desc: t('settings:stt.desc.google'), color: 'blue', icon: <Mic size={14} /> },
+        { id: 'groq', label: 'Groq Whisper', badge: '', recommended: false, desc: t('help:demo.sttDescGroq'), color: 'orange', icon: <Mic size={14} /> },
+        { id: 'azure', label: 'Azure Speech', badge: '', recommended: false, desc: t('help:demo.sttDescAzure'), color: 'teal', icon: <Mic size={14} /> },
+        { id: 'soniox', label: 'Soniox', badge: '', recommended: false, desc: t('help:demo.sttDescSoniox'), color: 'cyan', icon: <Mic size={14} /> },
+        { id: 'ibm', label: 'IBM Watson', badge: '', recommended: false, desc: t('help:demo.sttDescWatson'), color: 'indigo', icon: <Mic size={14} /> },
     ];
     const selected = options[0];
 
     return (
         <div className="flex justify-center flex-col items-center py-6 bg-bg-card rounded-xl border border-border-subtle relative overflow-hidden h-[300px]">
             <div className="w-[340px] flex flex-col gap-2 relative z-10 font-sans">
-                <label className="text-xs font-medium text-text-secondary">Speech Provider</label>
+                <label className="text-xs font-medium text-text-secondary">{t('settings:stt.title')}</label>
                 <div className="relative">
                     <button className={`w-full group bg-bg-input border border-border-subtle shadow-sm rounded-xl p-2.5 pr-3.5 flex items-center justify-between transition-all duration-200 outline-none ${isOpen ? 'ring-2 ring-accent-primary/20 border-accent-primary/50' : 'hover:shadow-md'}`}>
                         <div className="flex items-center gap-3 overflow-hidden">
@@ -624,7 +638,7 @@ const MockProviderSelectionAnim = () => {
                                 <div className="flex items-center gap-2">
                                     <span className="text-[13px] font-semibold text-text-primary truncate leading-tight">{selected.label}</span>
                                     {selected.badge && <span className={`text-[9px] px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wide ml-2 ${getBadgeStyle('green')}`}>{selected.badge}</span>}
-                                    {selected.recommended && <span className={`text-[9px] px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wide ml-2 ${getBadgeStyle(selected.color)}`}>Recommended</span>}
+                                    {selected.recommended && <span className={`text-[9px] px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wide ml-2 ${getBadgeStyle(selected.color)}`}>{t('settings:stt.recommendedBadge')}</span>}
                                 </div>
                                 <span className="text-[11px] text-text-tertiary truncate block leading-tight mt-0.5">{selected.desc}</span>
                             </div>
@@ -661,7 +675,7 @@ const MockProviderSelectionAnim = () => {
                                                             <div className="flex items-center gap-2">
                                                                 <span className={"text-[13px] font-medium transition-colors text-text-primary"}>{option.label}</span>
                                                                 {option.badge && <span className={`text-[9px] px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wide ${getBadgeStyle('green')}`}>{option.badge}</span>}
-                                                                {option.recommended && <span className={`text-[9px] px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wide ${getBadgeStyle(option.color)}`}>Recommended</span>}
+                                                                {option.recommended && <span className={`text-[9px] px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wide ${getBadgeStyle(option.color)}`}>{t('settings:stt.recommendedBadge')}</span>}
                                                             </div>
                                                             {isSelected && <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }}><Check size={14} className="text-accent-primary" strokeWidth={3} /></motion.div>}
                                                         </div>
@@ -694,6 +708,7 @@ const MockProviderSelectionAnim = () => {
 };
 
 const MockApiKeyFlowAnim = () => {
+    const { t } = useTranslation(['help', 'common', 'settings', 'meeting', 'providers', 'history']);
     const [stage, setStage] = useState(0); // 0: enter key, 1: saving, 2: test, 3: connected, 4: trash
     useEffect(() => {
         const i = setInterval(() => setStage(s => (s + 1) % 5), 2000);
@@ -703,16 +718,16 @@ const MockApiKeyFlowAnim = () => {
     return (
         <div className="flex justify-center flex-col items-center gap-2 py-8 bg-bg-card rounded-xl border border-border-subtle relative overflow-hidden h-[240px]">
             <div className="w-[380px] space-y-2 relative z-10">
-                <label className="text-xs font-medium text-text-secondary block">Groq API Key</label>
+                <label className="text-xs font-medium text-text-secondary block">{t('help:demo.groqApiKey')}</label>
                 <div className="flex gap-2">
                     <div className="flex-1 bg-bg-input border border-border-subtle rounded-lg px-3 py-2 text-sm text-text-primary flex items-center shadow-inner">
                         <span className={stage > 0 ? "opacity-100" : "opacity-40"}>
-                            {stage > 0 ? "gsk_a8B2c..." : "Enter API key"}
+                            {stage > 0 ? "gsk_a8B2c..." : t('help:demo.enterApiKey')}
                         </span>
                         {stage === 0 && <motion.div animate={{ opacity: [1, 0] }} transition={{ repeat: Infinity, duration: 0.8 }} className="w-0.5 h-4 bg-accent-primary ml-0.5" />}
                     </div>
                     <div className="px-5 py-2 rounded-lg text-xs font-medium bg-bg-elevated border border-border-subtle flex items-center justify-center transition-colors shadow-sm">
-                        {stage === 1 ? <Check size={14} className="text-green-500" /> : 'Save'}
+                        {stage === 1 ? <Check size={14} className="text-green-500" /> : t('common:actions.save')}
                     </div>
                 </div>
                 <div className="flex items-center justify-between mt-2">
@@ -720,7 +735,7 @@ const MockApiKeyFlowAnim = () => {
                         <div className="text-xs bg-bg-input px-3 py-1.5 rounded-md flex items-center gap-2 border border-border-subtle shadow-sm">
                             {stage === 2 ? <RefreshCw size={12} className="text-blue-500 animate-spin" /> : stage > 2 ? <Check size={12} className="text-green-500" /> : <Play size={12} className="text-text-tertiary" />}
                             <span className={stage > 2 ? "text-green-500" : "text-text-primary"}>
-                                {stage === 2 ? 'Testing...' : stage > 2 ? 'Connected' : 'Test API Key'}
+                                {stage === 2 ? t('providers:test.testing') : stage > 2 ? t('providers:test.connected') : t('help:demo.testApiKey')}
                             </span>
                         </div>
                     </div>
@@ -746,13 +761,14 @@ const MockApiKeyFlowAnim = () => {
 };
 
 const ElevenLabsPermissionsMock = () => {
+    const { t } = useTranslation(['help', 'common', 'settings', 'meeting', 'providers', 'history']);
     return (
         <div className="w-full flex justify-center py-4 bg-bg-elevated rounded-xl border border-border-subtle mb-3 mt-2 shadow-sm">
             <div className="flex items-center justify-between w-full max-w-[360px]">
-                <span className="text-[14.5px] text-text-primary font-medium tracking-tight">Speech to Text</span>
+                <span className="text-[14.5px] text-text-primary font-medium tracking-tight">{t('help:demo.speechToText')}</span>
                 <div className="flex items-center bg-bg-main p-[3px] rounded-lg border border-border-subtle shadow-inner">
-                    <div className="px-3.5 py-1.5 text-[13px] font-medium text-text-secondary">No Access</div>
-                    <div className="px-3.5 py-1.5 text-[13px] font-medium text-black bg-white rounded-md shadow-sm relative z-10 before:absolute before:inset-0 before:rounded-md before:border-[1.5px] before:border-black before:opacity-90 before:-m-[1px]">Access</div>
+                    <div className="px-3.5 py-1.5 text-[13px] font-medium text-text-secondary">{t('help:demo.noAccess')}</div>
+                    <div className="px-3.5 py-1.5 text-[13px] font-medium text-black bg-white rounded-md shadow-sm relative z-10 before:absolute before:inset-0 before:rounded-md before:border-[1.5px] before:border-black before:opacity-90 before:-m-[1px]">{t('help:demo.access')}</div>
                 </div>
             </div>
         </div>
@@ -771,6 +787,7 @@ interface AccordionSectionProps {
 }
 
 const AccordionSection: React.FC<AccordionSectionProps> = ({ title, icon, children, defaultOpen = false }) => {
+    const { t } = useTranslation(['help', 'common', 'settings', 'meeting', 'providers', 'history']);
     const [isOpen, setIsOpen] = useState(defaultOpen);
 
     return (
@@ -806,44 +823,45 @@ const AccordionSection: React.FC<AccordionSectionProps> = ({ title, icon, childr
 };
 
 const SetupGuide = () => {
+    const { t } = useTranslation(['help', 'common', 'settings', 'meeting', 'providers', 'history']);
     const cmd = getModifierSymbol('cmd');
     const shift = getModifierSymbol('shift');
     const steps = [
         {
-            title: 'Grant Permissions',
+            title: t('help:quickStart.step1Title'),
             desc: isMac
-                ? 'Enable Screen Recording and Accessibility for Natively in macOS Privacy & Security.'
-                : 'Approve the microphone prompt the first time you start a meeting (Settings → Privacy → Microphone).',
+                ? t('help:quickStart.step1Mac')
+                : t('help:quickStart.step1Win'),
         },
         {
-            title: 'Set Up Audio',
-            desc: 'Open Settings → Audio and select Natively API, or paste a Deepgram or Google key.',
+            title: t('help:quickStart.step2Title'),
+            desc: t('help:quickStart.step2Desc'),
         },
         {
-            title: 'Connect an AI Model',
-            desc: 'Open Settings → AI Providers and choose a built-in model, or add a Groq or OpenRouter key.',
+            title: t('help:quickStart.step3Title'),
+            desc: t('help:quickStart.step3Desc'),
         },
         {
-            title: 'Personalize (Optional)',
-            desc: 'Drop your resume + JD in Profile Intelligence, link your Google Calendar, or pick a Mode tailored to your session.',
+            title: t('help:quickStart.step4Title'),
+            desc: t('help:quickStart.step4Desc'),
         },
         {
-            title: "You're all set.",
+            title: t('help:quickStart.allSet'),
             desc: null,
         },
     ];
 
     const hotkeys = [
-        { label: 'Toggle', kbd: `${cmd}H` },
-        { label: 'Screenshot', kbd: `${cmd}${shift}H` },
-        { label: 'Chat', kbd: `${cmd}K` },
+        { label: t('help:quickStart.chipToggle'), kbd: `${cmd}H` },
+        { label: t('help:quickStart.chipScreenshot'), kbd: `${cmd}${shift}H` },
+        { label: t('help:quickStart.chipChat'), kbd: `${cmd}K` },
     ];
 
     return (
         <div className="mb-10">
             <div className="mb-7">
-                <h3 className="text-[20px] font-bold text-text-primary tracking-tight leading-tight">Quick Start</h3>
-                <p className="text-[13px] text-text-tertiary mt-0.5">Get Natively running in four steps.</p>
+                <h3 className="text-[20px] font-bold text-text-primary tracking-tight leading-tight">{t('help:quickStart.title')}</h3>
+                <p className="text-[13px] text-text-tertiary mt-0.5">{t('help:quickStart.subtitle')}</p>
             </div>
 
             <div>
@@ -889,6 +907,7 @@ const SetupGuide = () => {
     );
 };
 export const HelpSettings: React.FC<{ onNavigate?: (tab: string) => void }> = ({ onNavigate }) => {
+    const { t } = useTranslation(['help', 'common', 'settings', 'meeting', 'providers', 'history']);
     const { shortcuts } = useShortcuts();
     const isLight = useResolvedTheme() === 'light';
 
@@ -900,10 +919,10 @@ export const HelpSettings: React.FC<{ onNavigate?: (tab: string) => void }> = ({
             <div className="mb-6 shrink-0">
                 <h2 className={`text-2xl font-bold text-text-primary flex items-center gap-3`}>
                     <HelpCircle className="w-6 h-6 text-accent-primary" />
-                    Help & Setup Guide
+                    {t('help:page.title')}
                 </h2>
                 <p className={`text-sm text-text-secondary mt-3 max-w-2xl`}>
-                    Learn how to deeply configure Natively. Everything from providing the right API scopes to executing conversational interviews seamlessly is covered below.
+                    {t('help:page.subtitle')}
                 </p>
             </div>
 
@@ -919,14 +938,17 @@ export const HelpSettings: React.FC<{ onNavigate?: (tab: string) => void }> = ({
                                 <Zap className="w-5 h-5 text-text-primary group-hover:text-white transition-colors" fill="currentColor" />
                             </div>
                             <div className="flex-1">
-                                <h4 className="text-[14px] font-bold text-text-primary mb-0.5">Want to skip the manual setup?</h4>
+                                <h4 className="text-[14px] font-bold text-text-primary mb-0.5">{t('help:page.skipSetupTitle')}</h4>
                                 <p className="text-[13px] text-text-secondary">
-                                    Use the <span className="font-semibold text-text-primary">Natively API</span> for an out-of-the-box experience. One-click zero-configuration usage.
+                                    <Trans
+                                        i18nKey="help:page.skipSetupBody"
+                                        components={[<span className="font-semibold text-text-primary" key="brand">Natively API</span>]}
+                                    />
                                 </p>
                             </div>
                         </div>
                         <div className="hidden sm:flex self-center ml-4 px-3 py-1.5 rounded-lg bg-text-primary text-bg-main text-[11px] font-bold items-center gap-1.5 opacity-90 group-hover:opacity-100 transition-opacity whitespace-nowrap shrink-0">
-                            Enable Now <ArrowRight size={12} />
+                            {t('help:page.enableNow')} <ArrowRight size={12} />
                         </div>
                     </div>
                 )}
@@ -935,26 +957,29 @@ export const HelpSettings: React.FC<{ onNavigate?: (tab: string) => void }> = ({
 
                 <div className="h-10" />
                 <div className="mb-4 flex items-center gap-2 border-b border-border-subtle pb-3">
-                    <h3 className="text-[20px] font-bold text-text-primary tracking-tight leading-tight">Help Guide</h3>
+                    <h3 className="text-[20px] font-bold text-text-primary tracking-tight leading-tight">{t('help:page.guideTitle')}</h3>
                 </div>
 
-                <AccordionSection title="1. App Permissions Setup" icon={<Monitor className="w-4 h-4" />}>
+                <AccordionSection title={t('help:guide.s1Title')} icon={<Monitor className="w-4 h-4" />}>
                     <div className="space-y-4">
                         <p>
                             {isMac
-                                ? 'Natively operates entirely on-device, but requires OS permissions to tap into your screen context and global keystrokes. Here is how your system should look:'
-                                : 'Natively operates entirely on-device. Windows will prompt you for microphone access the first time you start a meeting — no other OS permissions are required.'}
+                                ? t('help:guide.s1IntroMac')
+                                : t('help:guide.s1IntroWin')}
                         </p>
                         {isMac && <MockPermissionsAnim />}
                         <div className="space-y-3 mt-4">
-                            <h4 className="font-bold text-base text-text-primary border-b border-border-subtle pb-2">Hardware & Engine Configurations</h4>
+                            <h4 className="font-bold text-base text-text-primary border-b border-border-subtle pb-2">{t('help:guide.hardwareTitle')}</h4>
 
                             <div className={`p-4 rounded-xl border bg-bg-item-surface border-border-subtle space-y-2`}>
                                 <h5 className={`font-semibold text-[13px] text-text-primary flex items-center gap-2`}>
-                                    <Mic size={14} className="text-blue-500" /> Microphone & Speaker Loopback Selection
+                                    <Mic size={14} className="text-blue-500" /> {t('help:guide.loopbackTitle')}
                                 </h5>
                                 <p className="text-[11px] opacity-90 leading-relaxed text-text-secondary">
-                                    Natively can capture both what you say and what you hear globally. At the top of the Audio Settings, use the Dropdowns to explicitly select your hardware Input (e.g. your physical microphone) and Output capture (what the speakers play). By default, Natively utilizes the <strong>System Default</strong>, so audio routing will automatically follow your OS preferences.
+                                    <Trans
+                                        i18nKey="help:guide.loopbackDesc"
+                                        components={[<strong key="sysDefault">{t('help:guide.systemDefault')}</strong>]}
+                                    />
                                 </p>
                             </div>
 
@@ -965,7 +990,7 @@ export const HelpSettings: React.FC<{ onNavigate?: (tab: string) => void }> = ({
                                             <Monitor size={14} className="text-accent-primary" /> ScreenCaptureKit (SCK)
                                         </h5>
                                         <p className="text-[11px] opacity-90 leading-relaxed text-text-secondary">
-                                            The recommended backend for macOS 13.0+. Uses Apple's modern, highly optimized internal framework for 0-latency loopback speaker capture securely.
+                                            {t('help:guide.sckDesc')}
                                         </p>
                                     </div>
                                     <div className={`p-4 rounded-xl border bg-bg-item-surface border-border-subtle space-y-2`}>
@@ -973,7 +998,7 @@ export const HelpSettings: React.FC<{ onNavigate?: (tab: string) => void }> = ({
                                             <Volume2 size={14} className="text-orange-500" /> CoreAudio (Legacy)
                                         </h5>
                                         <p className="text-[11px] opacity-90 leading-relaxed text-text-secondary">
-                                            Fallback engine for older hardware. Relies on internal device aggregation to trap output audio. Only use this if SCK repeatedly drops speaker packets.
+                                            {t('help:guide.coreAudioDesc')}
                                         </p>
                                     </div>
                                 </div>
@@ -981,10 +1006,20 @@ export const HelpSettings: React.FC<{ onNavigate?: (tab: string) => void }> = ({
 
                             <div className={`p-4 rounded-xl border bg-bg-item-surface border-border-subtle space-y-2`}>
                                 <h5 className={`font-semibold text-[13px] text-text-primary flex items-center gap-2`}>
-                                    <Globe size={14} className="text-green-500" /> Language & Regional Accents
+                                    <Globe size={14} className="text-green-500" /> {t('help:guide.languageTitle')}
                                 </h5>
                                 <p className="text-[11px] opacity-90 leading-relaxed text-text-secondary">
-                                    Below the provider list, you must specify the <strong>Language</strong> you will be speaking (e.g., English). Most importantly, ensure you select your specific regional <span className={kbdClass}>Accent / Region</span> mapping (e.g., <em>en-US</em> vs <em>en-GB</em> vs <em>en-IN</em>) as STT backends use this map to vastly increase transcription accuracy logic based on regional inflections.
+                                    {/* 语言地区代码保持原文（必须照原样选择），语序交给译文 */}
+                                    <Trans
+                                        i18nKey="help:guide.languageDesc"
+                                        components={[
+                                            <strong key="lang">{t('settings:stt.language')}</strong>,
+                                            <span className={kbdClass} key="accent">{t('settings:stt.accentRegion')}</span>,
+                                            <em key="c1">en-US</em>,
+                                            <em key="c2">en-GB</em>,
+                                            <em key="c3">en-IN</em>,
+                                        ]}
+                                    />
                                 </p>
                             </div>
                         </div>
@@ -993,129 +1028,148 @@ export const HelpSettings: React.FC<{ onNavigate?: (tab: string) => void }> = ({
                             <div className="flex flex-col gap-3 mt-6">
                                 <div className={`p-4 rounded-xl border bg-bg-item-surface border-border-subtle`}>
                                     <h4 className={`font-semibold text-sm mb-2 text-text-primary flex items-center gap-2`}>
-                                        <Monitor className="w-4 h-4 text-accent-primary" /> Screen Recording
+                                        <Monitor className="w-4 h-4 text-accent-primary" /> {t('onboarding:permissions.screenRecording')}
                                     </h4>
-                                    <p className="text-xs opacity-90 mb-2">Provides Natively the ability to read your screen temporarily when you capture context.</p>
-                                    <p className="text-[11px] text-text-tertiary">System Settings &gt; Privacy & Security &gt; Screen Recording</p>
+                                    <p className="text-xs opacity-90 mb-2">{t('help:guide.permScreenDesc')}</p>
+                                    <p className="text-[11px] text-text-tertiary">{t('help:guide.pathMacScreen')}</p>
                                 </div>
 
                                 <div className={`p-4 rounded-xl border bg-bg-item-surface border-border-subtle`}>
                                     <h4 className={`font-semibold text-sm mb-2 text-text-primary flex items-center gap-2`}>
-                                        <Command className="w-4 h-4 text-purple-500" /> Accessibility
+                                        <Command className="w-4 h-4 text-purple-500" /> {t('help:guide.permAccessibility')}
                                     </h4>
-                                    <p className="text-xs opacity-90 mb-2">Required for Natively to detect the global keyboard shortcuts below, regardless of what window is focused.</p>
-                                    <p className="text-[11px] text-text-tertiary">System Settings &gt; Privacy & Security &gt; Accessibility</p>
+                                    <p className="text-xs opacity-90 mb-2">{t('help:guide.permAccessibilityDesc')}</p>
+                                    <p className="text-[11px] text-text-tertiary">{t('help:guide.pathMacAccessibility')}</p>
                                 </div>
                             </div>
                         ) : (
                             <div className="flex flex-col gap-3 mt-6">
                                 <div className={`p-4 rounded-xl border bg-bg-item-surface border-border-subtle`}>
                                     <h4 className={`font-semibold text-sm mb-2 text-text-primary flex items-center gap-2`}>
-                                        <Mic className="w-4 h-4 text-blue-500" /> Microphone
+                                        <Mic className="w-4 h-4 text-blue-500" /> {t('onboarding:permissions.microphone')}
                                     </h4>
-                                    <p className="text-xs opacity-90 mb-2">Required to capture what you say during meetings. Windows prompts the first time you start a meeting.</p>
-                                    <p className="text-[11px] text-text-tertiary">Settings &gt; Privacy &gt; Microphone</p>
+                                    <p className="text-xs opacity-90 mb-2">{t('help:guide.permMicDesc')}</p>
+                                    <p className="text-[11px] text-text-tertiary">{t('help:guide.pathWinMic')}</p>
                                 </div>
                             </div>
                         )}
                     </div>
                 </AccordionSection>
 
-                <AccordionSection title="2. Audio STT Providers Setup (Microphone)" icon={<Mic className="w-4 h-4" />}>
+                <AccordionSection title={t('help:guide.s2Title')} icon={<Mic className="w-4 h-4" />}>
                     <div className="space-y-6">
-                        <p>Natively supports over 8 different Audio engines to transcribe what you hear and say. From the Audio tab in settings, use the overarching dropdown to switch the active engine.</p>
+                        <p>{t('help:guide.sttIntro')}</p>
 
                         <MockProviderSelectionAnim />
 
                         <div className="space-y-4 pt-2">
-                            <h4 className="font-bold text-lg text-text-primary border-b border-border-subtle pb-2">API Keys & Testing</h4>
-                            <p className="text-xs text-text-secondary">We strongly recommend testing connections before jumping into a live meeting. The system shows successful pings or explicit errors if credits/permissions fail.</p>
+                            <h4 className="font-bold text-lg text-text-primary border-b border-border-subtle pb-2">{t('help:guide.apiKeysTitle')}</h4>
+                            <p className="text-xs text-text-secondary">{t('help:guide.apiKeysDesc')}</p>
 
                             <MockApiKeyFlowAnim />
                         </div>
 
                         <div className="space-y-3 pt-4">
-                            <h4 className="font-bold text-lg text-text-primary border-b border-border-subtle pb-2">Specific Provider Setup</h4>
+                            <h4 className="font-bold text-lg text-text-primary border-b border-border-subtle pb-2">{t('help:guide.providerSetupTitle')}</h4>
 
                             <div className="p-4 rounded-xl border bg-bg-item-surface border-border-subtle space-y-2">
                                 <h5 className="font-semibold text-sm text-text-primary flex justify-between items-center">
-                                    <span>1. Google Cloud STT</span>
-                                    <button onClick={() => { (window as any).electronAPI?.openExternal('https://console.cloud.google.com/apis/credentials') }} className="text-accent-primary hover:underline text-[10px] flex items-center gap-1"><ExternalLink size={10} /> Link</button>
+                                    <span>{t('help:guide.p1Title')}</span>
+                                    <button onClick={() => { (window as any).electronAPI?.openExternal('https://console.cloud.google.com/apis/credentials') }} className="text-accent-primary hover:underline text-[10px] flex items-center gap-1"><ExternalLink size={10} /> {t('help:guide.link')}</button>
                                 </h5>
                                 <p className="text-xs opacity-90 leading-relaxed text-text-secondary">
-                                    Uses a Service Account JSON instead of an API Key. You must build a GCP Project, activate the Cloud Speech API, and create a Service Account under IAM. Download the JSON Key, and drag-and-drop it into the box in the Audio Settings.
+                                    {t('help:guide.p1Desc')}
                                 </p>
                             </div>
 
                             <div className="p-4 rounded-xl border bg-bg-item-surface border-border-subtle space-y-2">
                                 <h5 className="font-semibold text-sm text-text-primary flex justify-between items-center">
-                                    <span>2. ElevenLabs</span>
-                                    <button onClick={() => { (window as any).electronAPI?.openExternal('https://elevenlabs.io/app/settings/api-keys') }} className="text-accent-primary hover:underline text-[10px] flex items-center gap-1"><ExternalLink size={10} /> Link</button>
+                                    <span>{t('help:guide.p2Title')}</span>
+                                    <button onClick={() => { (window as any).electronAPI?.openExternal('https://elevenlabs.io/app/settings/api-keys') }} className="text-accent-primary hover:underline text-[10px] flex items-center gap-1"><ExternalLink size={10} /> {t('help:guide.link')}</button>
                                 </h5>
                                 <p className="text-xs opacity-90 leading-relaxed text-text-secondary">
-                                    When creating a Custom API key for the "Conversational AI" streaming integration, you must explicitly enable <strong>convai.conversations.create</strong> and <strong>assistants.list</strong>.
-                                    Crucially, you must also allow <strong>Speech to Text: Access</strong> as seen below in the ElevenLabs UI:
+                                    <Trans
+                                        i18nKey="help:guide.p2Desc"
+                                        components={[
+                                            <strong key="s1">convai.conversations.create</strong>,
+                                            <strong key="s2">assistants.list</strong>,
+                                            <strong key="s3">{t('help:guide.p2Scope')}</strong>,
+                                        ]}
+                                    />
                                 </p>
                                 <ElevenLabsPermissionsMock />
                             </div>
 
                             <div className="p-4 rounded-xl border bg-bg-item-surface border-border-subtle space-y-2">
                                 <h5 className="font-semibold text-sm text-text-primary flex justify-between items-center">
-                                    <span>3. Groq</span>
-                                    <button onClick={() => { (window as any).electronAPI?.openExternal('https://console.groq.com/keys') }} className="text-accent-primary hover:underline text-[10px] flex items-center gap-1"><ExternalLink size={10} /> Link</button>
+                                    <span>{t('help:guide.p3Title')}</span>
+                                    <button onClick={() => { (window as any).electronAPI?.openExternal('https://console.groq.com/keys') }} className="text-accent-primary hover:underline text-[10px] flex items-center gap-1"><ExternalLink size={10} /> {t('help:guide.link')}</button>
                                 </h5>
                                 <p className="text-xs opacity-90 leading-relaxed text-text-secondary">
-                                    Provides ultra-fast Whisper responses via LPUs. Starts with <span className={kbdClass}>gsk_</span>. No special permissions required.
+                                    <Trans
+                                        i18nKey="help:guide.p3Desc"
+                                        components={[<span className={kbdClass} key="prefix">gsk_</span>]}
+                                    />
                                 </p>
                             </div>
 
                             <div className="p-4 rounded-xl border bg-bg-item-surface border-border-subtle space-y-2">
                                 <h5 className="font-semibold text-sm text-text-primary flex justify-between items-center">
-                                    <span>4. OpenAI</span>
-                                    <button onClick={() => { (window as any).electronAPI?.openExternal('https://platform.openai.com/api-keys') }} className="text-accent-primary hover:underline text-[10px] flex items-center gap-1"><ExternalLink size={10} /> Link</button>
+                                    <span>{t('help:guide.p4Title')}</span>
+                                    <button onClick={() => { (window as any).electronAPI?.openExternal('https://platform.openai.com/api-keys') }} className="text-accent-primary hover:underline text-[10px] flex items-center gap-1"><ExternalLink size={10} /> {t('help:guide.link')}</button>
                                 </h5>
                                 <p className="text-xs opacity-90 leading-relaxed text-text-secondary">
-                                    Uses standard OpenAI keys (<span className={kbdClass}>sk-</span>). Remember: this Audio key is isolated from your AI Generation key under "AI Providers".
+                                    <Trans
+                                        i18nKey="help:guide.p4Desc"
+                                        components={[<span className={kbdClass} key="prefix">sk-</span>]}
+                                    />
                                 </p>
                             </div>
 
                             <div className="p-4 rounded-xl border bg-bg-item-surface border-border-subtle space-y-2">
                                 <h5 className="font-semibold text-sm text-text-primary flex justify-between items-center">
-                                    <span>5. Deepgram</span>
-                                    <button onClick={() => { (window as any).electronAPI?.openExternal('https://console.deepgram.com/') }} className="text-accent-primary hover:underline text-[10px] flex items-center gap-1"><ExternalLink size={10} /> Link</button>
+                                    <span>{t('help:guide.p5Title')}</span>
+                                    <button onClick={() => { (window as any).electronAPI?.openExternal('https://console.deepgram.com/') }} className="text-accent-primary hover:underline text-[10px] flex items-center gap-1"><ExternalLink size={10} /> {t('help:guide.link')}</button>
                                 </h5>
                                 <p className="text-xs opacity-90 leading-relaxed text-text-secondary">
-                                    Extremely accurate streaming transcription (Nova-2 model). Key is generated on-demand in the Deepgram Console.
+                                    {t('help:guide.p5Desc')}
                                 </p>
                             </div>
 
                             <div className="p-4 rounded-xl border bg-bg-item-surface border-border-subtle space-y-2">
                                 <h5 className="font-semibold text-sm text-text-primary flex justify-between items-center">
-                                    <span>6. Azure</span>
-                                    <button onClick={() => { (window as any).electronAPI?.openExternal('https://portal.azure.com/') }} className="text-accent-primary hover:underline text-[10px] flex items-center gap-1"><ExternalLink size={10} /> Link</button>
+                                    <span>{t('help:guide.p6Title')}</span>
+                                    <button onClick={() => { (window as any).electronAPI?.openExternal('https://portal.azure.com/') }} className="text-accent-primary hover:underline text-[10px] flex items-center gap-1"><ExternalLink size={10} /> {t('help:guide.link')}</button>
                                 </h5>
                                 <p className="text-xs opacity-90 leading-relaxed text-text-secondary">
-                                    Requires establishing Azure Speech Services. <strong>Important</strong>: You must also specify an Azure Region alongside your key (e.g. <em>eastus</em>, <em>westeurope</em>) or requests will bounce.
+                                    <Trans
+                                        i18nKey="help:guide.p6Desc"
+                                        components={[
+                                            <strong key="lead">{t('help:guide.importantLead')}</strong>,
+                                            <em key="r1">eastus</em>,
+                                            <em key="r2">westeurope</em>,
+                                        ]}
+                                    />
                                 </p>
                             </div>
 
                             <div className="p-4 rounded-xl border bg-bg-item-surface border-border-subtle space-y-2">
                                 <h5 className="font-semibold text-sm text-text-primary flex justify-between items-center">
-                                    <span>7. IBM Watson</span>
-                                    <button onClick={() => { (window as any).electronAPI?.openExternal('https://cloud.ibm.com/catalog/services/speech-to-text') }} className="text-accent-primary hover:underline text-[10px] flex items-center gap-1"><ExternalLink size={10} /> Link</button>
+                                    <span>{t('help:guide.p7Title')}</span>
+                                    <button onClick={() => { (window as any).electronAPI?.openExternal('https://cloud.ibm.com/catalog/services/speech-to-text') }} className="text-accent-primary hover:underline text-[10px] flex items-center gap-1"><ExternalLink size={10} /> {t('help:guide.link')}</button>
                                 </h5>
                                 <p className="text-xs opacity-90 leading-relaxed text-text-secondary">
-                                    Create a Watson Speech to Text resource in IBM Cloud and generate a set of API credentials.
+                                    {t('help:guide.p7Desc')}
                                 </p>
                             </div>
 
                             <div className="p-4 rounded-xl border bg-bg-item-surface border-border-subtle space-y-2">
                                 <h5 className="font-semibold text-sm text-text-primary flex justify-between items-center">
-                                    <span>8. Soniox</span>
-                                    <button onClick={() => { (window as any).electronAPI?.openExternal('https://console.soniox.com/') }} className="text-accent-primary hover:underline text-[10px] flex items-center gap-1"><ExternalLink size={10} /> Link</button>
+                                    <span>{t('help:guide.p8Title')}</span>
+                                    <button onClick={() => { (window as any).electronAPI?.openExternal('https://console.soniox.com/') }} className="text-accent-primary hover:underline text-[10px] flex items-center gap-1"><ExternalLink size={10} /> {t('help:guide.link')}</button>
                                 </h5>
                                 <p className="text-xs opacity-90 leading-relaxed text-text-secondary">
-                                    Provides high-end medical/law tier transcriptions using their standard dashboard API Key.
+                                    {t('help:guide.p8Desc')}
                                 </p>
                             </div>
                         </div>
@@ -1123,12 +1177,12 @@ export const HelpSettings: React.FC<{ onNavigate?: (tab: string) => void }> = ({
                     </div>
                 </AccordionSection>
 
-                <AccordionSection title="3. AI Providers & Prompt Engine" icon={<Key className="w-4 h-4" />}>
+                <AccordionSection title={t('help:guide.s3Title')} icon={<Key className="w-4 h-4" />}>
                     <div className="space-y-4">
-                        <p className="text-sm">Natively uses Large Language Models (LLMs) to reason about your screen and audio context. You can configure cloud providers, local models, or fully custom endpoints.</p>
+                        <p className="text-sm">{t('help:guide.llmIntro')}</p>
 
                         <div className="space-y-3 pt-2">
-                            <h4 className="font-bold text-lg text-text-primary border-b border-border-subtle pb-2">1. Standard Cloud Providers</h4>
+                            <h4 className="font-bold text-lg text-text-primary border-b border-border-subtle pb-2">{t('help:guide.cloudProvidersTitle')}</h4>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                 <div className="p-3 rounded-xl border bg-bg-item-surface border-border-subtle hover:border-border-muted transition-colors">
@@ -1136,9 +1190,9 @@ export const HelpSettings: React.FC<{ onNavigate?: (tab: string) => void }> = ({
                                         <span className="flex items-center gap-2">
                                             <img src="https://groq.com/favicon.svg" alt="Groq" className="w-4 h-4 object-contain" /> Groq
                                         </span>
-                                        <button onClick={() => { (window as any).electronAPI?.openExternal('https://console.groq.com/keys') }} className="text-accent-primary hover:underline text-[10px] flex items-center gap-1"><ExternalLink size={10} /> Get Key</button>
+                                        <button onClick={() => { (window as any).electronAPI?.openExternal('https://console.groq.com/keys') }} className="text-accent-primary hover:underline text-[10px] flex items-center gap-1"><ExternalLink size={10} /> {t('providers:apiKey.get')}</button>
                                     </h5>
-                                    <p className="text-[11px] opacity-80 mb-2">Ultra-fast inference using LPU hardware. Default model: <strong>llama-3.3-70b-versatile</strong>.</p>
+                                    <p className="text-[11px] opacity-80 mb-2"><Trans i18nKey="help:guide.llmGroqDesc" components={[<strong key="m">llama-3.3-70b-versatile</strong>]} /></p>
                                     <span className={kbdClass}>gsk_...</span>
                                 </div>
                                 <div className="p-3 rounded-xl border bg-bg-item-surface border-border-subtle hover:border-border-muted transition-colors">
@@ -1146,9 +1200,9 @@ export const HelpSettings: React.FC<{ onNavigate?: (tab: string) => void }> = ({
                                         <span className="flex items-center gap-2">
                                             <SiOpenai className={`w-3.5 h-3.5 ${isLight ? 'text-black' : 'text-white'}`} /> OpenAI
                                         </span>
-                                        <button onClick={() => { (window as any).electronAPI?.openExternal('https://platform.openai.com/api-keys') }} className="text-accent-primary hover:underline text-[10px] flex items-center gap-1"><ExternalLink size={10} /> Get Key</button>
+                                        <button onClick={() => { (window as any).electronAPI?.openExternal('https://platform.openai.com/api-keys') }} className="text-accent-primary hover:underline text-[10px] flex items-center gap-1"><ExternalLink size={10} /> {t('providers:apiKey.get')}</button>
                                     </h5>
-                                    <p className="text-[11px] opacity-80 mb-2">Industry standard pipeline. Default models: <strong>gpt-5.4-mini</strong> & <strong>gpt-5.4</strong>.</p>
+                                    <p className="text-[11px] opacity-80 mb-2"><Trans i18nKey="help:guide.llmOpenaiDesc" components={[<strong key="m1">gpt-5.4-mini</strong>, <strong key="m2">gpt-5.4</strong>]} /></p>
                                     <span className={kbdClass}>sk-proj-...</span>
                                 </div>
                                 <div className="p-3 rounded-xl border bg-bg-item-surface border-border-subtle hover:border-border-muted transition-colors">
@@ -1156,9 +1210,9 @@ export const HelpSettings: React.FC<{ onNavigate?: (tab: string) => void }> = ({
                                         <span className="flex items-center gap-2">
                                             <img src="https://cdn.simpleicons.org/anthropic/000000" style={{ filter: isLight ? '' : 'invert(1)' }} alt="Anthropic" className="w-4 h-4 object-contain" /> Anthropic
                                         </span>
-                                        <button onClick={() => { (window as any).electronAPI?.openExternal('https://console.anthropic.com/settings/keys') }} className="text-accent-primary hover:underline text-[10px] flex items-center gap-1"><ExternalLink size={10} /> Get Key</button>
+                                        <button onClick={() => { (window as any).electronAPI?.openExternal('https://console.anthropic.com/settings/keys') }} className="text-accent-primary hover:underline text-[10px] flex items-center gap-1"><ExternalLink size={10} /> {t('providers:apiKey.get')}</button>
                                     </h5>
-                                    <p className="text-[11px] opacity-80 mb-2">Superior coding baseline parameters. Default: <strong>claude-4.6-sonnet</strong>.</p>
+                                    <p className="text-[11px] opacity-80 mb-2"><Trans i18nKey="help:guide.llmAnthropicDesc" components={[<strong key="m">claude-4.6-sonnet</strong>]} /></p>
                                     <span className={kbdClass}>sk-ant-...</span>
                                 </div>
                                 <div className="p-3 rounded-xl border bg-bg-item-surface border-border-subtle hover:border-border-muted transition-colors">
@@ -1166,9 +1220,9 @@ export const HelpSettings: React.FC<{ onNavigate?: (tab: string) => void }> = ({
                                         <span className="flex items-center gap-2">
                                             <SiGoogle className="w-3.5 h-3.5 text-blue-500" /> Google Gemini
                                         </span>
-                                        <button onClick={() => { (window as any).electronAPI?.openExternal('https://aistudio.google.com/app/apikey') }} className="text-accent-primary hover:underline text-[10px] flex items-center gap-1"><ExternalLink size={10} /> Get Key</button>
+                                        <button onClick={() => { (window as any).electronAPI?.openExternal('https://aistudio.google.com/app/apikey') }} className="text-accent-primary hover:underline text-[10px] flex items-center gap-1"><ExternalLink size={10} /> {t('providers:apiKey.get')}</button>
                                     </h5>
-                                    <p className="text-[11px] opacity-80 mb-2">Immense contextual window. Default model: <strong>gemini-3.1-pro</strong>.</p>
+                                    <p className="text-[11px] opacity-80 mb-2"><Trans i18nKey="help:guide.llmGeminiDesc" components={[<strong key="m">gemini-3.1-pro</strong>]} /></p>
                                     <span className={kbdClass}>AIzaSy...</span>
                                 </div>
                             </div>
@@ -1178,43 +1232,56 @@ export const HelpSettings: React.FC<{ onNavigate?: (tab: string) => void }> = ({
                                     <Zap className="w-4 h-4 text-accent-primary" />
                                 </div>
                                 <p className="text-[11px] text-text-secondary leading-relaxed mt-0.5">
-                                    <strong className="text-text-primary font-bold">Autonomous Registry Sync:</strong> Natively utilizes a 14-day background sync clock (<span className="font-mono bg-bg-elevated border border-border-muted px-1.5 py-0.5 rounded text-[10px] text-text-primary shadow-[inset_0_-1px_0_rgba(0,0,0,0.1)]">v2/api/models</span>) to silently poll upstream APIs. If Anthropic or OpenAI drops a new flagship architecture (e.g. GPT-5), your app dynamically absorbs it into the UI dropdown automatically.
+                                    <Trans
+                                        i18nKey="help:guide.registrySyncDesc"
+                                        components={[
+                                            <strong className="text-text-primary font-bold" key="lead">{t('help:guide.registrySyncLead')}</strong>,
+                                            <span className="font-mono bg-bg-elevated border border-border-muted px-1.5 py-0.5 rounded text-[10px] text-text-primary shadow-[inset_0_-1px_0_rgba(0,0,0,0.1)]" key="endpoint">v2/api/models</span>,
+                                        ]}
+                                    />
                                 </p>
                             </div>
 
                             <div className="p-4 mt-2 rounded-xl border border-border-subtle bg-bg-item-surface">
-                                <h5 className="font-semibold text-[13px] text-text-primary mb-1">Configuring the Active Model Engine</h5>
+                                <h5 className="font-semibold text-[13px] text-text-primary mb-1">{t('help:guide.activeModelTitle')}</h5>
                                 <p className="text-[11px] text-text-secondary leading-relaxed">
-                                    Inside the Launcher UI (above the start button), you can hot-swap your <strong>Active Model</strong>. This dictation is extremely important—it determines the active core reasoning engine. If set to <strong>claude-3-5-sonnet</strong>, the intelligence agent uses Anthropic infrastructure exclusively for screen analysis. Switch to <strong>llama3:8b</strong> beneath it, and the architecture instantly reverts to generating responses via your offline GPU pipeline.
+                                    <Trans
+                                        i18nKey="help:guide.activeModelDesc"
+                                        components={[
+                                            <strong key="am">{t('providers:defaultModel.activeModel')}</strong>,
+                                            <strong key="m1">claude-3-5-sonnet</strong>,
+                                            <strong key="m2">llama3:8b</strong>,
+                                        ]}
+                                    />
                                 </p>
                             </div>
                         </div>
 
                         <div className="space-y-3 pt-4">
-                            <h4 className="font-bold text-lg text-text-primary border-b border-border-subtle pb-2">2. Local Models (Ollama)</h4>
+                            <h4 className="font-bold text-lg text-text-primary border-b border-border-subtle pb-2">{t('help:guide.ollamaTitle')}</h4>
                             <div className="p-4 rounded-xl border bg-bg-item-surface border-border-subtle space-y-3">
                                 <p className="text-xs opacity-90 leading-relaxed text-text-secondary">
-                                    You can run Natively completely offline with 100% data privacy using Ollama. Natively automatically scans <span className={kbdClass}>http://localhost:11434</span> for active models.
+                                    You can run Natively completely offline with 100% data privacy using Ollama. Natively automatically scans <span className={kbdClass}>http://localhost:11434</span> {t('help:guide.ollamaTail')}
                                 </p>
                                 <ol className="list-decimal pl-4 text-xs space-y-2 opacity-90 text-text-secondary">
-                                    <li>Download Ollama locally via <button onClick={() => { (window as any).electronAPI?.openExternal('https://ollama.com/download') }} className="text-accent-primary hover:underline inline-flex items-center gap-1 font-medium">ollama.com <ExternalLink size={10} /></button></li>
+                                    <li><Trans i18nKey="help:guide.ollamaStep1" components={[<button onClick={() => { (window as any).electronAPI?.openExternal('https://ollama.com/download') }} className="text-accent-primary hover:underline inline-flex items-center gap-1 font-medium" key="link">ollama.com <ExternalLink size={10} /></button>]} /></li>
                                     <li>
-                                        Open Terminal and run our recommended 8B parameter instruction model:
+                                        {t('help:guide.ollamaStep2')}
                                         <div className="mt-1 bg-bg-input p-2 rounded border border-border-subtle font-mono text-[11px]">ollama run llama3:8b</div>
                                     </li>
-                                    <li>Alternatively, for faster generation without GPU, use Microsoft's smaller model:
+                                    <li>{t('help:guide.ollamaStep3')}
                                         <div className="mt-1 bg-bg-input p-2 rounded border border-border-subtle font-mono text-[11px]">ollama run phi3</div>
                                     </li>
-                                    <li>Return to Natively's AI Providers overlay, and you will see your Local models ready for usage.</li>
+                                    <li>{t('help:guide.ollamaStep4')}</li>
                                 </ol>
                             </div>
                         </div>
 
                         <div className="space-y-3 pt-4">
-                            <h4 className="font-bold text-lg text-text-primary border-b border-border-subtle pb-2">3. Custom Providers</h4>
+                            <h4 className="font-bold text-lg text-text-primary border-b border-border-subtle pb-2">{t('help:guide.customProvidersTitle')}</h4>
                             <div className="p-4 rounded-xl border bg-bg-item-surface border-border-subtle space-y-3">
                                 <p className="text-xs opacity-90 leading-relaxed text-text-secondary">
-                                    Use Custom Providers to hook up any standard external LLM router (like OpenRouter, LMStudio, or proprietary company endpoints). Create a new provider using a cURL command template.
+                                    {t('help:guide.customProvidersDesc')}
                                 </p>
                                 <div className="bg-bg-input p-3 rounded-lg border border-border-subtle space-y-2">
                                     <div className="text-[11px] font-mono text-text-secondary">
@@ -1226,7 +1293,13 @@ export const HelpSettings: React.FC<{ onNavigate?: (tab: string) => void }> = ({
                                 <div className="flex items-start gap-2 mt-2">
                                     <div className="w-5 h-5 rounded bg-orange-500/20 text-orange-500 flex items-center justify-center shrink-0 mt-0.5"><Zap size={10} /></div>
                                     <div className="text-xs text-text-secondary leading-relaxed">
-                                        <strong>Crucial: The Response Path.</strong> You must inform Natively how to parse the JSON text back. Deeply nested outputs must define the exact path array. For OpenAI/OpenRouter compliant endpoints, this is strictly: <span className={kbdClass}>choices[0].message.content</span>.
+                                        <Trans
+                                            i18nKey="help:guide.responsePathDesc"
+                                            components={[
+                                                <strong key="lead">{t('help:guide.responsePathLead')}</strong>,
+                                                <span className={kbdClass} key="path">choices[0].message.content</span>,
+                                            ]}
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -1235,9 +1308,9 @@ export const HelpSettings: React.FC<{ onNavigate?: (tab: string) => void }> = ({
                     </div>
                 </AccordionSection>
 
-                <AccordionSection title="4. Natively Interface Operations" icon={<Monitor className="w-4 h-4" />}>
+                <AccordionSection title={t('help:guide.s4Title')} icon={<Monitor className="w-4 h-4" />}>
                     <div className="space-y-6">
-                        <p className="text-[13px]">When initialized, Natively hides itself visually while remaining active as a persistent translucent overlay. This is your command center.</p>
+                        <p className="text-[13px]">{t('help:guide.interfaceIntro')}</p>
 
                         <div className="relative w-full flex flex-col p-2 sm:p-5 bg-bg-main rounded-[26px] border border-border-subtle shadow-inner">
                             <MockAppInterface />
@@ -1247,21 +1320,21 @@ export const HelpSettings: React.FC<{ onNavigate?: (tab: string) => void }> = ({
                         {/* Quick Actions & Hotkeys */}
                         <div className="mt-4 mb-3 flex items-center gap-3">
                             <div className="flex-1 h-px bg-border-subtle" />
-                            <span className="text-[10px] font-semibold text-text-tertiary uppercase tracking-widest">Quick Actions & Hotkeys</span>
+                            <span className="text-[10px] font-semibold text-text-tertiary uppercase tracking-widest">{t('help:guide.quickActionsTitle')}</span>
                             <div className="flex-1 h-px bg-border-subtle" />
                         </div>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
                             {([
-                                { Icon: Pencil, color: 'blue', title: 'What to Answer?', badge: null, bc: '', kbd: ['⌘', '1'], desc: 'Reads the active transcript and screen, then streams a precise response to read aloud.' },
-                                { Icon: Lightbulb, color: 'violet', title: 'Brainstorm', badge: 'Interview ON', bc: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30', kbd: ['⌘', '3'], desc: 'Recap becomes Brainstorm when Interview Mode is ON — deep multi-step strategies.' },
-                                { Icon: HelpCircle, color: 'teal', title: 'Follow Up', badge: null, bc: '', kbd: ['⌘', '4'], desc: 'Suggests the next logical question to keep conversation flowing gracefully.' },
-                                { Icon: Zap, color: 'emerald', title: 'Answer Now', badge: null, bc: '', kbd: ['⌘', '5'], desc: 'Records your mic + screen context and fires an immediate AI query.' },
-                                { Icon: MessageSquare, color: 'indigo', title: 'Clarify', badge: null, bc: '', kbd: ['⌘', '2'], desc: 'Generates sharp probing questions from latent audio when a topic is unclear.' },
-                                { Icon: RefreshCw, color: 'amber', title: 'Recap', badge: 'Interview OFF', bc: 'bg-red-500/10 text-red-400 border-red-500/30', kbd: ['⌘', '3'], desc: 'Condenses the last 5 minutes into bullet points when you lose the thread.' },
-                                { Icon: Sparkles, color: 'sky', title: 'Code Hint', badge: null, bc: '', kbd: ['⌘', '6'], desc: 'Reads your screen and nudges you toward the correct code implementation.' },
-                                { Icon: Monitor, color: 'rose', title: 'Screenshot & Ask', badge: null, bc: '', kbd: ['⌘', '⇧', 'H'], desc: 'Forces a full-screen capture and immediately processes it through the LLM.' },
-                                { Icon: EyeOff, color: 'slate', title: 'Stealth Execute', badge: null, bc: '', kbd: ['⌘', '↵'], desc: 'Processes context in the background without ever revealing the interface.' },
+                                { Icon: Pencil, color: 'blue', title: t('help:guide.qaWhatToAnswerTitle'), badge: null, bc: '', kbd: ['⌘', '1'], desc: t('help:guide.qaWhatToAnswerDesc') },
+                                { Icon: Lightbulb, color: 'violet', title: t('help:guide.qaBrainstormTitle'), badge: t('help:guide.qaBadgeInterviewOn'), bc: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30', kbd: ['⌘', '3'], desc: t('help:guide.qaBrainstormDesc') },
+                                { Icon: HelpCircle, color: 'teal', title: t('help:guide.qaFollowUpTitle'), badge: null, bc: '', kbd: ['⌘', '4'], desc: t('help:guide.qaFollowUpDesc') },
+                                { Icon: Zap, color: 'emerald', title: t('help:guide.qaAnswerNowTitle'), badge: null, bc: '', kbd: ['⌘', '5'], desc: t('help:guide.qaAnswerNowDesc') },
+                                { Icon: MessageSquare, color: 'indigo', title: t('meeting:actions.clarify'), badge: null, bc: '', kbd: ['⌘', '2'], desc: t('help:guide.qaClarifyDesc') },
+                                { Icon: RefreshCw, color: 'amber', title: t('meeting:actions.recap'), badge: t('help:guide.qaBadgeInterviewOff'), bc: 'bg-red-500/10 text-red-400 border-red-500/30', kbd: ['⌘', '3'], desc: t('help:guide.qaRecapDesc') },
+                                { Icon: Sparkles, color: 'sky', title: t('help:guide.qaCodeHintTitle'), badge: null, bc: '', kbd: ['⌘', '6'], desc: t('help:guide.qaCodeHintDesc') },
+                                { Icon: Monitor, color: 'rose', title: t('help:guide.qaScreenshotAskTitle'), badge: null, bc: '', kbd: ['⌘', '⇧', 'H'], desc: t('help:guide.qaScreenshotAskDesc') },
+                                { Icon: EyeOff, color: 'slate', title: t('help:guide.qaStealthTitle'), badge: null, bc: '', kbd: ['⌘', '↵'], desc: t('help:guide.qaStealthDesc') },
                             ] as Array<{ Icon: React.ElementType; color: 'blue' | 'violet' | 'teal' | 'emerald' | 'indigo' | 'amber' | 'sky' | 'rose' | 'slate'; title: string; badge: string | null; bc: string; kbd: string[]; desc: string }>).map(({ Icon, color, title, badge, bc, kbd, desc }) => {
                                 const resolvedKbd = kbd.map(k =>
                                     k === '⌘' ? getModifierSymbol('cmd')
@@ -1269,7 +1342,7 @@ export const HelpSettings: React.FC<{ onNavigate?: (tab: string) => void }> = ({
                                   : k === '⌥' ? getModifierSymbol('option')
                                   : k
                                 );
-                                const t = {
+                                const tone = {
                                     blue: { bg: 'bg-blue-500/10', text: 'text-blue-400', border: 'border-blue-500/20', glow: 'group-hover:shadow-[0_0_0_1px_rgba(59,130,246,0.2),0_4px_12px_rgba(59,130,246,0.07)]' },
                                     violet: { bg: 'bg-violet-500/10', text: 'text-violet-400', border: 'border-violet-500/20', glow: 'group-hover:shadow-[0_0_0_1px_rgba(139,92,246,0.2),0_4px_12px_rgba(139,92,246,0.07)]' },
                                     teal: { bg: 'bg-teal-500/10', text: 'text-teal-400', border: 'border-teal-500/20', glow: 'group-hover:shadow-[0_0_0_1px_rgba(20,184,166,0.2),0_4px_12px_rgba(20,184,166,0.07)]' },
@@ -1282,12 +1355,12 @@ export const HelpSettings: React.FC<{ onNavigate?: (tab: string) => void }> = ({
                                 }[color];
 
                                 return (
-                                    <div key={title} className={`group flex flex-col gap-1.5 p-3 rounded-xl border border-border-subtle bg-bg-item-surface hover:bg-bg-elevated transition-all duration-200 cursor-default ${t.glow}`}>
+                                    <div key={title} className={`group flex flex-col gap-1.5 p-3 rounded-xl border border-border-subtle bg-bg-item-surface hover:bg-bg-elevated transition-all duration-200 cursor-default ${tone.glow}`}>
 
                                         {/* Line 1 — Icon + Name */}
                                         <div className="flex items-center gap-2">
-                                            <div className={`w-5 h-5 rounded-md ${t.bg} border ${t.border} flex items-center justify-center shrink-0`}>
-                                                <Icon className={`w-3 h-3 ${t.text}`} strokeWidth={2.5} />
+                                            <div className={`w-5 h-5 rounded-md ${tone.bg} border ${tone.border} flex items-center justify-center shrink-0`}>
+                                                <Icon className={`w-3 h-3 ${tone.text}`} strokeWidth={2.5} />
                                             </div>
                                             <span className="text-[12px] font-bold text-text-primary tracking-tight leading-none truncate">{title}</span>
                                         </div>
@@ -1297,7 +1370,7 @@ export const HelpSettings: React.FC<{ onNavigate?: (tab: string) => void }> = ({
                                             {badge ? (
                                                 <span className={`text-[9px] font-black uppercase tracking-wider px-1.5 py-[2px] border rounded leading-none ${bc}`}>{badge}</span>
                                             ) : (
-                                                <span className="text-[9px] font-bold text-text-tertiary/50 uppercase tracking-wider leading-none">Always active</span>
+                                                <span className="text-[9px] font-bold text-text-tertiary/50 uppercase tracking-wider leading-none">{t('help:guide.alwaysActive')}</span>
                                             )}
                                         </div>
 
@@ -1322,65 +1395,65 @@ export const HelpSettings: React.FC<{ onNavigate?: (tab: string) => void }> = ({
                     </div>
                 </AccordionSection>
 
-                <AccordionSection title="5. Meeting Intelligence" icon={<Calendar className="w-4 h-4" />}>
+                <AccordionSection title={t('help:guide.s5Title')} icon={<Calendar className="w-4 h-4" />}>
                     <div className="space-y-6">
-                        <p className="text-[13px]">When an active session concludes, it gets saved directly to your local file system as a complete intelligence dossier spanning the transcript, AI token usage, and automated structural summaries.</p>
+                        <p className="text-[13px]">{t('help:guide.meetingIntelIntro')}</p>
 
                         <MockMeetingInterfaceAnim />
 
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                             <div className="p-4 bg-bg-item-surface border border-border-subtle rounded-xl shadow-sm hover:border-border-muted transition-colors group">
                                 <h4 className="text-[14px] font-bold text-text-primary flex items-center gap-2 mb-2">
-                                    <FileText className="w-4 h-4 text-blue-500 group-hover:scale-110 transition-transform" /> Summary Execution
+                                    <FileText className="w-4 h-4 text-blue-500 group-hover:scale-110 transition-transform" /> {t('help:guide.summaryTitle')}
                                 </h4>
                                 <p className="text-[12px] text-text-secondary leading-relaxed">
-                                    Natively fires a local background job as soon as the meeting finishes to compress the entire raw audio transcript into clean, formatted markdown representing structural overviews and explicit action items.
+                                    {t('help:guide.summaryDesc')}
                                 </p>
                             </div>
 
                             <div className="p-4 bg-bg-item-surface border border-border-subtle rounded-xl shadow-sm hover:border-border-muted transition-colors group">
                                 <h4 className="text-[14px] font-bold text-text-primary flex items-center gap-2 mb-2">
-                                    <Volume2 className="w-4 h-4 text-emerald-500 group-hover:scale-110 transition-transform" /> Raw Transcripts
+                                    <Volume2 className="w-4 h-4 text-emerald-500 group-hover:scale-110 transition-transform" /> {t('help:guide.rawTranscriptTitle')}
                                 </h4>
                                 <p className="text-[12px] text-text-secondary leading-relaxed">
-                                    Dive into the exact dialogue timeline. Speaker separation attempts to classify "Me" vs "Them" using volume thresholds, capturing everything physically said alongside timestamps.
+                                    {t('help:guide.rawTranscriptDesc')}
                                 </p>
                             </div>
 
                             <div className="p-4 bg-bg-item-surface border border-border-subtle rounded-xl shadow-sm hover:border-border-muted transition-colors group">
                                 <h4 className="text-[14px] font-bold text-text-primary flex items-center gap-2 mb-2">
-                                    <Cpu className="w-4 h-4 text-purple-500 group-hover:scale-110 transition-transform" /> Usage & Storage
+                                    <Cpu className="w-4 h-4 text-purple-500 group-hover:scale-110 transition-transform" /> {t('help:guide.usageTitle')}
                                 </h4>
                                 <p className="text-[12px] text-text-secondary leading-relaxed">
-                                    View exactly how many tokens the AI consumed globally across the meeting, tracking visual and textual inputs separately.
+                                    {t('help:guide.usageDesc')}
                                 </p>
                             </div>
                         </div>
 
                         <div className="border-t border-border-subtle pt-6">
                             <h4 className="font-bold text-sm text-text-primary flex items-center gap-2 mb-4">
-                                <MessageSquare className="w-4 h-4 text-accent-primary" /> In-Meeting Semantic Search
+                                <MessageSquare className="w-4 h-4 text-accent-primary" /> {t('help:guide.semanticSearchTitle')}
                             </h4>
-                            <p className="text-[13px] mb-6">Instead of re-reading the entire transcript to find what happened, use the attached RAG interface pinned to the bottom of the Meeting details window.</p>
+                            <p className="text-[13px] mb-6">{t('help:guide.semanticSearchDesc')}</p>
 
                             <MockMeetingChatAnim />
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-6">
                                 <div className="p-4 bg-bg-item-surface border border-border-subtle rounded-xl shadow-sm hover:border-border-muted transition-colors group">
                                     <h4 className="text-[14px] font-bold text-text-primary flex items-center gap-2 mb-2">
-                                        <Search className="w-4 h-4 text-orange-500 group-hover:scale-110 transition-transform" /> Contextual Semantic Search
+                                        <Search className="w-4 h-4 text-orange-500 group-hover:scale-110 transition-transform" /> {t('help:guide.contextualSearchTitle')}
                                     </h4>
                                     <p className="text-[12px] text-text-secondary leading-relaxed">
-                                        You don't need to craft long AI prompts. Simply ask, "What API dependencies did they list?" and the system injects the localized transcript from that specific timeline to provide highly-accurate responses dynamically.
+                                        {t('help:guide.contextualSearchDesc')}
                                     </p>
                                 </div>
 
                                 <div className="p-4 bg-bg-item-surface border border-border-subtle rounded-xl shadow-sm hover:border-border-muted transition-colors group">
                                     <h4 className="text-[14px] font-bold text-text-primary flex items-center gap-2 mb-2">
-                                        <Brain className="w-4 h-4 text-teal-500 group-hover:scale-110 transition-transform" /> Memory Isolation
+                                        <Brain className="w-4 h-4 text-teal-500 group-hover:scale-110 transition-transform" /> {t('help:guide.memoryIsolationTitle')}
                                     </h4>
                                     <p className="text-[12px] text-text-secondary leading-relaxed">
-                                        Conversations here are strictly isolated to the selected meeting boundaries. They do not utilize global memory, ensuring hyper-focused extraction without cross-contamination.
+                                        {t('help:guide.memoryIsolationDesc')}
                                     </p>
                                 </div>
                             </div>
@@ -1388,35 +1461,35 @@ export const HelpSettings: React.FC<{ onNavigate?: (tab: string) => void }> = ({
                     </div>
                 </AccordionSection>
 
-                <AccordionSection title="6. Global Search & Shortcuts" icon={<Search className="w-4 h-4" />}>
+                <AccordionSection title={t('help:guide.s6Title')} icon={<Search className="w-4 h-4" />}>
                     <div className="space-y-6">
-                        <p className="text-[13px]">Hit <span className={kbdClass}>{isMac ? 'Cmd+K' : 'Ctrl+K'}</span> anywhere on your computer to invoke the Natively Global Palette. This acts as your Spotlight overlay for interacting directly with the system backbone.</p>
+                        <p className="text-[13px]"><Trans i18nKey="help:guide.globalPaletteDesc" components={[<span className={kbdClass} key="kb">{isMac ? 'Cmd+K' : 'Ctrl+K'}</span>]} /></p>
 
                         <MockSearchPillAnim />
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4 mb-4">
                             <div className="p-4 bg-bg-item-surface border border-border-subtle rounded-xl shadow-sm hover:border-border-muted transition-colors group">
                                 <h4 className="text-[14px] font-bold text-text-primary flex items-center gap-2 mb-2">
-                                    <Briefcase className="w-4 h-4 text-sky-500 group-hover:scale-110 transition-transform" /> Instant Meeting Traversal
+                                    <Briefcase className="w-4 h-4 text-sky-500 group-hover:scale-110 transition-transform" /> {t('help:guide.traversalTitle')}
                                 </h4>
                                 <p className="text-[12px] text-text-secondary leading-relaxed">
-                                    Typing any text instantly fuzzy matches across all your previous meeting titles, summaries, and internal files. Hitting enter jumps you straight into the intelligence viewer for that topic.
+                                    {t('help:guide.traversalDesc')}
                                 </p>
                             </div>
 
                             <div className="p-4 bg-bg-item-surface border border-border-subtle rounded-xl shadow-sm hover:border-border-muted transition-colors group">
                                 <h4 className="text-[14px] font-bold text-text-primary flex items-center gap-2 mb-2">
-                                    <Sparkles className="w-4 h-4 text-amber-500 group-hover:scale-110 transition-transform" /> Conversational Fallback
+                                    <Sparkles className="w-4 h-4 text-amber-500 group-hover:scale-110 transition-transform" /> {t('help:guide.fallbackTitle')}
                                 </h4>
                                 <p className="text-[12px] text-text-secondary leading-relaxed">
-                                    If your query doesn't match an existing document, the palette offers a direct jump to spark off a standard LLM chat conversation passing through your exact typed intent.
+                                    {t('help:guide.fallbackDesc')}
                                 </p>
                             </div>
                         </div>
 
                         <div className="border-t border-border-subtle pt-6">
-                            <h4 className="font-bold text-sm text-text-primary border-b border-border-subtle pb-1">Global System Shortcuts</h4>
-                            <p className="text-[11px] text-text-secondary mt-1 mb-3">These hotkeys work anywhere on your operating system, regardless of whether Natively is focused or completely hidden. Change them via <strong>Settings &gt; Hotkeys</strong>.</p>
+                            <h4 className="font-bold text-sm text-text-primary border-b border-border-subtle pb-1">{t('help:guide.globalShortcutsTitle')}</h4>
+                            <p className="text-[11px] text-text-secondary mt-1 mb-3"><Trans i18nKey="help:guide.globalShortcutsDesc" components={[<strong key="path">{t('help:guide.pathHotkeys')}</strong>]} /></p>
 
                             <div className="grid gap-3">
                                 <div className="flex items-center justify-between p-4 rounded-xl border bg-bg-item-surface border-border-subtle group">
@@ -1425,8 +1498,8 @@ export const HelpSettings: React.FC<{ onNavigate?: (tab: string) => void }> = ({
                                             <Eye className="w-4 h-4 text-text-primary" />
                                         </div>
                                         <div>
-                                            <div className="font-semibold text-sm text-text-primary">Show / Hide Interface</div>
-                                            <div className="text-xs text-text-secondary mt-1">Quickly toggle the window visibility. Used as an immediate panic hide.</div>
+                                            <div className="font-semibold text-sm text-text-primary">{t('help:guide.scToggleTitle')}</div>
+                                            <div className="text-xs text-text-secondary mt-1">{t('help:guide.scToggleDesc')}</div>
                                         </div>
                                     </div>
                                     <div className="flex gap-1 shrink-0">
@@ -1440,8 +1513,8 @@ export const HelpSettings: React.FC<{ onNavigate?: (tab: string) => void }> = ({
                                             <Image className="w-4 h-4 text-text-primary" />
                                         </div>
                                         <div>
-                                            <div className="font-semibold text-sm text-text-primary">Capture Contextual Screenshot</div>
-                                            <div className="text-xs text-text-secondary mt-1">Takes a silent screenshot in the background, feeding the visual data to the LLM context flow.</div>
+                                            <div className="font-semibold text-sm text-text-primary">{t('help:guide.scCaptureTitle')}</div>
+                                            <div className="text-xs text-text-secondary mt-1">{t('help:guide.scCaptureDesc')}</div>
                                         </div>
                                     </div>
                                     <div className="flex gap-1 shrink-0">
@@ -1455,8 +1528,8 @@ export const HelpSettings: React.FC<{ onNavigate?: (tab: string) => void }> = ({
                                             <MessageSquare className="w-4 h-4 text-text-primary" />
                                         </div>
                                         <div>
-                                            <div className="font-semibold text-sm text-text-primary">Process Captured Context (Execute)</div>
-                                            <div className="text-xs text-text-secondary mt-1">Triggers Natively to analyze the captured screenshots and text from the rolling buffer.</div>
+                                            <div className="font-semibold text-sm text-text-primary">{t('help:guide.scProcessTitle')}</div>
+                                            <div className="text-xs text-text-secondary mt-1">{t('help:guide.scProcessDesc')}</div>
                                         </div>
                                     </div>
                                     <div className="flex gap-1 shrink-0">
@@ -1470,8 +1543,8 @@ export const HelpSettings: React.FC<{ onNavigate?: (tab: string) => void }> = ({
                                             <Zap className="w-4 h-4 text-text-primary" />
                                         </div>
                                         <div>
-                                            <div className="font-semibold text-sm text-text-primary">Capture + Execute Instantly</div>
-                                            <div className="text-xs text-text-secondary mt-1">Captures a screenshot AND processes it in one fluid action.</div>
+                                            <div className="font-semibold text-sm text-text-primary">{t('help:guide.scBothTitle')}</div>
+                                            <div className="text-xs text-text-secondary mt-1">{t('help:guide.scBothDesc')}</div>
                                         </div>
                                     </div>
                                     <div className="flex gap-1 shrink-0">
@@ -1485,41 +1558,41 @@ export const HelpSettings: React.FC<{ onNavigate?: (tab: string) => void }> = ({
 
 
 
-                <AccordionSection title="7. Pro Intelligence" icon={<Star className="w-4 h-4" />}>
+                <AccordionSection title={t('help:guide.s7Title')} icon={<Star className="w-4 h-4" />}>
                     <div className="space-y-6">
                         {/* Profile */}
                         <div>
                             <div className="p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl mb-4">
                                 <h4 className="text-[13px] font-semibold text-amber-500 flex items-center gap-2 mb-1">
-                                    <User size={14} /> Profile Intelligence System
+                                    <User size={14} /> {t('help:guide.profileTitle')}
                                 </h4>
                                 <p className="text-[11px] text-text-secondary leading-relaxed mb-0">
-                                    Instead of telling the AI who you are during every prompt, Profile Intelligence parses your background and universally injects it into all queries so it responds securely customized to your job role.
+                                    {t('help:guide.profileDesc')}
                                 </p>
                             </div>
 
                             <div className="grid md:grid-cols-2 gap-3">
                                 <div className="p-4 rounded-xl border bg-bg-item-surface border-border-subtle">
                                     <h4 className="font-semibold text-sm mb-2 text-text-primary flex items-center gap-2">
-                                        <Globe className="w-4 h-4 text-blue-500" /> Core Benefits
+                                        <Globe className="w-4 h-4 text-blue-500" /> {t('help:guide.coreBenefitsTitle')}
                                     </h4>
                                     <ul className="text-[11px] text-text-secondary space-y-1 list-disc pl-4">
-                                        <li><strong>Zero Context Prep:</strong> Model inherits your coding stack, experience, etc.</li>
-                                        <li><strong>Resume Parsing:</strong> Upload your PDF Resume for local extraction.</li>
-                                        <li><strong>Global Toggle:</strong> Enable <span className="text-amber-500 font-semibold">Profile Mode</span> via the Star button.</li>
+                                        <li><strong>{t('help:guide.benefit1Lead')}</strong> {t('help:guide.benefit1')}</li>
+                                        <li><strong>{t('help:guide.benefit2Lead')}</strong> {t('help:guide.benefit2')}</li>
+                                        <li><Trans i18nKey="help:guide.benefit3" components={[<strong key="lead">{t('help:guide.benefit3Lead')}</strong>, <span className="text-amber-500 font-semibold" key="mode">{t('settings:popup.profileMode')}</span>]} /></li>
                                     </ul>
                                 </div>
 
                                 <div className="p-4 rounded-xl border bg-accent-primary/5 border-border-subtle">
                                     <h4 className="font-semibold text-sm mb-2 text-text-primary flex items-center gap-2">
-                                        <CreditCard className="w-4 h-4 text-accent-primary" /> Pro Requirement
+                                        <CreditCard className="w-4 h-4 text-accent-primary" /> {t('help:guide.proRequirementTitle')}
                                     </h4>
                                     <p className="text-[11px] text-text-secondary mb-2">
-                                        This is a Natively Pro feature.
+                                        {t('help:guide.proRequirementDesc')}
                                     </p>
                                     <ol className="text-[11px] text-text-secondary space-y-1 list-decimal pl-4 mb-0">
-                                        <li>Get a License at <button onClick={() => { (window as any).electronAPI?.openExternal('https://natively.software/') }} className="text-accent-primary hover:underline font-semibold">natively.software</button></li>
-                                        <li>Drop your Resume PDF in the UI to activate injection.</li>
+                                        <li>{t('help:guide.getLicenseAt')} <button onClick={() => { (window as any).electronAPI?.openExternal('https://natively.software/') }} className="text-accent-primary hover:underline font-semibold">natively.software</button></li>
+                                        <li>{t('help:guide.dropResume')}</li>
                                     </ol>
                                 </div>
                             </div>
@@ -1528,61 +1601,73 @@ export const HelpSettings: React.FC<{ onNavigate?: (tab: string) => void }> = ({
                         <div className="border-t border-border-subtle pt-5 mt-2">
                             <div className="p-3 bg-purple-500/10 border border-purple-500/20 rounded-xl mb-4">
                                 <h4 className="text-[13px] font-semibold text-purple-400 flex items-center gap-2 mb-1">
-                                    <Briefcase size={14} /> Job Description Targeting
+                                    <Briefcase size={14} /> {t('help:guide.jdTargetingTitle')}
                                 </h4>
                                 <p className="text-[11px] text-text-secondary leading-relaxed mb-0">
-                                    Drop a target <strong>JD PDF</strong> alongside your resume. Natively extracts the role title, level, company, and required technologies, then biases every prompt to align your responses with that exact spec — perfect for staying on-message during a final loop.
+                                    <Trans
+                                        i18nKey="help:guide.jdTargetingDesc"
+                                        components={[<strong key="jd">{t('help:guide.jdPdf')}</strong>]}
+                                    />
                                 </p>
                             </div>
 
                             <div className="grid md:grid-cols-2 gap-3 mb-5">
                                 <div className="p-4 rounded-xl border bg-bg-item-surface border-border-subtle">
                                     <h4 className="font-semibold text-sm mb-2 text-text-primary flex items-center gap-2">
-                                        <Building2 className="w-4 h-4 text-purple-400" /> Company Intelligence
+                                        <Building2 className="w-4 h-4 text-purple-400" /> {t('help:guide.companyIntelTitle')}
                                     </h4>
                                     <p className="text-[11px] text-text-secondary leading-relaxed">
-                                        After uploading a JD, hit <strong>Research Now</strong> to compile a live dossier on the company — recent news, product surface area, culture signals — cached and injected into every reply so you sound briefed without prep.
+                                        <Trans
+                                            i18nKey="help:guide.companyIntelDesc"
+                                            components={[<strong key="btn">{t('settings:profile.researchNow')}</strong>]}
+                                        />
                                     </p>
                                 </div>
                                 <div className="p-4 rounded-xl border bg-bg-item-surface border-border-subtle">
                                     <h4 className="font-semibold text-sm mb-2 text-text-primary flex items-center gap-2">
-                                        <DollarSign className="w-4 h-4 text-emerald-500" /> Negotiation Script
+                                        <DollarSign className="w-4 h-4 text-emerald-500" /> {t('help:guide.negotiationTitle')}
                                     </h4>
                                     <p className="text-[11px] text-text-secondary leading-relaxed">
-                                        Generate a <strong>tailored salary script</strong> calibrated against the active JD's level and your background. Live coaching shows up inline during compensation conversations.
+                                        <Trans
+                                            i18nKey="help:guide.negotiationDesc"
+                                            components={[<strong key="script">{t('help:guide.tailoredScript')}</strong>]}
+                                        />
                                     </p>
                                 </div>
                             </div>
 
                             <div className="p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl mb-4">
                                 <h4 className="text-[13px] font-semibold text-emerald-500 flex items-center gap-2 mb-1">
-                                    <FileText size={14} /> Custom Context Notes
+                                    <FileText size={14} /> {t('help:guide.customContextTitle')}
                                 </h4>
                                 <p className="text-[11px] text-text-secondary leading-relaxed mb-0">
-                                    In addition to your Resume and JD, type any free-form context into the <strong>Custom Context</strong> textarea — sales stats, product details, LeetCode solutions, personal preferences. Injected as a <code className="bg-bg-elevated px-1 rounded text-[10px]">&lt;user_context&gt;</code> block into every AI call, across all modes and providers.
+                                    <Trans
+                                        i18nKey="help:guide.customContextDesc"
+                                        components={[<strong key="cc">{t('settings:profile.customContext')}</strong>, <code className="bg-bg-elevated px-1 rounded text-[10px]" key="tag">&lt;user_context&gt;</code>]}
+                                    />
                                 </p>
                             </div>
                             <div className="grid md:grid-cols-2 gap-3">
                                 <div className="p-4 rounded-xl border bg-bg-item-surface border-border-subtle">
                                     <h4 className="font-semibold text-sm mb-2 text-text-primary flex items-center gap-2">
-                                        <Upload className="w-4 h-4 text-emerald-500" /> How to Use
+                                        <Upload className="w-4 h-4 text-emerald-500" /> {t('help:guide.howToUseTitle')}
                                     </h4>
                                     <ul className="text-[11px] text-text-secondary space-y-1 list-disc pl-4">
-                                        <li>Open <strong>Settings → Profile Intelligence</strong></li>
-                                        <li>Scroll to the <strong>Custom Context</strong> textarea</li>
-                                        <li>Type anything — auto-saved after 800 ms</li>
-                                        <li>Up to 4,000 characters with a live counter</li>
+                                        <li>{t('common:actions.open')} <strong>{t('help:guide.pathProfileIntel')}</strong></li>
+                                        <li>{t('help:guide.scrollTo')} <strong>{t('settings:profile.customContext')}</strong> {t('help:guide.textarea')}</li>
+                                        <li>{t('help:guide.customContextStep3')}</li>
+                                        <li>{t('help:guide.customContextStep4')}</li>
                                     </ul>
                                 </div>
                                 <div className="p-4 rounded-xl border bg-bg-item-surface border-border-subtle">
                                     <h4 className="font-semibold text-sm mb-2 text-text-primary flex items-center gap-2">
-                                        <Sparkles className="w-4 h-4 text-amber-500" /> What to Put Here
+                                        <Sparkles className="w-4 h-4 text-amber-500" /> {t('help:guide.whatToPutTitle')}
                                     </h4>
                                     <ul className="text-[11px] text-text-secondary space-y-1 list-disc pl-4">
-                                        <li>Your company's product details or pricing</li>
-                                        <li>Candidate pipeline notes for recruiting</li>
-                                        <li>LeetCode / DSA patterns you prefer</li>
-                                        <li>Personal formatting or style preferences</li>
+                                        <li>{t('help:guide.putItem1')}</li>
+                                        <li>{t('help:guide.putItem2')}</li>
+                                        <li>{t('help:guide.putItem3')}</li>
+                                        <li>{t('help:guide.putItem4')}</li>
                                     </ul>
                                 </div>
                             </div>
@@ -1590,18 +1675,18 @@ export const HelpSettings: React.FC<{ onNavigate?: (tab: string) => void }> = ({
                     </div>
                 </AccordionSection>
 
-                <AccordionSection title="8. Modes Manager" icon={<LayoutGrid className="w-4 h-4" />}>
+                <AccordionSection title={t('help:guide.s8Title')} icon={<LayoutGrid className="w-4 h-4" />}>
                     <div className="space-y-6">
-                        <p className="text-[13px]">Modes let you assign a specialized AI persona to your session. Each mode has a tailored system prompt, a personal context area, reference files, and smart note template sections — so Natively behaves differently depending on whether you're in a sales call, a coding interview, or a team standup.</p>
+                        <p className="text-[13px]">{t('help:guide.modesIntro')}</p>
 
                         <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                             {([
-                                { name: 'Interview', desc: 'STAR-format answers, behavioral stories, step-by-step coding hints.' },
-                                { name: 'Sales', desc: 'Objection handling, discovery questions, product pitch frameworks.' },
-                                { name: 'Recruiting', desc: 'Candidate assessment, JD cross-referencing, structured evaluation.' },
-                                { name: 'Team Meet', desc: 'Action items, announcements, blockers, decisions — auto-extracted.' },
-                                { name: 'Lecture', desc: 'Concept breakdowns, intuition-first explanations, formula notes.' },
-                                { name: 'Technical', desc: 'DSA / system design reasoning, edge cases, complexity analysis.' },
+                                { name: 'Interview', desc: t('help:guide.modeDesc1') },
+                                { name: 'Sales', desc: t('help:guide.modeDesc2') },
+                                { name: 'Recruiting', desc: t('help:guide.modeDesc3') },
+                                { name: 'Team Meet', desc: t('help:guide.modeDesc4') },
+                                { name: 'Lecture', desc: t('help:guide.modeDesc5') },
+                                { name: 'Technical', desc: t('help:guide.modeDesc6') },
                             ] as Array<{ name: string; desc: string }>).map(({ name, desc }) => (
                                 <div key={name} className="p-3 rounded-xl border bg-bg-item-surface border-border-subtle">
                                     <h5 className="font-semibold text-sm text-text-primary mb-1">{name}</h5>
@@ -1611,41 +1696,41 @@ export const HelpSettings: React.FC<{ onNavigate?: (tab: string) => void }> = ({
                         </div>
 
                         <div className="space-y-3 pt-2 border-t border-border-subtle">
-                            <h4 className="font-bold text-sm text-text-primary pt-4">How to Use Modes</h4>
+                            <h4 className="font-bold text-sm text-text-primary pt-4">{t('help:guide.modesHowToTitle')}</h4>
                             <div className="grid md:grid-cols-2 gap-3">
                                 <div className="p-4 rounded-xl border bg-bg-item-surface border-border-subtle">
-                                    <h4 className="font-semibold text-sm mb-2 text-text-primary">Opening the Manager</h4>
+                                    <h4 className="font-semibold text-sm mb-2 text-text-primary">{t('help:guide.modesOpenTitle')}</h4>
                                     <ul className="text-[11px] text-text-secondary space-y-1 list-disc pl-4">
-                                        <li>Click the <strong>grid icon</strong> in the Launcher header</li>
-                                        <li>Or click the grid icon in the main interface toolbar</li>
-                                        <li>Requires a Natively Pro license</li>
+                                        <li><Trans i18nKey="help:guide.modesOpenStep1" components={[<strong key="icon">{t('help:guide.gridIcon')}</strong>]} /></li>
+                                        <li>{t('help:guide.modesOpenStep2')}</li>
+                                        <li>{t('help:guide.modesOpenStep3')}</li>
                                     </ul>
                                 </div>
                                 <div className="p-4 rounded-xl border bg-bg-item-surface border-border-subtle">
-                                    <h4 className="font-semibold text-sm mb-2 text-text-primary">Activating a Mode</h4>
+                                    <h4 className="font-semibold text-sm mb-2 text-text-primary">{t('help:guide.modesActivateTitle')}</h4>
                                     <ul className="text-[11px] text-text-secondary space-y-1 list-disc pl-4">
-                                        <li>Select any mode in the left sidebar</li>
-                                        <li>Click <strong>Set active</strong> to apply it</li>
-                                        <li>The toolbar icon shows the active mode name live</li>
-                                        <li>Click <strong>Deactivate</strong> to return to General</li>
+                                        <li>{t('help:guide.modesActivateStep1')}</li>
+                                        <li>{t('help:guide.click')} <strong>{t('help:guide.setActive')}</strong> {t('help:guide.toApplyIt')}</li>
+                                        <li>{t('help:guide.modesActivateStep3')}</li>
+                                        <li>{t('help:guide.click')} <strong>{t('help:guide.deactivate')}</strong> {t('help:guide.toReturnGeneral')}</li>
                                     </ul>
                                 </div>
                                 <div className="p-4 rounded-xl border bg-bg-item-surface border-border-subtle">
-                                    <h4 className="font-semibold text-sm mb-2 text-text-primary">Reference Files</h4>
+                                    <h4 className="font-semibold text-sm mb-2 text-text-primary">{t('help:guide.referenceFilesTitle')}</h4>
                                     <ul className="text-[11px] text-text-secondary space-y-1 list-disc pl-4">
-                                        <li>Upload PDF, DOCX, or TXT files per mode</li>
-                                        <li>File contents are injected as real-time context</li>
-                                        <li>Great for: resumes, product sheets, job descriptions</li>
-                                        <li>Per-file cap: 12 k chars · total cap: 40 k chars</li>
+                                        <li>{t('help:guide.refStep1')}</li>
+                                        <li>{t('help:guide.refStep2')}</li>
+                                        <li>{t('help:guide.refStep3')}</li>
+                                        <li>{t('help:guide.refStep4')}</li>
                                     </ul>
                                 </div>
                                 <div className="p-4 rounded-xl border bg-bg-item-surface border-border-subtle">
-                                    <h4 className="font-semibold text-sm mb-2 text-text-primary">Custom Modes & Templates</h4>
+                                    <h4 className="font-semibold text-sm mb-2 text-text-primary">{t('help:guide.customModesTitle')}</h4>
                                     <ul className="text-[11px] text-text-secondary space-y-1 list-disc pl-4">
-                                        <li>Click <strong>+ New Mode</strong> for a blank slate</li>
-                                        <li>Browse the <strong>Templates Gallery</strong> for ready-made personas</li>
-                                        <li>Edit the <strong>Real-time Prompt</strong> with the inline Save action</li>
-                                        <li>Define <strong>Note Section Templates</strong> per mode for capture format</li>
+                                        <li>{t('help:guide.click')} <strong>{t('help:guide.newMode')}</strong> {t('help:guide.forBlankSlate')}</li>
+                                        <li>{t('help:guide.browseThe')} <strong>{t('help:guide.templatesGallery')}</strong> {t('help:guide.forReadyMade')}</li>
+                                        <li>{t('help:guide.editThe')} <strong>{t('help:guide.realtimePrompt')}</strong> {t('help:guide.withInlineSave')}</li>
+                                        <li>{t('help:guide.define')} <strong>{t('help:guide.noteTemplates')}</strong> {t('help:guide.perModeFormat')}</li>
                                     </ul>
                                 </div>
                             </div>
@@ -1653,57 +1738,69 @@ export const HelpSettings: React.FC<{ onNavigate?: (tab: string) => void }> = ({
 
                         <div className="p-3 bg-indigo-500/10 border border-indigo-500/20 rounded-xl">
                             <h4 className="text-[13px] font-semibold text-indigo-400 flex items-center gap-2 mb-1">
-                                <Star size={14} /> Pro Feature
+                                <Star size={14} /> {t('help:guide.proFeatureTitle')}
                             </h4>
                             <p className="text-[11px] text-text-secondary leading-relaxed mb-0">
-                                Modes are locked behind Natively Pro. Free and trial users see only the General mode. Activate a license via <strong>Settings → Natively API</strong> to unlock all seven modes.
+                                <Trans
+                                    i18nKey="help:guide.modesProGate"
+                                    components={[<strong key="path">{t('help:guide.pathNativelyApi')}</strong>]}
+                                />
                             </p>
                         </div>
                     </div>
                 </AccordionSection>
 
-                <AccordionSection title="9. Miscellaneous" icon={<Settings className="w-4 h-4" />}>
+                <AccordionSection title={t('help:guide.s9Title')} icon={<Settings className="w-4 h-4" />}>
                     <div className="space-y-6">
                         {/* Calendar */}
                         <div>
                             <div className="p-3 bg-blue-500/10 border border-blue-500/20 rounded-xl mb-4">
                                 <h4 className="text-[13px] font-semibold text-blue-500 flex items-center gap-2 mb-1">
-                                    <Calendar size={14} /> What is Calendar Intelligence?
+                                    <Calendar size={14} /> {t('help:guide.calendarTitle')}
                                 </h4>
                                 <p className="text-[11px] text-text-secondary leading-relaxed mb-0">
-                                    By connecting your Google Calendar directly to Natively, the AI automatically gains context on your upcoming meetings, syncs the event data, and reads attendee lists to hyper-personalize your interactions.
+                                    {t('help:guide.calendarDesc')}
                                 </p>
                             </div>
 
                             <div className="grid md:grid-cols-2 gap-3">
                                 <div className="p-4 rounded-xl border bg-bg-item-surface border-border-subtle">
-                                    <h4 className="font-semibold text-sm mb-2 text-text-primary">How to Set it Up</h4>
+                                    <h4 className="font-semibold text-sm mb-2 text-text-primary">{t('help:guide.calendarSetupTitle')}</h4>
                                     <ul className="text-[11px] text-text-secondary space-y-1 list-disc pl-4">
-                                        <li>Navigate to the <strong>Calendar</strong> tab in settings.</li>
-                                        <li>Click <strong>Connect Google Calendar</strong> and authenticate securely.</li>
-                                        <li>Natively will quietly background-sync your schedule.</li>
+                                        <li>{t('help:guide.navigateTo')} <strong>{t('settings:nav.calendar')}</strong> {t('help:guide.tabInSettings')}</li>
+                                        <li>{t('help:guide.click')} <strong>{t('help:guide.connectGoogleCalendar')}</strong> {t('help:guide.andAuthenticate')}</li>
+                                        <li>{t('help:guide.calendarStep3')}</li>
                                     </ul>
                                 </div>
                                 <div className="p-4 rounded-xl border bg-bg-item-surface border-border-subtle">
-                                    <h4 className="font-semibold text-sm mb-2 text-text-primary">Follow-Up System</h4>
+                                    <h4 className="font-semibold text-sm mb-2 text-text-primary">{t('help:guide.followUpTitle')}</h4>
                                     <p className="text-[11px] text-text-secondary">
-                                        When tracking live meetings, Natively uses the connected calendar context to instantly figure out <strong>who you are talking to</strong>. This powers the Follow-Up Email system, letting you auto-draft post-meeting notes to confirmed attendees.
+                                        <Trans
+                                            i18nKey="help:guide.followUpDesc"
+                                            components={[<strong key="who">{t('help:guide.whoYouTalkTo')}</strong>]}
+                                        />
                                     </p>
                                 </div>
                                 <div className="p-4 rounded-xl border bg-bg-item-surface border-border-subtle">
                                     <h4 className="font-semibold text-sm mb-2 text-text-primary flex items-center gap-2">
-                                        <LayoutGrid className="w-4 h-4 text-blue-500" /> Launcher Peek Stack
+                                        <LayoutGrid className="w-4 h-4 text-blue-500" /> {t('help:guide.peekStackTitle')}
                                     </h4>
                                     <p className="text-[11px] text-text-secondary">
-                                        The Launcher's Calendar card now displays your <strong>next real meeting</strong> with a stacked-card visual hinting at what comes after it — no need to switch tabs to see what's queued.
+                                        <Trans
+                                            i18nKey="help:guide.peekStackDesc"
+                                            components={[<strong key="next">{t('help:guide.nextRealMeeting')}</strong>]}
+                                        />
                                     </p>
                                 </div>
                                 <div className="p-4 rounded-xl border bg-bg-item-surface border-border-subtle">
                                     <h4 className="font-semibold text-sm mb-2 text-text-primary flex items-center gap-2">
-                                        <ExternalLink className="w-4 h-4 text-emerald-500" /> One-Click Join
+                                        <ExternalLink className="w-4 h-4 text-emerald-500" /> {t('help:guide.oneClickJoinTitle')}
                                     </h4>
                                     <p className="text-[11px] text-text-secondary">
-                                        Each upcoming event shows a <strong>Join Now</strong> button that opens the meeting link in your <strong>system default browser</strong> (so it lands in the right Chrome/Safari profile), not an in-app webview.
+                                        <Trans
+                                            i18nKey="help:guide.oneClickJoinDesc"
+                                            components={[<strong key="join">{t('help:guide.joinNow')}</strong>, <strong key="browser">{t('help:guide.systemBrowser')}</strong>]}
+                                        />
                                     </p>
                                 </div>
                             </div>
@@ -1714,92 +1811,112 @@ export const HelpSettings: React.FC<{ onNavigate?: (tab: string) => void }> = ({
                         {/* Fast Mode */}
                         <div className="space-y-4">
                             <h4 className="font-bold text-sm text-text-primary flex items-center gap-2">
-                                <Zap className="w-4 h-4 text-orange-500" /> Fast Mode (Hardware LPU)
+                                <Zap className="w-4 h-4 text-orange-500" /> {t('help:guide.fastModeTitle')}
                             </h4>
                             <MockFastModeAnim />
                             <div className="p-4 rounded-xl border bg-orange-500/10 border-orange-500/20">
                                 <h4 className="font-semibold text-sm mb-2 text-orange-500 flex items-center gap-2">
-                                    <Zap className="w-4 h-4" /> How Fast Mode Works
+                                    <Zap className="w-4 h-4" /> {t('help:guide.fastModeHowTitle')}
                                 </h4>
                                 <p className="text-xs text-orange-400/80 m-0">
-                                    Fast Mode activates highly efficient models (like Llama 3 8B) layered over Groq hardware LPUs instead of GPUs. This brings latency down from 2-3 seconds to less than 500ms. To enable Fast Mode, navigate to Settings &gt; General Settings popup overlay, and click the Lightning Icon.
+                                    {t('help:guide.fastModeDesc')}
                                 </p>
                             </div>
                         </div>
                     </div>
                 </AccordionSection>
 
-                <AccordionSection title="10. Phone Mirror" icon={<Smartphone className="w-4 h-4" />}>
+                <AccordionSection title={t('help:guide.s10Title')} icon={<Smartphone className="w-4 h-4" />}>
                     <div className="space-y-4">
                         <div className="p-3 bg-sky-500/10 border border-sky-500/20 rounded-xl mb-2">
                             <h4 className="text-[13px] font-semibold text-sky-400 flex items-center gap-2 mb-1">
-                                <Smartphone size={14} /> Stream Natively to Your Phone
+                                <Smartphone size={14} /> {t('help:guide.phoneMirrorTitle')}
                             </h4>
                             <p className="text-[11px] text-text-secondary leading-relaxed mb-0">
-                                Phone Mirror spins up a small local web server so you can watch Natively's live transcript and AI answers from your phone or tablet — handy when your screen is being shared and you don't want the overlay visible.
+                                {t('help:guide.phoneMirrorDesc')}
                             </p>
                         </div>
 
                         <div className="grid md:grid-cols-2 gap-3">
                             <div className="p-4 rounded-xl border bg-bg-item-surface border-border-subtle">
                                 <h4 className="font-semibold text-sm mb-2 text-text-primary flex items-center gap-2">
-                                    <Wifi className="w-4 h-4 text-sky-500" /> Enable & Connect
+                                    <Wifi className="w-4 h-4 text-sky-500" /> {t('help:guide.phoneMirrorConnectTitle')}
                                 </h4>
                                 <ul className="text-[11px] text-text-secondary space-y-1 list-disc pl-4">
-                                    <li>Open <strong>Settings → Phone Mirror</strong></li>
-                                    <li>Toggle on, then scan the generated QR code from your phone</li>
-                                    <li>Loopback by default — flip <strong>Expose on LAN</strong> to reach it from another device on the same Wi-Fi</li>
+                                    <li>{t('common:actions.open')} <strong>{t('help:guide.pathPhoneMirror')}</strong></li>
+                                    <li>{t('help:guide.phoneMirrorStep2')}</li>
+                                    <li><Trans i18nKey="help:guide.phoneMirrorStep3" components={[<strong key="lan">{t('help:guide.exposeOnLan')}</strong>]} /></li>
                                 </ul>
                             </div>
                             <div className="p-4 rounded-xl border bg-bg-item-surface border-border-subtle">
                                 <h4 className="font-semibold text-sm mb-2 text-text-primary flex items-center gap-2">
-                                    <Lock className="w-4 h-4 text-amber-500" /> Token-Gated Security
+                                    <Lock className="w-4 h-4 text-amber-500" /> {t('help:guide.phoneMirrorSecurityTitle')}
                                 </h4>
                                 <p className="text-[11px] text-text-secondary">
-                                    Every session is protected by a single-use bearer token baked into the QR. If a device leaves your trust circle, hit <strong>Rotate Token</strong> to invalidate every existing connection in one tap.
+                                    <Trans
+                                        i18nKey="help:guide.phoneMirrorSecurityDesc"
+                                        components={[<strong key="rotate">{t('settings:phoneMirror.rotateToken')}</strong>]}
+                                    />
                                 </p>
                             </div>
                         </div>
 
                         <div className="p-3 border border-orange-500/20 bg-orange-500/5 rounded-lg">
                             <p className="text-[10px] text-orange-400 m-0">
-                                <strong>⚠️ LAN exposure:</strong> Only enable <em>Expose on LAN</em> on networks you trust. The token stops casual snoops, but anyone who captures the QR or copies the URL can read your live transcript until you rotate.
+                                <Trans
+                                    i18nKey="help:guide.lanExposureWarning"
+                                    components={[<strong key="lead">{t('help:guide.lanExposureLead')}</strong>, <em key="lan">{t('help:guide.exposeOnLan')}</em>]}
+                                />
                             </p>
                         </div>
                     </div>
                 </AccordionSection>
 
-                <AccordionSection title="11. Stealth & Window Control" icon={<Ghost className="w-4 h-4" />}>
+                <AccordionSection title={t('help:guide.s11Title')} icon={<Ghost className="w-4 h-4" />}>
                     <div className="space-y-4">
                         <div className="p-3 bg-indigo-500/10 border border-indigo-500/20 rounded-xl mb-4">
                             <h4 className="text-[13px] font-semibold text-indigo-400 flex items-center gap-2 mb-1">
-                                <Ghost size={14} /> Process Disguise & Undetectability
+                                <Ghost size={14} /> {t('help:guide.stealthTitle')}
                             </h4>
                             <p className="text-[11px] text-text-secondary leading-relaxed mb-0">
-                                Natively is heavily geared towards power users seeking minimalistic operation. The process completely disguises itself and remains undetectable/invisible to standard screen-recording applications and desktop sharing utilities.
+                                {t('help:guide.stealthDesc')}
                             </p>
                         </div>
 
                         <div className="grid gap-3">
                             <div className="p-4 rounded-xl border bg-bg-item-surface border-border-subtle group">
                                 <h4 className="font-semibold text-sm mb-2 text-text-primary flex items-center gap-2">
-                                    <EyeOff className="w-4 h-4 text-text-secondary" /> Dynamic UI Opacity
+                                    <EyeOff className="w-4 h-4 text-text-secondary" /> {t('help:guide.opacityTitle')}
                                 </h4>
                                 <p className="text-xs text-text-secondary">
-                                    Decrease your visual footprint to near-zero. Navigate to the General Settings overlay and dynamically drag the <strong>Opacity Slider</strong> down to make the interface completely translucent against your underlying native applications.
+                                    <Trans
+                                        i18nKey="help:guide.opacityDesc"
+                                        components={[<strong key="slider">{t('help:guide.opacitySlider')}</strong>]}
+                                    />
                                 </p>
                             </div>
 
                             <div className="p-4 rounded-xl border bg-bg-item-surface border-border-subtle group">
                                 <h4 className="font-semibold text-sm mb-2 text-text-primary flex items-center gap-2">
-                                    <Monitor className="w-4 h-4 text-text-secondary" /> Mouse Pass-Through Mode
+                                    <Monitor className="w-4 h-4 text-text-secondary" /> {t('help:guide.passthroughTitle')}
                                 </h4>
                                 <p className="text-[11px] text-text-secondary mb-2">
-                                    Do you want the AI prompt completely fused into your screen without obstructing your clicks? Activate <strong>Mouse Pass-through</strong> inside the UI toggle menu.
+                                    <Trans
+                                        i18nKey="help:guide.passthroughDesc"
+                                        components={[<strong key="pt">{t('help:guide.mousePassthrough')}</strong>]}
+                                    />
                                 </p>
                                 <div className="p-2 border border-orange-500/20 bg-orange-500/5 rounded-lg">
                                     <p className="text-[10px] text-orange-400 m-0">
-                                        <strong>⚠️ Warning:</strong> This renders the Natively overlay completely unclickable. You MUST memorize the Global Hotkeys (e.g. <strong>{isMac ? 'Cmd' : 'Ctrl'}+Shift+Arrows</strong> to move, <strong>{isMac ? 'Cmd' : 'Ctrl'}+B</strong> to hide, <strong>{isMac ? 'Cmd' : 'Ctrl'}+1-7</strong> for actions) to control the application once this is active.
+                                        <Trans
+                                            i18nKey="help:guide.passthroughWarning"
+                                            components={[
+                                            <strong key="lead">{t('help:guide.warningLead')}</strong>,
+                                            <strong key="k1">{isMac ? 'Cmd' : 'Ctrl'}+Shift+Arrows</strong>,
+                                            <strong key="k2">{isMac ? 'Cmd' : 'Ctrl'}+B</strong>,
+                                            <strong key="k3">{isMac ? 'Cmd' : 'Ctrl'}+1-7</strong>,
+                                        ]}
+                                        />
                                     </p>
                                 </div>
                             </div>

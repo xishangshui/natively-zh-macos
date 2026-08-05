@@ -27,7 +27,8 @@
     "details": "Details",
     "rebind": "Rebind",
     "openSettings": "Open Settings",
-    "refresh": "Refresh"
+    "refresh": "Refresh",
+    "open": "Open"
   },
   "state": {
     "loading": "Loading...",

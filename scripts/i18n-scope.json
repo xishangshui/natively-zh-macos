@@ -48,7 +48,8 @@
     "src/components/trial/FreeTrialBanner.tsx",
     "src/components/trial/FreeTrialModal.tsx",
     "src/components/trial/TrialPromoToaster.tsx",
-    "src/components/ui/ConnectCalendarButton.tsx"
+    "src/components/ui/ConnectCalendarButton.tsx",
+    "src/components/settings/HelpSettings.tsx"
   ],
   "excluded": []
 }

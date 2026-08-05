@@ -3,7 +3,7 @@
 本文件由 `scripts/i18n-allowlist.json` 生成，请勿手工编辑——
 手写的文档一定会和名单漂移。改动名单后重新生成即可。
 
-条目总数：**105**　门禁覆盖文件数：**47**
+条目总数：**153**　门禁覆盖文件数：**48**
 
 ## 判定标准
 
@@ -213,6 +213,61 @@
 | `gpt-5.3-codex-spark` | 模型 ID，按设计规格 3.2 不翻译 |
 | `gpt-5.5` | 模型 ID，按设计规格 3.2 不翻译 |
 | `messages` | OpenAI 请求体字段名，按设计规格 3.2 不翻译 |
+
+### `src/components/settings/HelpSettings.tsx`
+
+所在界面：（未标注页面）
+
+| 保留的原文 | 理由 |
+|---|---|
+| `"Authorization: Bearer YOUR_KEY"` | HTTP 请求头示例，必须照原样填写 |
+| `&lt;user_context&gt;` | 注入到 prompt 的 XML 标签名，必须与实现一致 |
+| `+Shift+Arrows` | 键盘快捷键组合，按设计规格 3.2 不翻译 |
+| `AI` | 通用技术缩写，中文界面同样使用 |
+| `AIzaSy...` | API Key 前缀示例，用户需据此核对自己的密钥 |
+| `Anthropic` | 供应商 / 产品名，按设计规格 3.2 不翻译 |
+| `Azure Speech` | 供应商 / 产品名，按设计规格 3.2 不翻译 |
+| `choices[0].message.content` | JSON 响应路径，必须与 API 结构一致 |
+| `claude-3-5-sonnet` | 模型 ID，按设计规格 3.2 不翻译 |
+| `claude-4.6-sonnet` | 模型 ID，按设计规格 3.2 不翻译 |
+| `Cmd` | 键盘按键名，按设计规格 3.2 不翻译 |
+| `Cmd+K` | 键盘快捷键，按设计规格 3.2 不翻译 |
+| `CoreAudio (Legacy)` | Apple 框架名，按设计规格 3.2 不翻译 |
+| `Ctrl` | 键盘按键名，按设计规格 3.2 不翻译 |
+| `Ctrl+K` | 键盘快捷键，按设计规格 3.2 不翻译 |
+| `curl` | 可复制执行的命令，翻译即失效 |
+| `Deepgram Nova-3` | 供应商 / 产品名，按设计规格 3.2 不翻译 |
+| `eastus` | Azure 区域 ID，必须照原样填写 |
+| `en-GB` | BCP 47 语言地区代码，必须照原样选择 |
+| `en-IN` | BCP 47 语言地区代码，必须照原样选择 |
+| `en-US` | BCP 47 语言地区代码，必须照原样选择 |
+| `Enter` | 键盘按键名，按设计规格 3.2 不翻译 |
+| `Gemini 3.1 Flash` | 模型 ID，按设计规格 3.2 不翻译 |
+| `gemini-3.1-pro` | 模型 ID，按设计规格 3.2 不翻译 |
+| `Google Cloud` | 供应商 / 产品名，按设计规格 3.2 不翻译 |
+| `Google Gemini` | 供应商 / 产品名，按设计规格 3.2 不翻译 |
+| `gpt-5.4` | 模型 ID，按设计规格 3.2 不翻译 |
+| `gpt-5.4-mini` | 模型 ID，按设计规格 3.2 不翻译 |
+| `Groq` | 供应商 / 产品名，按设计规格 3.2 不翻译 |
+| `Groq Whisper` | 供应商 / 产品名，按设计规格 3.2 不翻译 |
+| `gsk_` | API Key 前缀示例，用户需据此核对自己的密钥 |
+| `gsk_...` | API Key 前缀示例，用户需据此核对自己的密钥 |
+| `gsk_a8B2c...` | API Key 前缀示例，用户需据此核对自己的密钥 |
+| `IBM Watson` | 供应商 / 产品名，按设计规格 3.2 不翻译 |
+| `llama-3.3-70b-versatile` | 模型 ID，按设计规格 3.2 不翻译 |
+| `llama3:8b` | 模型 ID，按设计规格 3.2 不翻译 |
+| `Natively` | 供应商 / 产品名，按设计规格 3.2 不翻译 |
+| `Natively API` | 供应商 / 产品名，按设计规格 3.2 不翻译 |
+| `ollama run llama3:8b` | 可复制执行的命令，翻译即失效 |
+| `ollama run phi3` | 可复制执行的命令，翻译即失效 |
+| `OpenAI` | 供应商 / 产品名，按设计规格 3.2 不翻译 |
+| `ScreenCaptureKit (SCK)` | Apple 框架名，按设计规格 3.2 不翻译 |
+| `sk-` | API Key 前缀示例，用户需据此核对自己的密钥 |
+| `sk-ant-...` | API Key 前缀示例，用户需据此核对自己的密钥 |
+| `sk-proj-...` | API Key 前缀示例，用户需据此核对自己的密钥 |
+| `Soniox` | 供应商 / 产品名，按设计规格 3.2 不翻译 |
+| `Stripe Payment Intents` | 供应商 / 产品名，按设计规格 3.2 不翻译 |
+| `westeurope` | Azure 区域 ID，必须照原样填写 |
 
 ### `src/components/settings/NativelyApiSettings.tsx`
 

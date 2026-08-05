@@ -525,6 +525,246 @@
       "file": "src/components/UpdateModal.tsx",
       "literal": "Latest",
       "reason": "版本号无法解析时的兜底展示值，与 GitHub releases 的 latest 标签对应"
+    },
+    {
+      "file": "src/components/settings/HelpSettings.tsx",
+      "literal": "Natively",
+      "reason": "供应商 / 产品名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/settings/HelpSettings.tsx",
+      "literal": "Groq",
+      "reason": "供应商 / 产品名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/settings/HelpSettings.tsx",
+      "literal": "OpenAI",
+      "reason": "供应商 / 产品名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/settings/HelpSettings.tsx",
+      "literal": "Anthropic",
+      "reason": "供应商 / 产品名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/settings/HelpSettings.tsx",
+      "literal": "Google Gemini",
+      "reason": "供应商 / 产品名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/settings/HelpSettings.tsx",
+      "literal": "Google Cloud",
+      "reason": "供应商 / 产品名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/settings/HelpSettings.tsx",
+      "literal": "Deepgram Nova-3",
+      "reason": "供应商 / 产品名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/settings/HelpSettings.tsx",
+      "literal": "Groq Whisper",
+      "reason": "供应商 / 产品名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/settings/HelpSettings.tsx",
+      "literal": "Azure Speech",
+      "reason": "供应商 / 产品名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/settings/HelpSettings.tsx",
+      "literal": "Soniox",
+      "reason": "供应商 / 产品名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/settings/HelpSettings.tsx",
+      "literal": "IBM Watson",
+      "reason": "供应商 / 产品名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/settings/HelpSettings.tsx",
+      "literal": "Natively API",
+      "reason": "供应商 / 产品名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/settings/HelpSettings.tsx",
+      "literal": "Gemini 3.1 Flash",
+      "reason": "模型 ID，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/settings/HelpSettings.tsx",
+      "literal": "Stripe Payment Intents",
+      "reason": "供应商 / 产品名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/settings/HelpSettings.tsx",
+      "literal": "llama-3.3-70b-versatile",
+      "reason": "模型 ID，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/settings/HelpSettings.tsx",
+      "literal": "gpt-5.4-mini",
+      "reason": "模型 ID，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/settings/HelpSettings.tsx",
+      "literal": "gpt-5.4",
+      "reason": "模型 ID，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/settings/HelpSettings.tsx",
+      "literal": "claude-4.6-sonnet",
+      "reason": "模型 ID，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/settings/HelpSettings.tsx",
+      "literal": "gemini-3.1-pro",
+      "reason": "模型 ID，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/settings/HelpSettings.tsx",
+      "literal": "claude-3-5-sonnet",
+      "reason": "模型 ID，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/settings/HelpSettings.tsx",
+      "literal": "llama3:8b",
+      "reason": "模型 ID，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/settings/HelpSettings.tsx",
+      "literal": "gsk_",
+      "reason": "API Key 前缀示例，用户需据此核对自己的密钥"
+    },
+    {
+      "file": "src/components/settings/HelpSettings.tsx",
+      "literal": "gsk_...",
+      "reason": "API Key 前缀示例，用户需据此核对自己的密钥"
+    },
+    {
+      "file": "src/components/settings/HelpSettings.tsx",
+      "literal": "gsk_a8B2c...",
+      "reason": "API Key 前缀示例，用户需据此核对自己的密钥"
+    },
+    {
+      "file": "src/components/settings/HelpSettings.tsx",
+      "literal": "sk-",
+      "reason": "API Key 前缀示例，用户需据此核对自己的密钥"
+    },
+    {
+      "file": "src/components/settings/HelpSettings.tsx",
+      "literal": "sk-proj-...",
+      "reason": "API Key 前缀示例，用户需据此核对自己的密钥"
+    },
+    {
+      "file": "src/components/settings/HelpSettings.tsx",
+      "literal": "sk-ant-...",
+      "reason": "API Key 前缀示例，用户需据此核对自己的密钥"
+    },
+    {
+      "file": "src/components/settings/HelpSettings.tsx",
+      "literal": "AIzaSy...",
+      "reason": "API Key 前缀示例，用户需据此核对自己的密钥"
+    },
+    {
+      "file": "src/components/settings/HelpSettings.tsx",
+      "literal": "ollama run llama3:8b",
+      "reason": "可复制执行的命令，翻译即失效"
+    },
+    {
+      "file": "src/components/settings/HelpSettings.tsx",
+      "literal": "ollama run phi3",
+      "reason": "可复制执行的命令，翻译即失效"
+    },
+    {
+      "file": "src/components/settings/HelpSettings.tsx",
+      "literal": "curl",
+      "reason": "可复制执行的命令，翻译即失效"
+    },
+    {
+      "file": "src/components/settings/HelpSettings.tsx",
+      "literal": "\"Authorization: Bearer YOUR_KEY\"",
+      "reason": "HTTP 请求头示例，必须照原样填写"
+    },
+    {
+      "file": "src/components/settings/HelpSettings.tsx",
+      "literal": "choices[0].message.content",
+      "reason": "JSON 响应路径，必须与 API 结构一致"
+    },
+    {
+      "file": "src/components/settings/HelpSettings.tsx",
+      "literal": "&lt;user_context&gt;",
+      "reason": "注入到 prompt 的 XML 标签名，必须与实现一致"
+    },
+    {
+      "file": "src/components/settings/HelpSettings.tsx",
+      "literal": "en-US",
+      "reason": "BCP 47 语言地区代码，必须照原样选择"
+    },
+    {
+      "file": "src/components/settings/HelpSettings.tsx",
+      "literal": "en-GB",
+      "reason": "BCP 47 语言地区代码，必须照原样选择"
+    },
+    {
+      "file": "src/components/settings/HelpSettings.tsx",
+      "literal": "en-IN",
+      "reason": "BCP 47 语言地区代码，必须照原样选择"
+    },
+    {
+      "file": "src/components/settings/HelpSettings.tsx",
+      "literal": "eastus",
+      "reason": "Azure 区域 ID，必须照原样填写"
+    },
+    {
+      "file": "src/components/settings/HelpSettings.tsx",
+      "literal": "westeurope",
+      "reason": "Azure 区域 ID，必须照原样填写"
+    },
+    {
+      "file": "src/components/settings/HelpSettings.tsx",
+      "literal": "Cmd+K",
+      "reason": "键盘快捷键，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/settings/HelpSettings.tsx",
+      "literal": "Ctrl+K",
+      "reason": "键盘快捷键，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/settings/HelpSettings.tsx",
+      "literal": "Cmd",
+      "reason": "键盘按键名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/settings/HelpSettings.tsx",
+      "literal": "Ctrl",
+      "reason": "键盘按键名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/settings/HelpSettings.tsx",
+      "literal": "Enter",
+      "reason": "键盘按键名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/settings/HelpSettings.tsx",
+      "literal": "ScreenCaptureKit (SCK)",
+      "reason": "Apple 框架名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/settings/HelpSettings.tsx",
+      "literal": "CoreAudio (Legacy)",
+      "reason": "Apple 框架名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/settings/HelpSettings.tsx",
+      "literal": "AI",
+      "reason": "通用技术缩写，中文界面同样使用"
+    },
+    {
+      "file": "src/components/settings/HelpSettings.tsx",
+      "literal": "+Shift+Arrows",
+      "reason": "键盘快捷键组合，按设计规格 3.2 不翻译"
     }
   ]
 }

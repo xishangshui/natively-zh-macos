@@ -27,7 +27,8 @@
     "details": "详情",
     "rebind": "重新绑定",
     "openSettings": "打开设置",
-    "refresh": "刷新"
+    "refresh": "刷新",
+    "open": "打开"
   },
   "state": {
     "loading": "加载中...",
