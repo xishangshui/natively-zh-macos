@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { getCurrentUiLocale } from '../i18n';
 import { ToggleLeft, ToggleRight, Search, Calendar, ArrowRight, ArrowLeft, MoreHorizontal, Globe, Clock, ChevronRight, Settings, LayoutGrid, RefreshCw, Eye, EyeOff, Ghost, Plus, Mail, Link as LinkIcon, ChevronDown, Trash2, Bell, Check, Download, DownloadCloud, CheckCircle, AlertCircle, User, UserSearch, Sparkles, ArrowUpRight } from 'lucide-react';
 import { generateMeetingPDF } from '../utils/pdfGenerator';
 import icon from "./icon.png";
@@ -73,15 +74,23 @@ const getGroupLabel = (dateStr: string, t: (key: string) => string) => {
     if (checkDate.getTime() === today.getTime()) return t('launcher:date.today');
     if (checkDate.getTime() === yesterday.getTime()) return t('launcher:date.yesterday');
 
-    // 日期格式化本身在 Task 13 统一改为跟随 uiLocale
-    return date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+    // 跟随 uiLocale：写死 'en-US' 会让中文界面下的日期仍是英文。
+    // helper 在模块作用域拿不到 hook，用 getCurrentUiLocale() 读当前值。
+    return date.toLocaleDateString(getCurrentUiLocale(), {
+        weekday: 'short',
+        month: 'short',
+        day: 'numeric',
+    });
 };
 
 // Helper to format time (e.g. 3:14pm)
 const formatTime = (dateStr: string, t: (key: string) => string) => {
     if (dateStr === "Today") return t('launcher:date.justNow'); // Legacy
     const date = new Date(dateStr);
-    return date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }).toLowerCase();
+    // hour12 交给 locale 决定：中文习惯 24 小时制，不再强制 12 小时。
+    return date
+        .toLocaleTimeString(getCurrentUiLocale(), { hour: 'numeric', minute: '2-digit' })
+        .toLowerCase();
 };
 
 const Launcher: React.FC<LauncherProps> = ({ onStartMeeting, onOpenSettings, onOpenProfile, onOpenModes, onPageChange, ollamaPullStatus = 'idle', ollamaPullPercent = 0, ollamaPullMessage = '' }) => {

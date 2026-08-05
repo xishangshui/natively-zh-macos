@@ -26,7 +26,7 @@
     "test": "npm run build:electron && node --test --test-force-exit --test-timeout=60000 electron/services/__tests__ electron/llm/__tests__ electron/llm/codeVerification/__tests__ electron/audio/__tests__",
     "test:i18n:catalogs": "node --test --test-force-exit src/lib/__tests__/i18nCatalogParity.test.mjs",
     "test:i18n:coverage": "node --test --test-force-exit src/lib/__tests__/i18nCoverage.test.mjs",
-    "test:i18n": "npm run test:i18n:catalogs && npm run test:i18n:coverage",
+    "test:i18n": "npm run test:i18n:catalogs && npm run test:i18n:coverage && npm run test:i18n:formatters",
     "check:i18n": "node scripts/check-i18n-catalogs.mjs && node scripts/check-i18n-coverage.mjs",
     "test:modes": "npm run build:electron && node --test electron/services/__tests__/Mode*.test.mjs electron/services/__tests__/ProfileIntelligenceGate.test.mjs electron/services/__tests__/NativelyApiE2E.test.mjs",
     "test:modes:no-build": "node --test electron/services/__tests__/Mode*.test.mjs electron/services/__tests__/ProfileIntelligenceGate.test.mjs electron/services/__tests__/NativelyApiE2E.test.mjs",
@@ -52,7 +52,8 @@
     "test:intelligence:ui:debug": "PWDEBUG=1 playwright test --config intelligence-eval-real-ui/playwright.config.ts",
     "test:intelligence:ui:report": "playwright show-report intelligence-eval-real-ui/results/playwright-report",
     "eval:intelligence:ui": "node --experimental-strip-types intelligence-eval-real-ui/run-real-ui-e2e.ts",
-    "test:intelligence:ui:grader": "node --experimental-strip-types intelligence-eval-real-ui/grader-unit-checks.mjs"
+    "test:intelligence:ui:grader": "node --experimental-strip-types intelligence-eval-real-ui/grader-unit-checks.mjs",
+    "test:i18n:formatters": "node --import tsx --test src/lib/__tests__/localeFormatters.test.ts"
   },
   "build": {
     "generateUpdatesFilesForAllChannels": true,

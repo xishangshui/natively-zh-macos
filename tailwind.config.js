@@ -45,7 +45,15 @@ module.exports = {
         },
       },
       fontFamily: {
-        sans: ["Inter", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Helvetica", "Arial", "sans-serif"],
+        // 中文字体插在拉丁字体之后、sans-serif 之前：逐字形回退，
+        // 拉丁字母仍走 Inter，汉字落到 CJK 字体。顺序依设计规格 §10。
+        sans: [
+          "Inter", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Helvetica", "Arial",
+          "Microsoft YaHei UI", "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", "Source Han Sans SC",
+          "sans-serif"
+        ],
+        // 等宽栈不含 CJK：API Key / 模型 ID / 命令要保持字符等宽
+        mono: ["ui-monospace", "SFMono-Regular", "SF Mono", "Menlo", "Consolas", "Liberation Mono", "monospace"],
         celeb: ["CelebMF", "sans-serif"],
         "celeb-light": ["CelebMFLight", "sans-serif"]
       },

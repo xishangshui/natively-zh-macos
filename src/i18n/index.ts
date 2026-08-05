@@ -105,5 +105,16 @@ export function disposeRendererI18n(): void {
     changeListenerCleanup = null;
 }
 
+/**
+ * 当前生效的 UI locale，供**模块作用域**的格式化 helper 使用。
+ *
+ * 组件内部请优先用 `useTranslation()` 的 `i18n.language`——那条路径能在
+ * 语言切换时触发重渲染。本函数是给拿不到 hook 的模块级函数（如日期分组
+ * helper）兜底的，它只在被调用的那一刻读值，不订阅变更。
+ */
+export function getCurrentUiLocale(): UiLocale {
+    return isUiLocale(i18next.language) ? i18next.language : DEFAULT_UI_LOCALE;
+}
+
 export { i18next };
 export default i18next;

@@ -19,8 +19,21 @@
 @tailwind utilities;
 
 :root {
-  /* System Fonts - SF Pro */
-  --font-system: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  /* System Fonts - SF Pro
+     中文字体必须排在拉丁字体之后、通用 sans-serif 之前：
+     浏览器按字形逐字回退，拉丁字母仍由 SF Pro / Segoe UI 渲染，
+     汉字才落到 CJK 字体上，两种文字的观感都不受影响。
+     Windows 用 Microsoft YaHei UI，macOS 用 PingFang SC，
+     Linux / 精简版 Windows 回退到 Noto Sans CJK SC。
+     顺序依设计规格 §10。 */
+  --font-system: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+    "Microsoft YaHei UI", "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", "Source Han Sans SC",
+    sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+
+  /* 等宽字体：API Key、模型 ID、命令与代码继续使用，不混入 CJK 字体，
+     否则字符宽度会不一致（设计规格 §10）。 */
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono",
+    monospace;
 
   /* --- SEMANTIC TOKEN SYSTEM (DEFAULT: DARK) --- */
   /* Reference Image Matching */

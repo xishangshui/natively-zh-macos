@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import { getCurrentUiLocale } from '../i18n';
 import { createPortal } from 'react-dom';
 import { Search, Sparkles, FileText } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -70,7 +71,7 @@ function searchMeetings(meetings: Meeting[], query: string): SearchResult[] {
                 id: meeting.id,
                 type: 'meeting',
                 title: meeting.title,
-                subtitle: new Date(meeting.date).toLocaleDateString('en-US', {
+                subtitle: new Date(meeting.date).toLocaleDateString(getCurrentUiLocale(), {
                     month: 'short',
                     day: 'numeric'
                 }),
