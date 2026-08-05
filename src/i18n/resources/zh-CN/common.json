@@ -38,12 +38,14 @@
     "notSet": "未设置",
     "saving": "正在保存…",
     "savedExclaim": "已保存！",
-    "none": "无"
+    "none": "无",
+    "unknown": "未知"
   },
   "badge": {
     "beta": "测试版",
     "new": "新",
-    "experimental": "实验性"
+    "experimental": "实验性",
+    "soon": "即将推出"
   },
   "device": {
     "mac": "Mac",

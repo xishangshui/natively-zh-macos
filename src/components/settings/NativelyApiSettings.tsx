@@ -15,6 +15,7 @@ import {
   Zap,
 } from 'lucide-react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { Trans, useTranslation } from 'react-i18next';
 import { NativelyLogoMark } from '../NativelyLogoMark';
 import { FreeTrialModal } from '../trial/FreeTrialModal';
 import { getMeetingInterfaceTheme, type MeetingInterfaceTheme } from '../../lib/meetingInterfaceTheme';
@@ -60,16 +61,16 @@ const PLANS = [
     name: 'Standard',
     price: '$8',
     url: PLAN_STANDARD_URL,
-    badgeText: 'Basic',
+    badgeTextKey: 'settings:nativelyApi.plans.standard.badge',
     includesPro: false,
-    description: 'Ideal for light individual users who want essential transcription and model usage.',
-    note: 'Does not include Natively Pro desktop app license. Custom API key usage is supported.',
-    features: [
-      '500 AI requests per month',
-      '200 minutes of Speech-to-Text',
-      '20 real-time web searches',
-      'Standard server priority & support',
-      'Full local API key support',
+    descriptionKey: 'settings:nativelyApi.plans.standard.description',
+    noteKey: 'settings:nativelyApi.plans.noteWithoutPro',
+    featureKeys: [
+      'settings:nativelyApi.plans.standard.f1',
+      'settings:nativelyApi.plans.standard.f2',
+      'settings:nativelyApi.plans.standard.f3',
+      'settings:nativelyApi.plans.standard.f4',
+      'settings:nativelyApi.plans.standard.f5',
     ],
   },
   {
@@ -77,16 +78,16 @@ const PLANS = [
     name: 'Pro',
     price: '$15',
     url: PLAN_PRO_URL,
-    badgeText: 'Recommended',
+    badgeTextKey: 'settings:nativelyApi.plans.pro.badge',
     includesPro: true,
-    description: 'Best for power users and professionals seeking full local productivity integrations.',
-    note: 'Includes a full Natively Pro desktop app license for the duration of subscription.',
-    features: [
-      '1,000 AI requests per month',
-      '500 minutes of Speech-to-Text',
-      '100 real-time web searches',
-      'High-priority server request queue',
-      'Full Natively Pro app features included',
+    descriptionKey: 'settings:nativelyApi.plans.pro.description',
+    noteKey: 'settings:nativelyApi.plans.noteWithPro',
+    featureKeys: [
+      'settings:nativelyApi.plans.pro.f1',
+      'settings:nativelyApi.plans.pro.f2',
+      'settings:nativelyApi.plans.pro.f3',
+      'settings:nativelyApi.plans.highPriorityQueue',
+      'settings:nativelyApi.plans.proAppIncluded',
     ],
   },
   {
@@ -94,16 +95,16 @@ const PLANS = [
     name: 'Max',
     price: '$25',
     url: PLAN_MAX_URL,
-    badgeText: 'Best Value',
+    badgeTextKey: 'settings:nativelyApi.plans.max.badge',
     includesPro: true,
-    description: 'Built for developers and teams using high volume text-to-speech and AI reasoning.',
-    note: 'Includes a full Natively Pro desktop app license for the duration of subscription.',
-    features: [
-      '2,000 AI requests per month',
-      '1,000 minutes of Speech-to-Text',
-      '200 real-time web searches',
-      'High-priority server request queue',
-      'Full Natively Pro app features included',
+    descriptionKey: 'settings:nativelyApi.plans.max.description',
+    noteKey: 'settings:nativelyApi.plans.noteWithPro',
+    featureKeys: [
+      'settings:nativelyApi.plans.max.f1',
+      'settings:nativelyApi.plans.max.f2',
+      'settings:nativelyApi.plans.max.f3',
+      'settings:nativelyApi.plans.highPriorityQueue',
+      'settings:nativelyApi.plans.proAppIncluded',
     ],
   },
   {
@@ -111,16 +112,16 @@ const PLANS = [
     name: 'Ultra',
     price: '$35',
     url: PLAN_ULTRA_URL,
-    badgeText: 'Heavy Users',
+    badgeTextKey: 'settings:nativelyApi.plans.ultra.badge',
     includesPro: true,
-    description: 'For heavy enterprise users, continuous screen understanding, and high-frequency meeting recording.',
-    note: 'Includes a full Natively Pro desktop app license for the duration of subscription.',
-    features: [
-      '3,000 AI requests per month',
-      '2,000 minutes of Speech-to-Text',
-      '300 real-time web searches',
-      'Dedicated high-throughput queue',
-      'Full Natively Pro app features included',
+    descriptionKey: 'settings:nativelyApi.plans.ultra.description',
+    noteKey: 'settings:nativelyApi.plans.noteWithPro',
+    featureKeys: [
+      'settings:nativelyApi.plans.ultra.f1',
+      'settings:nativelyApi.plans.ultra.f2',
+      'settings:nativelyApi.plans.ultra.f3',
+      'settings:nativelyApi.plans.ultra.f4',
+      'settings:nativelyApi.plans.proAppIncluded',
     ],
   },
 ] as const;
@@ -286,6 +287,7 @@ function QuotaBar({
 
 // ─── Trial countdown (live, ticks every 500ms) ───────────────
 function TrialCountdown({ expiresAt }: { expiresAt: string }) {
+  const { t } = useTranslation(['settings']);
   const [remaining, setRemaining] = useState(() =>
     Math.max(0, new Date(expiresAt).getTime() - Date.now()),
   );
@@ -305,7 +307,7 @@ function TrialCountdown({ expiresAt }: { expiresAt: string }) {
     >
       <Clock size={11} strokeWidth={2} />
       <span className="text-[11px] font-mono font-semibold tabular-nums">
-        {remaining === 0 ? 'Ended' : `${m}:${s.toString().padStart(2, '0')}`}
+        {remaining === 0 ? t('settings:nativelyApi.trialEnded') : `${m}:${s.toString().padStart(2, '0')}`}
       </span>
     </div>
   );
@@ -371,6 +373,7 @@ function Card({ children, className = '' }: { children: React.ReactNode; classNa
 
 // ─── Component ───────────────────────────────────────────────
 export const NativelyApiSettings: React.FC = () => {
+  const { t } = useTranslation(['settings', 'common', 'errors', 'providers']);
   const [apiKey, setApiKey] = useState('');
   const [isSaved, setIsSaved] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -479,18 +482,18 @@ export const NativelyApiSettings: React.FC = () => {
       } else {
         setUsageError(
           r.error === 'subscription_inactive'
-            ? 'Subscription inactive — renew to restore access.'
+            ? t('errors:nativelyApi.subscriptionInactive')
             : r.error === 'key_not_found'
-              ? 'Key not recognised by server.'
+              ? t('errors:nativelyApi.keyNotRecognised')
               : r.error === 'invalid_key_format'
-                ? 'Invalid key format.'
+                ? t('errors:nativelyApi.invalidKeyFormat')
                 : r.error === 'network_error' || r.error?.includes('fetch')
-                  ? 'Could not reach server.'
-                  : `Server error: ${r.error ?? 'unknown'}`,
+                  ? t('errors:nativelyApi.unreachable')
+                  : t('errors:nativelyApi.serverError', { detail: r.error ?? t('common:state.unknown') }),
         );
       }
     } catch {
-      setUsageError('Failed to load usage.');
+      setUsageError(t('errors:nativelyApi.usageLoadFailed'));
     } finally {
       setIsLoadingUsage(false);
     }
@@ -631,7 +634,7 @@ export const NativelyApiSettings: React.FC = () => {
         trialPollRef.current = setInterval(refreshTrial, 30_000);
       }
     } catch (e: any) {
-      setTrialError(e.message || 'Network error');
+      setTrialError(e.message || t('errors:nativelyApi.networkError'));
     } finally {
       setTrialLoading(false);
     }
@@ -666,10 +669,10 @@ export const NativelyApiSettings: React.FC = () => {
         // first, which deadlocked/crashed the native audio stack right after a key
         // save (the "app hangs after entering the key" bug, macOS + Windows).
       } else {
-        setError(r.error || 'Failed to save API key');
+        setError(r.error || t('errors:nativelyApi.saveKeyFailed'));
       }
     } catch (e: any) {
-      setError(e.message || 'Unexpected error');
+      setError(e.message || t('errors:nativelyApi.unexpected'));
     } finally {
       setIsSaving(false);
     }
@@ -714,15 +717,20 @@ export const NativelyApiSettings: React.FC = () => {
       <div className="flex flex-col gap-3">
         <div className="flex items-center justify-between">
           <p className="text-[10px] font-semibold text-text-tertiary uppercase tracking-widest">
-            Choose a Plan
+            {t('settings:nativelyApi.choosePlan')}
           </p>
           <span className="text-[10px] text-text-tertiary">
-            Pro, Max &amp; Ultra include Natively Pro app
+            {t('settings:nativelyApi.proPlansIncludeApp')}
           </span>
         </div>
         <div className="w-full flex items-center justify-center py-2.5 rounded-xl border natively-api-header-promo-banner">
           <span className="text-[11.5px] font-medium natively-api-header-promo-text">
-            Use code <span className="font-bold natively-api-header-promo-code">INSIDER20</span> for 20% off Pro, Max &amp; Ultra
+            <Trans
+              i18nKey="settings:nativelyApi.headerPromo"
+              components={[
+                <span className="font-bold natively-api-header-promo-code" key="code">INSIDER20</span>,
+              ]}
+            />
           </span>
         </div>
       </div>
@@ -822,7 +830,7 @@ export const NativelyApiSettings: React.FC = () => {
                       <motion.div variants={cardSlideLeftVariants}>
                         {/* Badge & Inclusion Row */}
                         <div className="flex items-center gap-2 mb-4 h-6">
-                          {plan.badgeText && (
+                          {plan.badgeTextKey && (
                             <span className={`natively-api-pricing-badge ${
                               plan.name === 'Pro' 
                                 ? 'natively-api-pricing-badge-recommended natively-api-badge-text-recommended' 
@@ -832,19 +840,19 @@ export const NativelyApiSettings: React.FC = () => {
                                     ? 'natively-api-pricing-badge-ultra natively-api-badge-text-ultra'
                                     : 'natively-api-pricing-badge-standard natively-api-badge-text-standard'
                             }`}>
-                              {plan.badgeText}
+                              {t(plan.badgeTextKey)}
                             </span>
                           )}
                           {plan.includesPro && (
                             <span className="natively-api-pricing-badge natively-api-pricing-badge-emerald natively-api-badge-text-emerald select-none">
-                              + Pro App
+                              {t('settings:nativelyApi.plusProApp')}
                             </span>
                           )}
                         </div>
 
                         {/* Plan Name */}
                         <h4 className="text-[20px] font-bold text-text-primary tracking-tight">
-                          {plan.name} Tier
+                          {t('settings:nativelyApi.planTier', { plan: plan.name })}
                         </h4>
 
                         {/* Price */}
@@ -860,10 +868,10 @@ export const NativelyApiSettings: React.FC = () => {
                           }`}>
                             {price}
                           </span>
-                          <span className="text-[12px] font-medium text-text-tertiary">/ month</span>
+                          <span className="text-[12px] font-medium text-text-tertiary">{t('settings:nativelyApi.perMonth')}</span>
                         </div>
                         <p className="text-[11.5px] text-text-secondary mt-2.5 leading-relaxed">
-                          {plan.description}
+                          {t(plan.descriptionKey)}
                         </p>
                       </motion.div>
 
@@ -874,14 +882,19 @@ export const NativelyApiSettings: React.FC = () => {
                           style={{ visibility: plan.includesPro ? 'visible' : 'hidden' }}
                         >
                           <span className="text-[11px] font-medium natively-api-pricing-promo-text">
-                            Code <strong className="natively-api-pricing-promo-bold font-bold select-all">INSIDER20</strong> for 20% off
+                            <Trans
+                              i18nKey="settings:nativelyApi.promoCode"
+                              components={[
+                                <strong className="natively-api-pricing-promo-bold font-bold select-all" key="code">INSIDER20</strong>,
+                              ]}
+                            />
                           </span>
                         </div>
 
                         <div>
                           {isActive ? (
                             <div className="w-full natively-api-active-tag text-center py-3 rounded-full text-[13px] font-semibold select-none flex items-center justify-center">
-                              Active Plan
+                              {t('settings:nativelyApi.activePlan')}
                             </div>
                           ) : (
                             <button
@@ -899,7 +912,7 @@ export const NativelyApiSettings: React.FC = () => {
                                       : 'natively-api-pricing-cta-neutral'
                               }`}
                             >
-                              Get Started with {plan.name} <ArrowUpRight size={14} strokeWidth={2.5} />
+                              {t('settings:nativelyApi.getStartedWith', { plan: plan.name })} <ArrowUpRight size={14} strokeWidth={2.5} />
                             </button>
                           )}
                         </div>
@@ -912,10 +925,10 @@ export const NativelyApiSettings: React.FC = () => {
                       variants={cardSlideRightVariants}
                     >
                       <p className="text-[10px] font-bold text-text-primary uppercase tracking-wider mb-4">
-                        What's Included
+                        {t('settings:nativelyApi.whatsIncluded')}
                       </p>
                       <ul className="space-y-3 flex-1">
-                        {plan.features.map((feature, i) => (
+                        {plan.featureKeys.map((featureKey, i) => (
                           <li key={i} className="flex items-start gap-2.5 text-[12px] text-text-secondary leading-snug">
                             <CheckCircle 
                               size={13} 
@@ -930,13 +943,13 @@ export const NativelyApiSettings: React.FC = () => {
                               }`}
                               strokeWidth={2.5} 
                             />
-                            <span>{feature}</span>
+                            <span>{t(featureKey)}</span>
                           </li>
                         ))}
                       </ul>
                       <div className="mt-4 pt-4 border-t border-black/5 dark:border-white/5">
                         <p className="text-[10.5px] text-text-tertiary leading-relaxed">
-                          {plan.note}
+                          {t(plan.noteKey)}
                         </p>
                       </div>
                     </motion.div>
@@ -952,8 +965,7 @@ export const NativelyApiSettings: React.FC = () => {
       <div className="flex items-start gap-2 px-3 py-2.5 bg-bg-input rounded-xl border border-border-subtle">
         <Info size={11} className="text-text-tertiary shrink-0 mt-[1px]" strokeWidth={2} />
         <p className="text-[11px] text-text-tertiary leading-relaxed">
-          AI requests include chat replies, meeting title &amp; summary generation, and embeddings
-          — not just manual messages.
+          {t('settings:nativelyApi.aiQuotaNote')}
         </p>
       </div>
     </div>
@@ -968,14 +980,14 @@ export const NativelyApiSettings: React.FC = () => {
             Natively API
           </h3>
           <p className="text-[12px] text-text-tertiary mt-0.5 leading-snug">
-            Managed transcription, AI &amp; search
+            {t('settings:nativelyApi.subtitle')}
           </p>
         </div>
         {!isLoading && isSaved && (
           <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20">
             <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.6)]" />
             <span className="text-[10px] font-semibold text-emerald-500 tracking-wide">
-              {planLabel ?? 'Connected'}
+              {planLabel ?? t('providers:test.connected')}
             </span>
           </div>
         )}
@@ -1001,13 +1013,16 @@ export const NativelyApiSettings: React.FC = () => {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between">
                       <p className="text-[13.5px] font-semibold text-text-primary tracking-tight">
-                        Free Trial Active
+                        {t('settings:nativelyApi.trialActive')}
                       </p>
                       <TrialCountdown expiresAt={trialState.expiresAt} />
                     </div>
                     <p className="text-[10.5px] text-text-tertiary mt-1">
-                      {trialState.usage.ai} AI · {sttMin} min STT · {trialState.usage.search}{' '}
-                      searches used
+                      {t('settings:nativelyApi.trialUsage', {
+                        ai: trialState.usage.ai,
+                        stt: sttMin,
+                        search: trialState.usage.search,
+                      })}
                     </p>
                   </div>
                 </div>
@@ -1032,7 +1047,7 @@ export const NativelyApiSettings: React.FC = () => {
                     icon={Search}
                     used={trialState.usage.search}
                     limit={2}
-                    label="Search"
+                    label={t('settings:nativelyApi.quota.searchShort')}
                     unit=""
                   />
                 </div>
@@ -1043,7 +1058,7 @@ export const NativelyApiSettings: React.FC = () => {
                   className="w-full flex items-center justify-center gap-2 py-2.5 rounded-[9px] text-[12.5px] font-semibold bg-violet-600 hover:bg-violet-500 text-white shadow-[0_1px_3px_rgba(0,0,0,0.1)] transition-all active:scale-[0.98] cursor-pointer"
                 >
                   <ArrowUpRight size={13} strokeWidth={2.3} />
-                  Keep the momentum going
+                  {t('settings:nativelyApi.keepMomentum')}
                 </button>
               </div>
             </Card>
@@ -1078,33 +1093,32 @@ export const NativelyApiSettings: React.FC = () => {
                 </div>
 
                 <h3 className="text-[14.5px] font-bold text-text-primary tracking-tight mb-1">
-                  Natively API. Try it free.
+                  {t('settings:nativelyApi.tryFreeTitle')}
                 </h3>
                 <p className="text-[12px] text-text-secondary leading-snug px-4 mb-4">
-                  Experience managed text-to-speech, AI models, and real-time research without a
-                  subscription.
+                  {t('settings:nativelyApi.tryFreeBody')}
                 </p>
 
                 {/* Clean limits grid container */}
                 <div className="flex items-center justify-center gap-3.5 mb-5 text-[11.5px] font-medium text-text-primary bg-bg-input px-3.5 py-2 rounded-[8px] border border-border-subtle shadow-[inset_0_1px_rgba(255,255,255,0.02)]">
                   <div className="flex flex-col items-center gap-1">
                     <Clock size={14} strokeWidth={2} className="text-blue-500" />
-                    <span>30 min</span>
+                    <span>{t('settings:nativelyApi.trialLimitMinutes', { count: 30 })}</span>
                   </div>
                   <div className="w-px h-5 bg-border-subtle/80" />
                   <div className="flex flex-col items-center gap-1">
                     <Brain size={14} strokeWidth={2} className="text-violet-500" />
-                    <span>10 reqs</span>
+                    <span>{t('settings:nativelyApi.trialLimitRequests', { count: 10 })}</span>
                   </div>
                   <div className="w-px h-5 bg-border-subtle/80" />
                   <div className="flex flex-col items-center gap-1">
                     <Mic size={14} strokeWidth={2} className="text-emerald-500" />
-                    <span>10m STT</span>
+                    <span>{t('settings:nativelyApi.trialLimitStt', { count: 10 })}</span>
                   </div>
                   <div className="w-px h-5 bg-border-subtle/80" />
                   <div className="flex flex-col items-center gap-1">
                     <Search size={14} strokeWidth={2} className="text-orange-500" />
-                    <span>2 searches</span>
+                    <span>{t('settings:nativelyApi.trialLimitSearches', { count: 2 })}</span>
                   </div>
                 </div>
 
@@ -1119,12 +1133,12 @@ export const NativelyApiSettings: React.FC = () => {
                 >
                   {trialLoading ? (
                     <>
-                      <Loader2 size={13} className="animate-spin" /> Starting trial…
+                      <Loader2 size={13} className="animate-spin" /> {t('settings:nativelyApi.startingTrial')}
                     </>
                   ) : isClaimed ? (
-                    'Trial Already Claimed'
+                    t('settings:nativelyApi.trialClaimed')
                   ) : (
-                    'Start 10-Minute Free Trial'
+                    t('settings:nativelyApi.startTrial')
                   )}
                 </button>
 
@@ -1137,13 +1151,13 @@ export const NativelyApiSettings: React.FC = () => {
                 )}
 
                 <p className="text-[10.5px] text-text-tertiary font-medium mt-3">
-                  No account needed — bound to this device.
+                  {t('settings:nativelyApi.noAccountNeeded')}
                 </p>
 
                 <div className="w-[30px] h-px bg-border-subtle my-3" />
 
                 <p className="text-[11px] text-text-secondary font-medium">
-                  Already have an API key? Enter it below.
+                  {t('settings:nativelyApi.alreadyHaveKey')}
                 </p>
               </div>
             </Card>
@@ -1162,9 +1176,9 @@ export const NativelyApiSettings: React.FC = () => {
             <NativelyLogoMark size={18} className="text-blue-400" />
           </div>
           <div className="min-w-0">
-            <p className="text-[13px] font-semibold text-text-primary">API Key</p>
+            <p className="text-[13px] font-semibold text-text-primary">{t('settings:nativelyApi.apiKeyTitle')}</p>
             <p className="text-[11px] text-text-tertiary leading-snug mt-0.5">
-              Your Natively API key from your subscription email
+              {t('settings:nativelyApi.apiKeyHint')}
             </p>
           </div>
         </div>
@@ -1177,7 +1191,7 @@ export const NativelyApiSettings: React.FC = () => {
           {/* Label row */}
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-semibold text-text-tertiary uppercase tracking-widest">
-              Secret key
+              {t('settings:nativelyApi.secretKey')}
             </span>
             {isSaved && (
               <button
@@ -1185,7 +1199,7 @@ export const NativelyApiSettings: React.FC = () => {
                 className="flex items-center gap-1 text-[11px] text-red-400/80 hover:text-red-400 transition-colors duration-150 cursor-pointer"
               >
                 <Trash2 size={11} strokeWidth={2} />
-                Remove
+                {t('common:actions.remove')}
               </button>
             )}
           </div>
@@ -1240,39 +1254,44 @@ export const NativelyApiSettings: React.FC = () => {
             {isSaving ? (
               <span className="flex items-center justify-center gap-2">
                 <Loader2 size={13} className="animate-spin" />
-                Saving…
+                {t('common:state.saving')}
               </span>
             ) : justSaved ? (
               <span className="flex items-center justify-center gap-2">
                 <CheckCircle size={13} />
-                Saved
+                {t('providers:apiKey.saved')}
               </span>
             ) : (
-              'Save key'
+              t('settings:nativelyApi.saveKey')
             )}
           </button>
 
           {/* Hint */}
           <p className="text-[11px] text-text-secondary leading-relaxed text-center">
-            Don't have a key?{' '}
-            <span
-              onClick={() => openExternal(PLAN_STANDARD_URL)}
-              className="text-blue-400 hover:text-blue-300 cursor-pointer transition-colors duration-150"
-            >
-              Subscribe to get one
-            </span>
+            <Trans
+              i18nKey="settings:nativelyApi.noKeyHint"
+              components={[
+                <span
+                  key="subscribe"
+                  onClick={() => openExternal(PLAN_STANDARD_URL)}
+                  className="text-blue-400 hover:text-blue-300 cursor-pointer transition-colors duration-150"
+                />,
+              ]}
+            />
           </p>
 
           {/* T&C consent */}
           <p className="text-[10.5px] text-text-tertiary leading-relaxed text-center">
-            By saving your key, you agree to our{' '}
-            <span
-              onClick={() => openExternal('https://natively.software/nativelyapi/t&c')}
-              className="text-text-secondary hover:text-text-primary underline decoration-border-subtle underline-offset-[3px] cursor-pointer transition-colors"
-            >
-              Terms &amp; Conditions
-            </span>
-            .
+            <Trans
+              i18nKey="settings:nativelyApi.termsConsent"
+              components={[
+                <span
+                  key="terms"
+                  onClick={() => openExternal('https://natively.software/nativelyapi/t&c')}
+                  className="text-text-secondary hover:text-text-primary underline decoration-border-subtle underline-offset-[3px] cursor-pointer transition-colors"
+                />,
+              ]}
+            />
           </p>
         </div>
       </Card>
@@ -1291,10 +1310,10 @@ export const NativelyApiSettings: React.FC = () => {
                 )}
               </div>
               <div>
-                <p className="text-[13px] font-semibold text-text-primary">Usage this month</p>
+                <p className="text-[13px] font-semibold text-text-primary">{t('settings:nativelyApi.usageThisMonth')}</p>
                 {usageData && (
                   <p className="text-[11px] text-text-tertiary mt-0.5">
-                    Resets {fmtDate(usageData.quota.resets_at)}
+                    {t('settings:nativelyApi.resetsAt', { date: fmtDate(usageData.quota.resets_at) })}
                   </p>
                 )}
               </div>
@@ -1311,7 +1330,7 @@ export const NativelyApiSettings: React.FC = () => {
                 className={isLoadingUsage ? 'animate-spin' : ''}
                 strokeWidth={2}
               />
-              Refresh
+              {t('common:actions.refresh')}
             </button>
           </div>
 
@@ -1327,19 +1346,19 @@ export const NativelyApiSettings: React.FC = () => {
               <div className="mx-5 mb-4 grid grid-cols-3 bg-bg-input border border-border-subtle rounded-2xl overflow-hidden divide-x divide-border-subtle">
                 {[
                   {
-                    label: 'STT mins',
+                    label: t('settings:nativelyApi.quota.sttMins'),
                     value: usageData.quota.transcription.used,
                     color: 'text-blue-400',
                     glow: 'rgba(59,130,246,0.5)',
                   },
                   {
-                    label: 'AI calls',
+                    label: t('settings:nativelyApi.quota.aiCalls'),
                     value: usageData.quota.ai.used,
                     color: 'text-violet-400',
                     glow: 'rgba(139,92,246,0.5)',
                   },
                   {
-                    label: 'Searches',
+                    label: t('settings:nativelyApi.quota.searches'),
                     value: usageData.quota.search.used,
                     color: 'text-emerald-400',
                     glow: 'rgba(16,185,129,0.5)',
@@ -1361,19 +1380,19 @@ export const NativelyApiSettings: React.FC = () => {
               {/* Progress bars */}
               <div className="px-5 pb-5 space-y-3.5">
                 <QuotaBar
-                  label="Transcription"
+                  label={t('settings:nativelyApi.quota.transcription')}
                   icon={Mic}
                   bucket={usageData.quota.transcription}
                   barColor="bg-blue-500"
                 />
                 <QuotaBar
-                  label="AI requests"
+                  label={t('settings:nativelyApi.quota.aiRequests')}
                   icon={Brain}
                   bucket={usageData.quota.ai}
                   barColor="bg-violet-500"
                 />
                 <QuotaBar
-                  label="Web searches"
+                  label={t('settings:nativelyApi.quota.webSearches')}
                   icon={Search}
                   bucket={usageData.quota.search}
                   barColor="bg-emerald-500"
@@ -1392,20 +1411,20 @@ export const NativelyApiSettings: React.FC = () => {
         <div className="px-5 py-4">
           <div className="flex items-center justify-between mb-3.5">
             <p className="text-[10px] font-semibold text-text-tertiary uppercase tracking-widest">
-              How it works
+              {t('settings:nativelyApi.howItWorks.title')}
             </p>
             <button
               onClick={() => openExternal('https://natively.software/pro')}
               className="flex items-center gap-1 text-[10px] font-semibold text-blue-400 hover:text-blue-300 uppercase tracking-widest transition-colors cursor-pointer"
             >
-              Watch Demo <ArrowUpRight size={10} strokeWidth={2} />
+              {t('settings:nativelyApi.watchDemo')} <ArrowUpRight size={10} strokeWidth={2} />
             </button>
           </div>
           <div className="space-y-3">
             {[
-              { step: '1', text: 'Subscribe above and complete checkout on Dodo Payments.' },
-              { step: '2', text: 'Your API key is emailed instantly to your inbox.' },
-              { step: '3', text: 'Paste it here — Natively handles the rest automatically.' },
+              { step: '1', text: t('settings:nativelyApi.howItWorks.s1') },
+              { step: '2', text: t('settings:nativelyApi.howItWorks.s2') },
+              { step: '3', text: t('settings:nativelyApi.howItWorks.s3') },
             ].map(({ step, text }) => (
               <div key={step} className="flex items-start gap-3">
                 <div className="w-5 h-5 rounded-full bg-bg-input border border-border-subtle flex items-center justify-center text-[10px] font-bold text-text-tertiary shrink-0 mt-[1px]">
@@ -1425,9 +1444,9 @@ export const NativelyApiSettings: React.FC = () => {
             <Shield size={18} className="text-emerald-400" />
           </div>
           <div className="min-w-0">
-            <p className="text-[13px] font-semibold text-text-primary">Refund Policy</p>
+            <p className="text-[13px] font-semibold text-text-primary">{t('settings:nativelyApi.refund.title')}</p>
             <p className="text-[11px] text-text-tertiary leading-snug mt-0.5">
-              24-hour refund window — voucher purchases are final sale
+              {t('settings:nativelyApi.refund.subtitle')}
             </p>
           </div>
         </div>
@@ -1438,67 +1457,70 @@ export const NativelyApiSettings: React.FC = () => {
           <div className="space-y-3">
             <div className="rounded-xl bg-bg-input/50 border border-border-subtle px-3.5 py-3">
               <p className="text-[11.5px] text-text-secondary leading-relaxed">
-                <strong className="text-text-primary font-semibold">A quick heads-up:</strong>{' '}
-                Natively is built and maintained by a single developer and integrates a lot of
-                third-party services — AI providers, transcription engines, search APIs, payments,
-                OS-level audio &amp; screen capture. That gives the app a lot of capability, but the
-                surface area is wider than a typical closed-source product, and once in a while
-                something may not behave exactly as expected. If you run into something like that,
-                please <em>report it</em> rather than disputing the charge — we read every report
-                and fixes typically land in the next update.
+                <Trans
+                  i18nKey="settings:nativelyApi.refund.headsUp"
+                  components={[
+                    <strong className="text-text-primary font-semibold" key="lead" />,
+                    <em key="report" />,
+                  ]}
+                />
               </p>
             </div>
 
             <div className="flex items-start gap-3">
               <div className="w-1.5 h-1.5 rounded-full bg-text-tertiary/40 shrink-0 mt-[6px]" />
               <p className="text-[11.5px] text-text-secondary leading-relaxed">
-                Purchases made with a coupon, voucher, referral credit, or limited-time offer are{' '}
-                <strong className="text-text-primary font-semibold">final sale</strong> and not
-                eligible for refund.
+                <Trans
+                  i18nKey="settings:nativelyApi.refund.finalSale"
+                  components={[<strong className="text-text-primary font-semibold" key="finalSale" />]}
+                />
               </p>
             </div>
 
             <div className="flex items-start gap-3">
               <div className="w-1.5 h-1.5 rounded-full bg-text-tertiary/40 shrink-0 mt-[6px]" />
               <p className="text-[11.5px] text-text-secondary leading-relaxed">
-                To cancel your subscription, log in to the{' '}
-                <span
-                  onClick={() => openExternal('https://customer.dodopayments.com/')}
-                  className="text-blue-400 hover:text-blue-300 underline decoration-blue-400/40 underline-offset-[3px] cursor-pointer transition-colors"
-                >
-                  customer portal
-                </span>{' '}
-                to manage or cancel your plan.
+                <Trans
+                  i18nKey="settings:nativelyApi.refund.cancel"
+                  components={[
+                    <span
+                      key="portal"
+                      onClick={() => openExternal('https://customer.dodopayments.com/')}
+                      className="text-blue-400 hover:text-blue-300 underline decoration-blue-400/40 underline-offset-[3px] cursor-pointer transition-colors"
+                    />,
+                  ]}
+                />
               </p>
             </div>
 
             <div className="h-px bg-border-subtle mt-4 mb-3" />
 
             <p className="text-[11.5px] text-text-secondary leading-relaxed">
-              For everything else — the 24-hour refund window, subscription handling, taxes &amp;
-              fees, and your local consumer rights — please see our full{' '}
-              <span
-                onClick={() => openExternal('https://natively.software/refundpolicy')}
-                className="text-text-primary hover:text-text-secondary underline decoration-border-subtle underline-offset-[3px] cursor-pointer transition-colors"
-              >
-                Refund Policy
-              </span>
-              . To request a refund or ask a question, email{' '}
-              <span
-                onClick={() => openExternal('mailto:natively.contact@gmail.com')}
-                className="text-text-primary hover:text-text-secondary underline decoration-border-subtle underline-offset-[3px] cursor-pointer transition-colors"
-              >
-                natively.contact@gmail.com
-              </span>
-              .
+              <Trans
+                i18nKey="settings:nativelyApi.refund.seeFull"
+                components={[
+                  <span
+                    key="policy"
+                    onClick={() => openExternal('https://natively.software/refundpolicy')}
+                    className="text-text-primary hover:text-text-secondary underline decoration-border-subtle underline-offset-[3px] cursor-pointer transition-colors"
+                  />,
+                  <span
+                    key="email"
+                    onClick={() => openExternal('mailto:natively.contact@gmail.com')}
+                    className="text-text-primary hover:text-text-secondary underline decoration-border-subtle underline-offset-[3px] cursor-pointer transition-colors"
+                  >
+                    natively.contact@gmail.com
+                  </span>,
+                ]}
+              />
             </p>
 
             <div className="mt-3 px-3 py-2.5 rounded-xl bg-amber-500/6 border border-amber-500/15">
               <p className="text-[11.5px] text-text-secondary leading-relaxed">
-                <strong className="text-text-primary font-semibold">A personal note:</strong>{' '}
-                Natively is built, maintained, and supported entirely by one person — in their free time.
-                Email replies may take a few days, and weekends (Sat &amp; Sun) are offline.
-                Your patience is genuinely appreciated.
+                <Trans
+                  i18nKey="settings:nativelyApi.refund.personalNote"
+                  components={[<strong className="text-text-primary font-semibold" key="lead" />]}
+                />
               </p>
             </div>
           </div>

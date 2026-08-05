@@ -50,5 +50,21 @@
     "validationFailed": "校验失败",
     "connectionFailed": "连接失败",
     "testFailed": "测试失败"
+  },
+  "nativelyApi": {
+    "subscriptionInactive": "订阅未生效 —— 请续订以恢复访问。",
+    "keyNotRecognised": "服务器不识别该密钥。",
+    "invalidKeyFormat": "密钥格式无效。",
+    "unreachable": "无法连接服务器。",
+    "serverError": "服务器错误：{{detail}}",
+    "usageLoadFailed": "无法加载用量。",
+    "networkError": "网络错误",
+    "saveKeyFailed": "保存 API Key 失败",
+    "unexpected": "出现意外错误"
+  },
+  "pro": {
+    "activationFailedRetry": "激活失败，请重试。",
+    "activationFailed": "激活失败。",
+    "deactivationFailed": "解除授权失败。"
   }
 }

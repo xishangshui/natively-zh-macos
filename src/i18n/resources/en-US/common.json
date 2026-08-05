@@ -38,12 +38,14 @@
     "notSet": "not set",
     "saving": "Saving...",
     "savedExclaim": "Saved!",
-    "none": "None"
+    "none": "None",
+    "unknown": "unknown"
   },
   "badge": {
     "beta": "Beta",
     "new": "NEW",
-    "experimental": "Experimental"
+    "experimental": "Experimental",
+    "soon": "Soon"
   },
   "device": {
     "mac": "Mac",

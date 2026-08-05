@@ -14,6 +14,8 @@ interface PricingProduct {
 
 // ─── Strong cubic-bezier easings (per emil-design-eng) ───────
 // Never use the weak default `ease` / `ease-in` for UI motion.
+import { Trans, useTranslation } from 'react-i18next';
+
 const EASE_OUT: [number, number, number, number] = [0.23, 1, 0.32, 1];
 const EASE_OUT_CSS = 'cubic-bezier(0.23, 1, 0.32, 1)';
 
@@ -220,6 +222,7 @@ function InteractiveFeatureCard({
 // persona nodes (Technical, Sales, PM, etc.) with glowing connection orbits
 // in 3D perspective space.
 function ModesPoster({ animateShimmer }: { animateShimmer: boolean }) {
+    const { t } = useTranslation(['settings']);
     return (
         <div
             className="relative w-full h-[120px] mt-3 select-none pointer-events-none overflow-hidden"
@@ -293,7 +296,7 @@ function ModesPoster({ animateShimmer }: { animateShimmer: boolean }) {
                     </g>
                     {/* Label for Tech */}
                     <rect x="35" y="60" width="50" height="7" rx="2" fill="rgba(16, 185, 129, 0.1)" stroke="rgba(16, 185, 129, 0.2)" strokeWidth="0.5" />
-                    <text x="60" y="65" textAnchor="middle" fill="#10b981" fontSize="4" fontWeight="bold" fontFamily="Geist, Satoshi, sans-serif" letterSpacing="0.02em">TECH INTERVIEW</text>
+                    <text x="60" y="65" textAnchor="middle" fill="#10b981" fontSize="4" fontWeight="bold" fontFamily="Geist, Satoshi, sans-serif" letterSpacing="0.02em">{t('settings:pro.poster.techInterview')}</text>
 
 
                     {/* NODE 2: SALES (Briefcase representation) */}
@@ -305,7 +308,7 @@ function ModesPoster({ animateShimmer }: { animateShimmer: boolean }) {
                         <path d="M-2 -2 L-2 -4 L2 -4 L2 -2" fill="none" className="pricing-poster-stroke-bright" strokeWidth="1" />
                     </g>
                     {/* Label for Sales */}
-                    <text x="220" y="58" textAnchor="middle" className="pricing-poster-text-muted" fontSize="4.2" fontWeight="bold" fontFamily="Geist, Satoshi, sans-serif">SALES</text>
+                    <text x="220" y="58" textAnchor="middle" className="pricing-poster-text-muted" fontSize="4.2" fontWeight="bold" fontFamily="Geist, Satoshi, sans-serif">{t('settings:pro.poster.sales')}</text>
 
 
                     {/* NODE 3: PRODUCT MANAGER */}
@@ -316,7 +319,7 @@ function ModesPoster({ animateShimmer }: { animateShimmer: boolean }) {
                         <path d="M-4 1 L0 3 L4 1" fill="none" className="pricing-poster-stroke-bright" strokeWidth="0.8" />
                     </g>
                     {/* Label for PM */}
-                    <text x="80" y="112" textAnchor="middle" className="pricing-poster-text-muted" fontSize="4.2" fontWeight="bold" fontFamily="Geist, Satoshi, sans-serif">PRODUCT</text>
+                    <text x="80" y="112" textAnchor="middle" className="pricing-poster-text-muted" fontSize="4.2" fontWeight="bold" fontFamily="Geist, Satoshi, sans-serif">{t('settings:pro.poster.product')}</text>
 
 
                     {/* NODE 4: SYSTEM DESIGN */}
@@ -330,7 +333,7 @@ function ModesPoster({ animateShimmer }: { animateShimmer: boolean }) {
                         <path d="M2.5 -1 L2.5 0 L0 0" fill="none" className="pricing-poster-stroke-bright" strokeWidth="0.8" />
                     </g>
                     {/* Label for System Design */}
-                    <text x="200" y="112" textAnchor="middle" className="pricing-poster-text-muted" fontSize="4.2" fontWeight="bold" fontFamily="Geist, Satoshi, sans-serif">ARCHITECT</text>
+                    <text x="200" y="112" textAnchor="middle" className="pricing-poster-text-muted" fontSize="4.2" fontWeight="bold" fontFamily="Geist, Satoshi, sans-serif">{t('settings:pro.poster.architect')}</text>
 
 
                     {/* CENTRAL NODE: ACTIVE ENGINE */}
@@ -359,6 +362,7 @@ function ModesPoster({ animateShimmer }: { animateShimmer: boolean }) {
 // with laser connection nodes drawing lines between matching skills.
 // Features a floating central pill badge showing a dynamic "94% Match" glow.
 function ResumeMatchPoster({ animateShimmer }: { animateShimmer: boolean }) {
+    const { t } = useTranslation(['settings']);
     return (
         <div
             className="relative w-full h-[120px] mt-3 select-none pointer-events-none overflow-hidden"
@@ -441,7 +445,7 @@ function ResumeMatchPoster({ animateShimmer }: { animateShimmer: boolean }) {
                     </g>
                     {/* Small Resume Badge */}
                     <rect x="34" y="81" width="30" height="7" rx="2" fill="rgba(139, 92, 246, 0.2)" stroke="rgba(139, 92, 246, 0.3)" strokeWidth="0.5" />
-                    <text x="49" y="85" textAnchor="middle" fill="#c4b5fd" className="pricing-poster-badge-text-purple" fontSize="4.5" fontWeight="bold" fontFamily="Geist, Satoshi, sans-serif">RESUME</text>
+                    <text x="49" y="85" textAnchor="middle" fill="#c4b5fd" className="pricing-poster-badge-text-purple" fontSize="4.5" fontWeight="bold" fontFamily="Geist, Satoshi, sans-serif">{t('settings:pro.poster.resume')}</text>
 
 
                     {/* RIGHT PANEL: JOB DESCRIPTION */}
@@ -469,7 +473,7 @@ function ResumeMatchPoster({ animateShimmer }: { animateShimmer: boolean }) {
                     </g>
                     {/* Small JD Badge */}
                     <rect x="169" y="81" width="30" height="7" rx="2" fill="rgba(59, 130, 246, 0.2)" stroke="rgba(59, 130, 246, 0.3)" strokeWidth="0.5" />
-                    <text x="184" y="85" textAnchor="middle" fill="#93c5fd" className="pricing-poster-badge-text-blue" fontSize="4.5" fontWeight="bold" fontFamily="Geist, Satoshi, sans-serif">ROLE JD</text>
+                    <text x="184" y="85" textAnchor="middle" fill="#93c5fd" className="pricing-poster-badge-text-blue" fontSize="4.5" fontWeight="bold" fontFamily="Geist, Satoshi, sans-serif">{t('settings:pro.poster.roleJd')}</text>
 
 
                     {/* CONNECTING AI LASER LINES */}
@@ -502,6 +506,7 @@ function ResumeMatchPoster({ animateShimmer }: { animateShimmer: boolean }) {
 
 
 export const NativelyProSettings: React.FC = () => {
+    const { t } = useTranslation(['settings', 'common', 'errors']);
     const prefersReducedMotion = useReducedMotion();
     const [interfaceTheme, setInterfaceTheme] = useState<MeetingInterfaceTheme>(() => {
         const theme = getMeetingInterfaceTheme();
@@ -578,11 +583,11 @@ export const NativelyProSettings: React.FC = () => {
                 }, 1200);
             } else {
                 setStatus('error');
-                setErrorMessage(result?.error || 'Activation failed. Please try again.');
+                setErrorMessage(result?.error || t('errors:pro.activationFailedRetry'));
             }
         } catch (e: any) {
             setStatus('error');
-            setErrorMessage(e.message || 'Activation failed.');
+            setErrorMessage(e.message || t('errors:pro.activationFailed'));
         }
     };
 
@@ -591,7 +596,7 @@ export const NativelyProSettings: React.FC = () => {
             await window.electronAPI?.licenseDeactivate?.();
             refreshLicense();
         } catch (e: any) {
-            setErrorMessage(e.message || 'Deactivation failed.');
+            setErrorMessage(e.message || t('errors:pro.deactivationFailed'));
         }
     };
 
@@ -743,9 +748,9 @@ export const NativelyProSettings: React.FC = () => {
                         <div className="w-16 h-16 rounded-[16px] bg-emerald-500/10 border border-emerald-500/20 flex flex-col items-center justify-center mb-6 shadow-inner relative group">
                             <CheckCircle size={28} className="text-emerald-400" strokeWidth={2} />
                         </div>
-                        <h2 className="text-[18px] font-semibold tracking-tight text-text-primary">Pro License Active</h2>
+                        <h2 className="text-[18px] font-semibold tracking-tight text-text-primary">{t('settings:pro.licenseActive')}</h2>
                         <p className="text-[13px] mt-2 max-w-[280px] mx-auto leading-relaxed mb-8 text-text-secondary">
-                            Your device is fully authorized for Natively's premium features including the Profile Engine, Job Description Intelligence, and Company Research.
+                            {t('settings:pro.licenseActiveBody')}
                         </p>
 
                         <button
@@ -753,10 +758,10 @@ export const NativelyProSettings: React.FC = () => {
                             className="w-full max-w-[280px] py-3 rounded-xl bg-red-500/10 text-red-400 border border-red-500/20 text-[13px] font-medium hover:bg-red-500/20 flex items-center justify-center gap-2 shadow-inner cursor-pointer active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
                             style={{ transition: `transform 140ms ${EASE_OUT_CSS}, background-color 180ms ${EASE_OUT_CSS}` }}
                         >
-                            <X size={15} /> Deactivate License
+                            <X size={15} /> {t('settings:pro.deactivateLicense')}
                         </button>
                         <p className="text-[11px] text-center px-4 mt-4 leading-relaxed text-text-tertiary max-w-[300px]">
-                            Deactivating will remove the license from this device, allowing you to use it on another computer.
+                            {t('settings:pro.deactivateHint')}
                         </p>
                     </div>
                 </Card>
@@ -772,10 +777,10 @@ export const NativelyProSettings: React.FC = () => {
                         {/* Title row */}
                         <motion.div variants={itemVariants} className="px-0.5 pt-1">
                             <h2 className="text-[18px] font-bold tracking-[-0.02em] text-text-primary leading-tight">
-                                Choose your plan
+                                {t('settings:pro.choosePlan')}
                             </h2>
                             <p className="text-[12px] text-text-tertiary mt-1 leading-snug">
-                                Unlock the full Natively Pro toolkit.
+                                {t('settings:pro.choosePlanSubtitle')}
                             </p>
                         </motion.div>
 
@@ -794,7 +799,7 @@ export const NativelyProSettings: React.FC = () => {
                             >
                                 <div className="relative flex items-center justify-between" style={{ transformStyle: 'preserve-3d', transform: 'translateZ(12px)' }}>
                                     <span className="badge-tier-label inline-flex items-center px-2 py-0.5 rounded-full text-text-primary text-[10px] font-semibold" style={{ letterSpacing: '0.02em' }}>
-                                        Pro · Yearly
+                                        {t('settings:pro.tierYearly')}
                                     </span>
                                 </div>
 
@@ -827,7 +832,7 @@ export const NativelyProSettings: React.FC = () => {
                                     </span>
                                 </div>
                                 <p className="relative mt-1 text-[11px] font-medium text-text-secondary" style={{ transform: 'translateZ(10px)' }}>
-                                    per year · billed annually
+                                    {t('settings:pro.perYear')}
                                 </p>
 
                                 {/* Crisp gradient hairline divider */}
@@ -841,10 +846,10 @@ export const NativelyProSettings: React.FC = () => {
                                         </span>
                                         <div className="min-w-0">
                                             <p className="text-[12.5px] font-semibold leading-tight text-text-primary" style={{ letterSpacing: '-0.01em' }}>
-                                                Expert Persona Modes
+                                                {t('settings:pro.yearlyFeatureTitle')}
                                             </p>
                                             <p className="text-[10.5px] leading-snug mt-1 text-text-secondary">
-                                                Switch between 7 specialized AI personas tailored for different conversation dynamics.
+                                                {t('settings:pro.yearlyFeatureBody')}
                                             </p>
                                         </div>
                                     </div>
@@ -861,7 +866,7 @@ export const NativelyProSettings: React.FC = () => {
                                     className="pricing-cta-yearly relative mt-3 h-11 rounded-full text-[13px] font-semibold flex items-center justify-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
                                     style={{ letterSpacing: '-0.005em', transform: 'translateZ(28px)' }}
                                 >
-                                    Get Pro
+                                    {t('settings:pro.getPro')}
                                     {yearlyDiscountAbs !== null && (
                                         <span className="pricing-card-discount-badge inline-flex items-center px-1.5 py-0.5 rounded-full text-[9.5px] font-bold tracking-wider">
                                             -{yearlyDiscountAbs}%
@@ -869,7 +874,7 @@ export const NativelyProSettings: React.FC = () => {
                                     )}
                                 </button>
                                 <p className="relative mt-2 text-center text-[10px] leading-snug text-text-secondary" style={{ transform: 'translateZ(6px)' }}>
-                                    Cancels anytime. Renews at {yearlyPriceText}/yr.
+                                    {t('settings:pro.renewNote', { price: yearlyPriceText })}
                                 </p>
                             </InteractiveCard>
 
@@ -893,7 +898,7 @@ export const NativelyProSettings: React.FC = () => {
                                 {/* Label row: Pro · Lifetime */}
                                 <div className="relative flex items-center justify-between" style={{ transformStyle: 'preserve-3d', transform: 'translateZ(12px)' }}>
                                     <span className="badge-tier-label inline-flex items-center px-2 py-0.5 rounded-full text-text-primary text-[10px] font-semibold" style={{ letterSpacing: '0.02em' }}>
-                                        Pro · Lifetime
+                                        {t('settings:pro.tierLifetime')}
                                     </span>
                                 </div>
 
@@ -926,12 +931,12 @@ export const NativelyProSettings: React.FC = () => {
                                     </span>
                                     {lifetimeSavingsPct !== null && (
                                         <span className="pricing-card-savings-badge text-[10px] font-medium tracking-[0.01em] px-2 py-0.5 rounded-full select-none ml-1.5 self-center">
-                                            Save {lifetimeSavingsPct}%
+                                            {t('settings:pro.savePercent', { percent: lifetimeSavingsPct })}
                                         </span>
                                     )}
                                 </div>
                                 <p className="relative mt-1 text-[11px] font-medium text-text-secondary" style={{ transform: 'translateZ(10px)' }}>
-                                    One-time payment. Yours forever.
+                                    {t('settings:pro.lifetimeTagline')}
                                 </p>
 
                                 {/* Crisp divider */}
@@ -945,10 +950,10 @@ export const NativelyProSettings: React.FC = () => {
                                         </span>
                                         <div className="min-w-0">
                                             <p className="text-[12.5px] font-semibold leading-tight text-text-primary" style={{ letterSpacing: '-0.01em' }}>
-                                                Resume &amp; Context Grounding
+                                                {t('settings:pro.lifetimeFeatureTitle')}
                                             </p>
                                             <p className="text-[10.5px] leading-snug mt-1 text-text-secondary">
-                                                Align your live assistant guidance with your CV, background files, and target job description.
+                                                {t('settings:pro.lifetimeFeatureBody')}
                                             </p>
                                         </div>
                                     </div>
@@ -965,15 +970,15 @@ export const NativelyProSettings: React.FC = () => {
                                     className="pricing-cta-lifetime relative mt-3 h-11 rounded-full text-[13px] font-semibold flex items-center justify-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
                                     style={{ letterSpacing: '-0.005em', transform: 'translateZ(28px)' }}
                                 >
-                                    Lock in lifetime
+                                    {t('settings:pro.lockInLifetime')}
                                 </button>
                                 {lifetimeSavingsAbs !== null ? (
                                     <p className="relative mt-2 text-center text-[10px] leading-snug text-text-secondary" style={{ transform: 'translateZ(6px)' }}>
-                                        Save ${lifetimeSavingsAbs} vs 3 years of yearly.
+                                        {t('settings:pro.saveVsYearly', { amount: lifetimeSavingsAbs })}
                                     </p>
                                 ) : (
                                     <p className="relative mt-2 text-center text-[10px] leading-snug text-text-secondary" style={{ transform: 'translateZ(6px)' }}>
-                                        Pay once. Never renew.
+                                        {t('settings:pro.payOnce')}
                                     </p>
                                 )}
                             </InteractiveCard>
@@ -984,10 +989,10 @@ export const NativelyProSettings: React.FC = () => {
                             {/* Header */}
                             <div className="flex items-center justify-between px-0.5">
                                 <h3 className="text-[13px] font-bold tracking-[-0.015em] text-text-primary">
-                                    Everything you get in Pro
+                                    {t('settings:pro.everythingTitle')}
                                 </h3>
                                 <span className="text-[9px] uppercase tracking-[0.1em] font-semibold text-text-tertiary px-2 py-0.5 rounded-full border border-white/5 bg-white/2">
-                                    Both tiers
+                                    {t('settings:pro.bothTiers')}
                                 </span>
                             </div>
 
@@ -1010,16 +1015,16 @@ export const NativelyProSettings: React.FC = () => {
                                         </span>
                                         <div className="min-w-0">
                                             <p className="text-[12.5px] font-bold tracking-tight text-text-primary leading-tight">
-                                                Modes Manager
+                                                {t('settings:pro.features.modesTitle')}
                                             </p>
                                             <p className="text-[11px] text-text-secondary leading-snug mt-1 max-w-[340px]">
-                                                7 expert personas customized for tech interview prep, PM strategy, executive presence, and sales negotiation.
+                                                {t('settings:pro.features.modesBody')}
                                             </p>
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-3 bg-white/[0.04] border border-white/[0.09] rounded-full px-3 py-1.5 shadow-sm">
                                         <span className="text-[9px] font-extrabold text-text-primary tracking-wider uppercase">
-                                            7 expert personas
+                                            {t('settings:pro.features.modesBadge')}
                                         </span>
                                         <div className="flex -space-x-1.5">
                                             {['bg-emerald-400', 'bg-blue-400', 'bg-violet-400', 'bg-pink-400', 'bg-orange-400', 'bg-cyan-400', 'bg-yellow-400'].map((color, idx) => (
@@ -1047,10 +1052,10 @@ export const NativelyProSettings: React.FC = () => {
                                         </span>
                                         <div className="min-w-0">
                                             <p className="text-[12px] font-bold tracking-tight text-text-primary leading-tight">
-                                                Resume Intelligence
+                                                {t('settings:pro.features.resumeTitle')}
                                             </p>
                                             <p className="text-[10.5px] text-text-secondary leading-snug mt-1">
-                                                AI grounded in your lived experience, background, and career accomplishments.
+                                                {t('settings:pro.features.resumeBody')}
                                             </p>
                                         </div>
                                     </div>
@@ -1079,10 +1084,10 @@ export const NativelyProSettings: React.FC = () => {
                                         </span>
                                         <div className="min-w-0">
                                             <p className="text-[12px] font-bold tracking-tight text-text-primary leading-tight">
-                                                Context Intelligence
+                                                {t('settings:pro.features.contextTitle')}
                                             </p>
                                             <p className="text-[10.5px] text-text-secondary leading-snug mt-1">
-                                                Ground the AI response in custom reference files, PDFs, docs, and codebases.
+                                                {t('settings:pro.features.contextBody')}
                                             </p>
                                         </div>
                                     </div>
@@ -1107,10 +1112,10 @@ export const NativelyProSettings: React.FC = () => {
                                         </span>
                                         <div className="min-w-0">
                                             <p className="text-[12px] font-bold tracking-tight text-text-primary leading-tight">
-                                                Negotiation Coaching
+                                                {t('settings:pro.features.negotiationTitle')}
                                             </p>
                                             <p className="text-[10.5px] text-text-secondary leading-snug mt-1">
-                                                Live coaching, counter-offer scripting, and real-time market-band analysis.
+                                                {t('settings:pro.features.negotiationBody')}
                                             </p>
                                         </div>
                                     </div>
@@ -1136,10 +1141,10 @@ export const NativelyProSettings: React.FC = () => {
                                         </span>
                                         <div className="min-w-0">
                                             <p className="text-[12px] font-bold tracking-tight text-text-primary leading-tight">
-                                                JD Intelligence
+                                                {t('settings:pro.features.jdTitle')}
                                             </p>
                                             <p className="text-[10.5px] text-text-secondary leading-snug mt-1">
-                                                Gap-analysis comparing your profile directly against target job descriptions.
+                                                {t('settings:pro.features.jdBody')}
                                             </p>
                                         </div>
                                     </div>
@@ -1149,14 +1154,14 @@ export const NativelyProSettings: React.FC = () => {
                                                 <Check size={8} strokeWidth={3} />
                                                 System Design
                                             </span>
-                                            <span className="font-mono text-[7.5px] font-bold tracking-wider text-emerald-400">MATCH</span>
+                                            <span className="font-mono text-[7.5px] font-bold tracking-wider text-emerald-400">{t('settings:pro.poster.match')}</span>
                                         </div>
                                         <div className="flex items-center justify-between text-amber-300">
                                             <span className="flex items-center gap-1">
                                                 <AlertCircle size={8} strokeWidth={3} />
-                                                Distributed Caching
+                                                {t('settings:pro.poster.distributedCaching')}
                                             </span>
-                                            <span className="font-mono text-[7.5px] font-bold tracking-wider text-amber-400">GAP</span>
+                                            <span className="font-mono text-[7.5px] font-bold tracking-wider text-amber-400">{t('settings:pro.poster.gap')}</span>
                                         </div>
                                     </div>
                                 </InteractiveFeatureCard>
@@ -1173,19 +1178,19 @@ export const NativelyProSettings: React.FC = () => {
                                         </span>
                                         <div className="min-w-0">
                                             <p className="text-[12px] font-bold tracking-tight text-text-primary leading-tight">
-                                                Company Research
+                                                {t('settings:pro.features.companyTitle')}
                                             </p>
                                             <p className="text-[10.5px] text-text-secondary leading-snug mt-1">
-                                                Real-time deep-dive into culture, tech stack, and strategic industry positioning.
+                                                {t('settings:pro.features.companyBody')}
                                             </p>
                                         </div>
                                     </div>
                                     <div className="mt-3 flex items-center justify-between text-[8.5px] text-text-primary bg-white/[0.03] border border-white/[0.07] rounded-lg px-2 py-1">
                                         <span className="flex items-center gap-1 font-semibold text-text-secondary">
                                             <span className="w-1.5 h-1.5 rounded-full bg-cyan-350 animate-pulse" />
-                                            Culture Intel
+                                            {t('settings:pro.poster.cultureIntel')}
                                         </span>
-                                        <span className="font-mono text-cyan-350 font-bold uppercase tracking-wider text-[7.5px]">FETCHED LIVE</span>
+                                        <span className="font-mono text-cyan-350 font-bold uppercase tracking-wider text-[7.5px]">{t('settings:pro.poster.fetchedLive')}</span>
                                     </div>
                                 </InteractiveFeatureCard>
 
@@ -1206,17 +1211,17 @@ export const NativelyProSettings: React.FC = () => {
                                                     System Design
                                                 </p>
                                                 <span className="text-[8px] font-extrabold uppercase tracking-wider px-1 py-0.5 rounded bg-amber-500/15 text-amber-300 border border-amber-500/25 shrink-0">
-                                                    Soon
+                                                    {t('common:badge.soon')}
                                                 </span>
                                             </div>
                                             <p className="text-[10.5px] text-text-tertiary leading-snug mt-1">
-                                                Architecture whiteboard blueprints & diagram image OCR extraction.
+                                                {t('settings:pro.features.designBody')}
                                             </p>
                                         </div>
                                     </div>
                                     <div className="mt-3 relative h-6 rounded border border-dashed border-white/10 bg-white/[0.01] overflow-hidden flex items-center justify-center">
                                         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:6px_6px]" />
-                                        <span className="text-[8px] font-mono font-bold text-slate-400 select-none tracking-wider">ARCHITECTURE GRID</span>
+                                        <span className="text-[8px] font-mono font-bold text-slate-400 select-none tracking-wider">{t('settings:pro.poster.architectureGrid')}</span>
                                     </div>
                                 </InteractiveFeatureCard>
 
@@ -1234,30 +1239,30 @@ export const NativelyProSettings: React.FC = () => {
                                         <div className="min-w-0">
                                             <div className="flex items-center gap-1.5">
                                                 <p className="text-[12px] font-bold tracking-tight text-text-secondary leading-tight">
-                                                    Mock Interviews
+                                                    {t('settings:pro.features.mockTitle')}
                                                 </p>
                                                 <span className="text-[8px] font-extrabold uppercase tracking-wider px-1 py-0.5 rounded bg-amber-500/15 text-amber-300 border border-amber-500/25 shrink-0">
-                                                    Soon
+                                                    {t('common:badge.soon')}
                                                 </span>
                                             </div>
                                             <p className="text-[11px] text-text-tertiary leading-snug mt-1 max-w-[340px]">
-                                                Practice dialogues with specialized hiring manager personas, offering dynamic difficulty and grading reports.
+                                                {t('settings:pro.features.mockBody')}
                                             </p>
                                         </div>
                                     </div>
                                     <div className="flex flex-col gap-1 border border-white/[0.07] bg-white/[0.02] rounded-xl p-2 min-w-[160px] select-none shadow-sm shrink-0">
                                         <div className="flex items-center justify-between border-b border-white/[0.05] pb-1">
-                                            <span className="text-[8px] font-mono text-text-secondary uppercase tracking-wider">Report</span>
+                                            <span className="text-[8px] font-mono text-text-secondary uppercase tracking-wider">{t('settings:pro.poster.report')}</span>
                                             <span className="text-[9px] font-mono font-bold text-pink-450">SCORE: 88%</span>
                                         </div>
                                         <div className="space-y-0.5 text-[8px] text-text-secondary leading-tight">
                                             <div className="flex items-center gap-1">
                                                 <span className="w-1 h-1 rounded-full bg-emerald-400" />
-                                                <span>Strong behavioral stats</span>
+                                                <span>{t('settings:pro.poster.strongBehavioral')}</span>
                                             </div>
                                             <div className="flex items-center gap-1">
                                                 <span className="w-1 h-1 rounded-full bg-amber-400" />
-                                                <span>Add details in architecture</span>
+                                                <span>{t('settings:pro.poster.addArchDetails')}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -1269,9 +1274,12 @@ export const NativelyProSettings: React.FC = () => {
                         <motion.div variants={itemVariants} className="flex items-center justify-between gap-3 flex-wrap pt-1 px-0.5">
                             <div className="overlay-subtle-surface inline-flex items-center gap-1.5 h-8 px-2.5 rounded-full">
                                 <span className="text-[10.5px] font-medium text-text-secondary">
-                                    Code{' '}
-                                    <strong className="font-mono font-semibold text-text-primary tracking-tight" style={{ letterSpacing: '-0.01em' }}>INSIDER20</strong>
-                                    {' '}· 20% off yearly
+                                    <Trans
+                                        i18nKey="settings:pro.couponRow"
+                                        components={[
+                                            <strong className="font-mono font-semibold text-text-primary tracking-tight" style={{ letterSpacing: '-0.01em' }} key="code">INSIDER20</strong>,
+                                        ]}
+                                    />
                                 </span>
                             </div>
                             <button
@@ -1281,19 +1289,22 @@ export const NativelyProSettings: React.FC = () => {
                             >
                                 <PlayCircle size={13} />
                                 <span className="underline underline-offset-4 decoration-border-subtle hover:decoration-current">
-                                    Watch it in action
+                                    {t('settings:pro.watchInAction')}
                                 </span>
                             </button>
                         </motion.div>
                         <motion.p variants={itemVariants} className="text-[10px] text-text-tertiary leading-relaxed text-center px-2 pt-1">
-                            By upgrading you agree to our{' '}
-                            <span
-                                onClick={() => openExternal('https://natively.software/nativelypro/t&c')}
-                                className="text-text-secondary hover:text-text-primary underline decoration-border-subtle underline-offset-[3px] cursor-pointer"
-                                style={{ transition: `color 180ms ${EASE_OUT_CSS}` }}
-                            >
-                                Terms &amp; Conditions
-                            </span>
+                            <Trans
+                                i18nKey="settings:pro.upgradeConsent"
+                                components={[
+                                    <span
+                                        key="terms"
+                                        onClick={() => openExternal('https://natively.software/nativelypro/t&c')}
+                                        className="text-text-secondary hover:text-text-primary underline decoration-border-subtle underline-offset-[3px] cursor-pointer"
+                                        style={{ transition: `color 180ms ${EASE_OUT_CSS}` }}
+                                    />,
+                                ]}
+                            />
                             .
                         </motion.p>
                     </div>
@@ -1306,8 +1317,8 @@ export const NativelyProSettings: React.FC = () => {
                                     <Key size={14} className="text-text-primary" strokeWidth={2} />
                                 </div>
                                 <div>
-                                    <h3 className="text-[13.5px] font-semibold tracking-tight text-text-primary leading-none">Already purchased?</h3>
-                                    <p className="text-[11.5px] text-text-tertiary mt-1">Enter your license key to activate this device.</p>
+                                    <h3 className="text-[13.5px] font-semibold tracking-tight text-text-primary leading-none">{t('settings:pro.alreadyPurchased')}</h3>
+                                    <p className="text-[11.5px] text-text-tertiary mt-1">{t('settings:pro.enterKeyHint')}</p>
                                 </div>
                             </div>
 
@@ -1319,7 +1330,7 @@ export const NativelyProSettings: React.FC = () => {
                                         value={licenseKey}
                                         onChange={(e) => setLicenseKey(e.target.value)}
                                         onKeyDown={(e) => e.key === 'Enter' && handleActivate()}
-                                        placeholder="Enter your license key"
+                                        placeholder={t('settings:pro.licenseKeyPlaceholder')}
                                         disabled={status === 'loading' || status === 'success'}
                                         className="w-full rounded-[10px] pl-9 pr-3 py-2.5 text-[13px] font-mono focus:outline-none disabled:opacity-50 bg-bg-input border border-border-subtle text-text-primary placeholder-text-tertiary focus:border-white/30 focus:ring-1 focus:ring-white/20 shadow-[inset_0_1px_2px_rgba(0,0,0,0.1)]"
                                         style={{ transition: `border-color 180ms ${EASE_OUT_CSS}, box-shadow 180ms ${EASE_OUT_CSS}` }}
@@ -1340,11 +1351,11 @@ export const NativelyProSettings: React.FC = () => {
                                     style={{ letterSpacing: '-0.005em', transition: status === 'success' || status === 'loading' || !licenseKey.trim() ? `transform 140ms ${EASE_OUT_CSS}, background-color 180ms ${EASE_OUT_CSS}, opacity 180ms ${EASE_OUT_CSS}, box-shadow 200ms ${EASE_OUT_CSS}` : undefined }}
                                 >
                                     {status === 'success' ? (
-                                        <><CheckCircle size={14} /> Activated!</>
+                                        <><CheckCircle size={14} /> {t('settings:pro.activated')}</>
                                     ) : status === 'loading' ? (
-                                        <><div className="w-3.5 h-3.5 border-2 border-current border-t-transparent rounded-full animate-spin" /> Verifying...</>
+                                        <><div className="w-3.5 h-3.5 border-2 border-current border-t-transparent rounded-full animate-spin" /> {t('settings:pro.verifying')}</>
                                     ) : (
-                                        <><Lock size={14} /> Activate License</>
+                                        <><Lock size={14} /> {t('settings:pro.activateLicense')}</>
                                     )}
                                 </button>
 
@@ -1357,15 +1368,17 @@ export const NativelyProSettings: React.FC = () => {
 
                                 {/* T&C consent */}
                                 <p className="text-[10.5px] text-text-tertiary leading-relaxed text-center pt-1">
-                                    By activating, you agree to our{' '}
-                                    <span
-                                        onClick={() => openExternal('https://natively.software/nativelypro/t&c')}
-                                        className="text-text-secondary hover:text-text-primary underline decoration-border-subtle underline-offset-[3px] cursor-pointer"
-                                        style={{ transition: `color 180ms ${EASE_OUT_CSS}` }}
-                                    >
-                                        Terms &amp; Conditions
-                                    </span>
-                                    .
+                                    <Trans
+                                        i18nKey="settings:pro.activateConsent"
+                                        components={[
+                                            <span
+                                                key="terms"
+                                                onClick={() => openExternal('https://natively.software/nativelypro/t&c')}
+                                                className="text-text-secondary hover:text-text-primary underline decoration-border-subtle underline-offset-[3px] cursor-pointer"
+                                                style={{ transition: `color 180ms ${EASE_OUT_CSS}` }}
+                                            />,
+                                        ]}
+                                    />
                                 </p>
                             </div>
                         </div>
@@ -1381,9 +1394,9 @@ export const NativelyProSettings: React.FC = () => {
                         <Shield size={18} className="text-emerald-400" />
                     </div>
                     <div className="min-w-0">
-                        <p className="text-[13px] font-semibold text-text-primary">Refund Policy — Natively Pro</p>
+                        <p className="text-[13px] font-semibold text-text-primary">{t('settings:pro.refund.title')}</p>
                         <p className="text-[11px] text-text-tertiary leading-snug mt-0.5">
-                            Please try the Free Trial first
+                            {t('settings:pro.refund.subtitle')}
                         </p>
                     </div>
                 </div>
@@ -1394,60 +1407,73 @@ export const NativelyProSettings: React.FC = () => {
                     <div className="space-y-3">
                         <div className="rounded-xl bg-bg-input/50 border border-border-subtle px-3.5 py-3">
                             <p className="text-[11.5px] text-text-secondary leading-relaxed">
-                                <strong className="text-text-primary font-semibold">A quick heads-up:</strong> Natively is built and maintained by a single developer and integrates a lot of third-party services — AI providers, speech-to-text engines, search APIs, payments, OS-level audio &amp; screen capture. That gives Pro a lot of capability, but the surface area is wider than a typical closed-source app, and once in a while something may not behave exactly as expected. If that happens, please <em>report it</em> rather than disputing the charge — we read every report and fixes typically land in the next update.
+                                <Trans
+                                    i18nKey="settings:pro.refund.headsUp"
+                                    components={[
+                                        <strong className="text-text-primary font-semibold" key="lead" />,
+                                        <em key="report" />,
+                                    ]}
+                                />
                             </p>
                         </div>
 
                         <div className="flex items-start gap-3">
                             <div className="w-1.5 h-1.5 rounded-full bg-text-tertiary/40 shrink-0 mt-[6px]" />
                             <p className="text-[11.5px] text-text-secondary leading-relaxed">
-                                Purchases made with a coupon, voucher, referral credit, or limited-time offer are <strong className="text-text-primary font-semibold">final sale</strong> and not eligible for refund.
+                                <Trans
+                                    i18nKey="settings:pro.refund.finalSale"
+                                    components={[<strong className="text-text-primary font-semibold" key="finalSale" />]}
+                                />
                             </p>
                         </div>
 
                         <div className="flex items-start gap-3">
                             <div className="w-1.5 h-1.5 rounded-full bg-text-tertiary/40 shrink-0 mt-[6px]" />
                             <p className="text-[11.5px] text-text-secondary leading-relaxed">
-                                To cancel your subscription, log in to the{' '}
-                                <span
-                                    onClick={() => openExternal('https://customer.dodopayments.com/')}
-                                    className="text-blue-400 hover:text-blue-300 underline decoration-blue-400/40 underline-offset-[3px] cursor-pointer"
-                                    style={{ transition: `color 180ms ${EASE_OUT_CSS}` }}
-                                >
-                                    customer portal
-                                </span>{' '}
-                                to manage or cancel your plan.
+                                <Trans
+                                    i18nKey="settings:pro.refund.cancel"
+                                    components={[
+                                        <span
+                                            key="portal"
+                                            onClick={() => openExternal('https://customer.dodopayments.com/')}
+                                            className="text-blue-400 hover:text-blue-300 underline decoration-blue-400/40 underline-offset-[3px] cursor-pointer"
+                                            style={{ transition: `color 180ms ${EASE_OUT_CSS}` }}
+                                        />,
+                                    ]}
+                                />
                             </p>
                         </div>
 
                         <div className="h-px bg-border-subtle mt-4 mb-3" />
 
                         <p className="text-[11.5px] text-text-secondary leading-relaxed">
-                            For everything else — the 1-hour pre-activation window, subscription handling, taxes &amp; fees, and your local consumer rights — please see our full{' '}
-                            <span
-                                onClick={() => openExternal('https://natively.software/refundpolicy')}
-                                className="text-text-primary hover:text-text-secondary underline decoration-border-subtle underline-offset-[3px] cursor-pointer"
-                                style={{ transition: `color 180ms ${EASE_OUT_CSS}` }}
-                            >
-                                Refund Policy
-                            </span>
-                            . Have a question before buying? Email{' '}
-                            <span
-                                onClick={() => openExternal('mailto:natively.contact@gmail.com')}
-                                className="text-text-primary hover:text-text-secondary underline decoration-border-subtle underline-offset-[3px] cursor-pointer"
-                                style={{ transition: `color 180ms ${EASE_OUT_CSS}` }}
-                            >
-                                natively.contact@gmail.com
-                            </span>
-                            .
+                            <Trans
+                                i18nKey="settings:pro.refund.seeFull"
+                                components={[
+                                    <span
+                                        key="policy"
+                                        onClick={() => openExternal('https://natively.software/refundpolicy')}
+                                        className="text-text-primary hover:text-text-secondary underline decoration-border-subtle underline-offset-[3px] cursor-pointer"
+                                        style={{ transition: `color 180ms ${EASE_OUT_CSS}` }}
+                                    />,
+                                    <span
+                                        key="email"
+                                        onClick={() => openExternal('mailto:natively.contact@gmail.com')}
+                                        className="text-text-primary hover:text-text-secondary underline decoration-border-subtle underline-offset-[3px] cursor-pointer"
+                                        style={{ transition: `color 180ms ${EASE_OUT_CSS}` }}
+                                    >
+                                        natively.contact@gmail.com
+                                    </span>,
+                                ]}
+                            />
                         </p>
 
                         <div className="mt-3 px-3 py-2.5 rounded-xl bg-amber-500/6 border border-amber-500/15">
                             <p className="text-[11.5px] text-text-secondary leading-relaxed">
-                                <strong className="text-text-primary font-semibold">A personal note:</strong>{' '}
-                                Natively is built, maintained, and supported entirely by one person — in their free time.
-                                Email replies may take a few days, and weekends (Sat &amp; Sun) are offline.
-                                Your patience is genuinely appreciated.
+                                <Trans
+                                    i18nKey="settings:pro.refund.personalNote"
+                                    components={[<strong className="text-text-primary font-semibold" key="lead" />]}
+                                />
                             </p>
                         </div>
                     </div>
@@ -1458,14 +1484,14 @@ export const NativelyProSettings: React.FC = () => {
             {hardwareId && (
                 <div className="px-2 pt-2">
                     <div className="flex items-center justify-between">
-                        <span className="text-[10px] uppercase tracking-widest font-semibold text-text-tertiary">Device ID</span>
+                        <span className="text-[10px] uppercase tracking-widest font-semibold text-text-tertiary">{t('settings:pro.deviceId')}</span>
                         <button
                             onClick={copyHardwareId}
                             className="text-[11px] font-medium flex items-center gap-1 text-text-secondary hover:text-text-primary cursor-pointer active:scale-[0.97] h-8 px-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30 rounded-md"
                             style={{ transition: `color 180ms ${EASE_OUT_CSS}, transform 140ms ${EASE_OUT_CSS}` }}
                         >
                             {copiedHwid ? <Check size={10} className="text-emerald-500" /> : <Copy size={10} />}
-                            {copiedHwid ? 'Copied' : 'Copy ID'}
+                            {copiedHwid ? t('common:actions.copied') : t('settings:pro.copyDeviceId')}
                         </button>
                     </div>
                     <p className="text-[11px] font-mono mt-1.5 truncate select-all text-text-tertiary">

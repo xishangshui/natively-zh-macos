@@ -50,5 +50,21 @@
     "validationFailed": "Validation failed",
     "connectionFailed": "Connection failed",
     "testFailed": "Test failed"
+  },
+  "nativelyApi": {
+    "subscriptionInactive": "Subscription inactive — renew to restore access.",
+    "keyNotRecognised": "Key not recognised by server.",
+    "invalidKeyFormat": "Invalid key format.",
+    "unreachable": "Could not reach server.",
+    "serverError": "Server error: {{detail}}",
+    "usageLoadFailed": "Failed to load usage.",
+    "networkError": "Network error",
+    "saveKeyFailed": "Failed to save API key",
+    "unexpected": "Unexpected error"
+  },
+  "pro": {
+    "activationFailedRetry": "Activation failed. Please try again.",
+    "activationFailed": "Activation failed.",
+    "deactivationFailed": "Deactivation failed."
   }
 }

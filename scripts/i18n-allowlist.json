@@ -255,6 +255,71 @@
       "file": "src/components/SettingsOverlay.tsx",
       "literal": "e.g. eastus, westeurope, westus2",
       "reason": "Azure 区域 ID 列表，必须照原样填写"
+    },
+    {
+      "file": "src/components/settings/NativelyApiSettings.tsx",
+      "literal": "INSIDER20",
+      "reason": "促销码，必须照原样输入才能生效"
+    },
+    {
+      "file": "src/components/settings/NativelyApiSettings.tsx",
+      "literal": "Natively API",
+      "reason": "产品名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/settings/NativelyApiSettings.tsx",
+      "literal": "AI",
+      "reason": "通用技术缩写，中文界面同样使用"
+    },
+    {
+      "file": "src/components/settings/NativelyApiSettings.tsx",
+      "literal": "STT",
+      "reason": "语音识别的通用技术缩写，配额徽标空间狭小"
+    },
+    {
+      "file": "src/components/settings/NativelyApiSettings.tsx",
+      "literal": "natively_api_...",
+      "reason": "API Key 的格式示例，用户需据此识别自己的密钥"
+    },
+    {
+      "file": "src/components/settings/NativelyApiSettings.tsx",
+      "literal": "natively.contact@gmail.com",
+      "reason": "真实联系邮箱，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/settings/NativelyProSettings.tsx",
+      "literal": "AI",
+      "reason": "示意插画中央节点的缩写，中文界面同样使用 AI"
+    },
+    {
+      "file": "src/components/settings/NativelyProSettings.tsx",
+      "literal": "React Native",
+      "reason": "技术名词，按设计规格 3.2 不翻译；出现在示意插画的技能/要求列表里"
+    },
+    {
+      "file": "src/components/settings/NativelyProSettings.tsx",
+      "literal": "System Design",
+      "reason": "技术名词，按设计规格 3.2 不翻译；出现在示意插画的技能/要求列表里"
+    },
+    {
+      "file": "src/components/settings/NativelyProSettings.tsx",
+      "literal": "Python",
+      "reason": "技术名词，按设计规格 3.2 不翻译；出现在示意插画的技能/要求列表里"
+    },
+    {
+      "file": "src/components/settings/NativelyProSettings.tsx",
+      "literal": "TypeScript",
+      "reason": "技术名词，按设计规格 3.2 不翻译；出现在示意插画的技能/要求列表里"
+    },
+    {
+      "file": "src/components/settings/NativelyProSettings.tsx",
+      "literal": "INSIDER20",
+      "reason": "促销码，必须照原样输入才能生效"
+    },
+    {
+      "file": "src/components/settings/NativelyProSettings.tsx",
+      "literal": "natively.contact@gmail.com",
+      "reason": "真实联系邮箱，按设计规格 3.2 不翻译"
     }
   ]
 }

@@ -1,6 +1,6 @@
 {
   "_comment": "残留英文门禁的强制范围。每个迁移任务先把目标文件加入 enforcedFiles 触发红灯，再迁移文案，最后保持绿灯。排除项必须逐条写理由，禁止使用 src/** 或 electron/** 级别的宽泛忽略。",
-  "_progress": "Task 9 进行中（第 1 批已完成）：设置总览 SettingsOverlay、设置弹窗、本地 Whisper 面板、AI 供应商、手机镜像、供应商卡片、侧栏、技能、模式与快捷键组件已迁移并纳入门禁；Task 6 遗留的 225 条 reason=migrated in Task 9 暂放条目已全部删除。剩余 NativelyApiSettings.tsx 与 NativelyProSettings.tsx 共约 220 处待迁移，属 Task 9 第 2 批，完成后必须加入下方 enforcedFiles。",
+  "_progress": "Task 9 已完成：设置总览、设置弹窗、本地 Whisper 面板、AI 供应商、Natively API/Pro、手机镜像、供应商卡片、侧栏、技能、模式与快捷键组件全部迁移并纳入门禁。Task 6 遗留的 225 条 reason=migrated in Task 9 暂放条目已全部删除，allowlist 现已无任何暂放条目。",
   "enforcedFiles": [
     "src/App.tsx",
     "src/components/ErrorBoundary.tsx",
@@ -25,6 +25,8 @@
     "src/components/SettingsPopup.tsx",
     "src/components/LocalWhisperModelPanel.tsx",
     "src/components/settings/AIProvidersSettings.tsx",
+    "src/components/settings/NativelyApiSettings.tsx",
+    "src/components/settings/NativelyProSettings.tsx",
     "src/components/settings/PhoneMirrorSettings.tsx",
     "src/components/settings/ProviderCard.tsx",
     "src/components/settings/Sidebar.tsx",
