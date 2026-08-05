@@ -1,3 +1,39 @@
+> ## ⚠️ 这是非官方的简体中文化 fork / Unofficial Simplified-Chinese fork
+>
+> **中文：** 本仓库是 [Natively](https://github.com/Natively-AI-assistant/natively-cluely-ai-assistant)
+> v2.7.0（commit `be7280b`）的**非官方**简体中文本地化分支，仅做界面汉化、
+> 中文语音默认值、构建隔离与更新安全，**不改动**音频采集、转写、LLM、RAG
+> 或数据库的核心逻辑。
+>
+> - **与官方无关联。** 本 fork 不由 Natively 官方维护，**不提供**官方的
+>   Natively API、Natively Pro 订阅、支付、退款或客户支持。仓库内保留的
+>   `termsandcondition.md`、`refund.md`、`PRIVACY.md` 等文件属于**上游官方
+>   服务**的条款，与本 fork 无关 —— 请勿据此向本仓库主张任何服务或权利。
+> - **发行标识独立。** 产品名 `Natively ZH`、appId `com.natively.zh.desktop`、
+>   用户数据目录 `natively-zh`，与官方安装完全隔离，可并存。
+> - **不会静默覆盖官方版。** 已禁用后台自动下载与退出时自动安装；
+>   「关于」页保留手动查看上游版本的入口，但会明确提示安装官方发行版
+>   将替换本构建并移除中文界面。
+> - **未签名。** 本构建刻意不做代码签名，不伪装成官方签名发行版。
+> - `premium` 是上游的**私有**子模块，本 fork 无权限、从未初始化。
+>   `git submodule update` 会失败，这是预期行为 —— 开源降级路径不依赖它。
+> - 汉化说明、允许保留英文的清单、发布检查清单与回退指南见
+>   [`docs/zh-cn/`](docs/zh-cn/)。
+>
+> **English:** This is an **unofficial** Simplified-Chinese localization fork of
+> Natively v2.7.0 (`be7280b`). It only localizes the UI, adds Chinese
+> speech/answer defaults, isolates the distribution identity, and disables
+> silent official auto-updates. Core audio/STT/LLM/RAG/database logic is
+> untouched. **Not affiliated with or supported by the Natively project.**
+> It does **not** provide the official Natively API, Pro subscriptions,
+> payments, refunds, or support — the commercial terms files kept in this repo
+> apply to the **upstream** service, not to this fork. The `premium` submodule
+> is upstream-private and intentionally uninitialized.
+>
+> Licensed under **AGPL-3.0**, same as upstream. See [LICENSE](LICENSE).
+
+---
+
 # [Sponsored by Recall AI - API for desktop recording](https://docs.recall.ai/docs/desktop-sdk?utm_source=github&utm_medium=sponsorship&utm_campaign=evinjohnn-natively-ai-assistant)
 
 If you’re looking for a hosted desktop recording API, consider checking out [Recall.ai](https://docs.recall.ai/docs/desktop-sdk?utm_source=github&utm_medium=sponsorship&utm_campaign=evinjohnn-natively-ai-assistant), an API that records Zoom, Google Meet, Microsoft Teams, in-person meetings, and more.
