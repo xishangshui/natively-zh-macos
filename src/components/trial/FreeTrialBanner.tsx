@@ -3,6 +3,7 @@
 // Stays visible across the whole session; not dismissible while trial is running.
 
 import { AnimatePresence, motion } from 'framer-motion';
+import { Trans, useTranslation } from 'react-i18next';
 import { ArrowUpRight, Clock, Mic, Search, Zap } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 
@@ -23,6 +24,7 @@ function fmt(ms: number): string {
 }
 
 export const FreeTrialBanner: React.FC<TrialBannerProps> = ({ expiresAt, usage, onUpgrade }) => {
+    const { t } = useTranslation(['updates', 'settings', 'common']);
   const [remaining, setRemaining] = useState(() =>
     Math.max(0, new Date(expiresAt).getTime() - Date.now()),
   );
@@ -80,20 +82,20 @@ export const FreeTrialBanner: React.FC<TrialBannerProps> = ({ expiresAt, usage, 
                 isWarning || expired ? 'text-amber-400' : 'text-text-secondary'
               }`}
             >
-              {expired ? 'Trial ended' : fmt(remaining)}
+              {expired ? t('updates:trial.ended') : fmt(remaining)}
             </span>
-            <span className="text-[10px] text-text-tertiary/70 font-medium">free trial</span>
+            <span className="text-[10px] text-text-tertiary/70 font-medium">{t('updates:trial.label')}</span>
           </div>
 
           {/* Usage mini-bars */}
           <div className="flex items-center gap-3 flex-1 min-w-0">
-            <UsagePip icon={Zap} pct={aiPct} label={`${usage.ai}/10 AI`} />
+            <UsagePip icon={Zap} pct={aiPct} label={t('updates:trial.pipAi', { used: usage.ai })} />
             <UsagePip
               icon={Mic}
               pct={sttPct}
-              label={`${(usage.stt_seconds / 60).toFixed(1)}/10m STT`}
+              label={t('updates:trial.pipStt', { used: (usage.stt_seconds / 60).toFixed(1) })}
             />
-            <UsagePip icon={Search} pct={searchPct} label={`${usage.search}/2 search`} />
+            <UsagePip icon={Search} pct={searchPct} label={t('updates:trial.pipSearch', { used: usage.search })} />
           </div>
 
           {/* Upgrade CTA */}
@@ -101,7 +103,7 @@ export const FreeTrialBanner: React.FC<TrialBannerProps> = ({ expiresAt, usage, 
             onClick={onUpgrade}
             className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-violet-500/15 text-violet-400 hover:bg-violet-500/25 border border-violet-500/30 transition-colors shrink-0"
           >
-            Upgrade
+            {t('settings:profile.upgrade')}
             <ArrowUpRight size={10} strokeWidth={2.5} />
           </button>
         </div>

@@ -335,6 +335,196 @@
       "file": "src/components/ProfileIntelligenceSettings.tsx",
       "literal": "tvly-",
       "reason": "Tavily API Key 的固定前缀，用户需据此核对自己的密钥"
+    },
+    {
+      "file": "src/components/StartupSequence.tsx",
+      "literal": "Hacker News",
+      "reason": "媒体平台名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/StartupSequence.tsx",
+      "literal": "AlternativeTo",
+      "reason": "媒体平台名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/StartupSequence.tsx",
+      "literal": "Product Hunt",
+      "reason": "媒体平台名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/StartupSequence.tsx",
+      "literal": "reddit",
+      "reason": "媒体平台名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/AboutSection.tsx",
+      "literal": "Natively ZH",
+      "reason": "本中文构建的发行标识，不翻译"
+    },
+    {
+      "file": "src/components/AboutSection.tsx",
+      "literal": "Evin John",
+      "reason": "作者姓名，不翻译"
+    },
+    {
+      "file": "src/components/AboutSection.tsx",
+      "literal": "Natively",
+      "reason": "产品名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/AboutSection.tsx",
+      "literal": "GitHub",
+      "reason": "平台名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/AboutSection.tsx",
+      "literal": "Twitter",
+      "reason": "平台名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/AboutSection.tsx",
+      "literal": "LinkedIn",
+      "reason": "平台名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/AboutSection.tsx",
+      "literal": "Instagram",
+      "reason": "平台名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/AboutSection.tsx",
+      "literal": "Groq",
+      "reason": "技术栈名称，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/AboutSection.tsx",
+      "literal": "Gemini",
+      "reason": "技术栈名称，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/AboutSection.tsx",
+      "literal": "OpenAI",
+      "reason": "技术栈名称，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/AboutSection.tsx",
+      "literal": "Deepgram",
+      "reason": "技术栈名称，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/AboutSection.tsx",
+      "literal": "ElevenLabs",
+      "reason": "技术栈名称，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/AboutSection.tsx",
+      "literal": "Electron",
+      "reason": "技术栈名称，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/AboutSection.tsx",
+      "literal": "React",
+      "reason": "技术栈名称，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/AboutSection.tsx",
+      "literal": "Rust",
+      "reason": "技术栈名称，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/AboutSection.tsx",
+      "literal": "Sharp",
+      "reason": "技术栈名称，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/AboutSection.tsx",
+      "literal": "TypeScript",
+      "reason": "技术栈名称，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/AboutSection.tsx",
+      "literal": "Tailwind CSS",
+      "reason": "技术栈名称，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/AboutSection.tsx",
+      "literal": "Vite",
+      "reason": "技术栈名称，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/AboutSection.tsx",
+      "literal": "Google Cloud",
+      "reason": "技术栈名称，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/AboutSection.tsx",
+      "literal": "SQLite",
+      "reason": "技术栈名称，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/onboarding/PermissionsToaster.tsx",
+      "literal": "Natively",
+      "reason": "产品名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/UpdateModal.tsx",
+      "literal": "xattr -cr /Applications/Natively.app",
+      "reason": "可复制执行的终端命令，翻译即失效"
+    },
+    {
+      "file": "src/components/UpdateBanner.tsx",
+      "literal": "UI Test",
+      "reason": "开发期 UI 自测用的假更新说明，不出现在正式发行版"
+    },
+    {
+      "file": "src/components/trial/FreeTrialModal.tsx",
+      "literal": "Natively Pro",
+      "reason": "产品名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/trial/FreeTrialModal.tsx",
+      "literal": "Max",
+      "reason": "计划档位名，不翻译"
+    },
+    {
+      "file": "src/components/trial/FreeTrialModal.tsx",
+      "literal": "Ultra",
+      "reason": "计划档位名，不翻译"
+    },
+    {
+      "file": "src/components/trial/FreeTrialModal.tsx",
+      "literal": "Standard",
+      "reason": "计划档位名，不翻译"
+    },
+    {
+      "file": "src/components/onboarding/PermissionsOnboardingFull.tsx",
+      "literal": "1Password",
+      "reason": "系统设置面板示意图里的第三方应用名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/onboarding/PermissionsOnboardingFull.tsx",
+      "literal": "Slack",
+      "reason": "系统设置面板示意图里的第三方应用名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/onboarding/PermissionsOnboardingFull.tsx",
+      "literal": "zoom",
+      "reason": "系统设置面板示意图里的第三方应用名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/onboarding/PermissionsOnboardingFull.tsx",
+      "literal": "Google Chrome",
+      "reason": "系统设置面板示意图里的第三方应用名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/onboarding/PermissionsOnboardingFull.tsx",
+      "literal": "Natively",
+      "reason": "产品名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/UpdateModal.tsx",
+      "literal": "Latest",
+      "reason": "版本号无法解析时的兜底展示值，与 GitHub releases 的 latest 标签对应"
     }
   ]
 }

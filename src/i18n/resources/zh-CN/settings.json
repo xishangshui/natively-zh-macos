@@ -302,7 +302,9 @@
     "weekClear": "这周暂时没有安排。",
     "noCalendars": "没有日历",
     "connectHint": "先连接一个 Google 账号即可开始。",
-    "join": "加入"
+    "join": "加入",
+    "connected": "日历已连接",
+    "connect": "连接日历"
   },
   "nativelyApi": {
     "plans": {

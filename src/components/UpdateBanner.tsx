@@ -1,7 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { Trans, useTranslation } from 'react-i18next';
 import UpdateModal from './UpdateModal';
 
 const UpdateBanner: React.FC = () => {
+    const { t } = useTranslation(['updates', 'common', 'errors']);
     const [updateInfo, setUpdateInfo] = useState<any>(null);
     const [parsedNotes, setParsedNotes] = useState<any>(null);
     const [isVisible, setIsVisible] = useState(false);
@@ -69,7 +71,7 @@ const UpdateBanner: React.FC = () => {
             } else {
                 console.warn('[UpdateBanner] update-downloaded received with no version');
                 setStatus('error');
-                setErrorMessage('Update downloaded but version is unknown. Please download from GitHub releases.');
+                setErrorMessage(t('errors:updates.versionUnknown'));
             }
         });
 
@@ -103,7 +105,7 @@ const UpdateBanner: React.FC = () => {
                 e.preventDefault();
                 console.log("[UpdateBanner] Cmd+J pressed: Triggering Instruction UI mock...");
                 setUpdateInfo({ version: '2.0.8' });
-                setParsedNotes({ summary: 'Test Update', fullBody: 'Testing', sections: [{ title: 'Notes', items: ['UI Test'] }] });
+                setParsedNotes({ summary: 'Test Update', fullBody: 'Testing', sections: [{ title: t('updates:banner.notes'), items: ['UI Test'] }] });
                 setStatus('idle');
                 setIsVisible(true);
             }

@@ -9,6 +9,7 @@
 //
 
 import React, { useState, useEffect, useCallback } from 'react';
+import { Trans, useTranslation } from 'react-i18next';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { X, Monitor, Mic, Settings } from 'lucide-react';
 import nativelyIcon from '../../../assets/icon.png';
@@ -43,6 +44,7 @@ const SPRING = {
 const FADE = { enter: { opacity: 0, y: 12, filter: 'blur(4px)' }, in: { opacity: 1, y: 0, filter: 'blur(0px)' }, exit: { opacity: 0, scale: 0.97, filter: 'blur(3px)' } };
 
 export const PermissionsToaster: React.FC<Props> = ({ isOpen, onDismiss }) => {
+    const { t } = useTranslation(['onboarding', 'common']);
   const [visible,    setVisible]    = useState(false);
   const [platform,   setPlatform]   = useState<string>('darwin');
   const [micStatus,  setMicStatus]  = useState<PermStatus>('loading');
@@ -222,7 +224,7 @@ export const PermissionsToaster: React.FC<Props> = ({ isOpen, onDismiss }) => {
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <img src={nativelyIcon} alt="Natively" style={{ width: '18px', height: '18px', borderRadius: '4px', flexShrink: 0 }} />
                     <span style={{ fontSize: '11px', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: t3 }}>
-                      Permissions
+                      {t('onboarding:permissions.title')}
                     </span>
                   </div>
                 </div>
@@ -234,10 +236,10 @@ export const PermissionsToaster: React.FC<Props> = ({ isOpen, onDismiss }) => {
                   style={{ marginBottom: '28px' }}
                 >
                   <h2 style={{ fontSize: '24px', fontWeight: 700, letterSpacing: '-0.03em', color: t1, margin: '0 0 8px', lineHeight: 1.2 }}>
-                    Let's get you set up
+                    {t('onboarding:permissions.subtitle')}
                   </h2>
                   <p style={{ fontSize: '13px', lineHeight: 1.65, color: t3, margin: 0 }}>
-                    Natively needs a few permissions to capture meetings and transcribe speech.
+                    {t('onboarding:permissions.body')}
                   </p>
                 </motion.div>
 
@@ -250,8 +252,8 @@ export const PermissionsToaster: React.FC<Props> = ({ isOpen, onDismiss }) => {
                   {platform === 'darwin' && (
                     <PermItem
                       icon={Monitor}
-                      label="Screen Recording"
-                      description="Required to capture meeting content"
+                      label={t('onboarding:permissions.screenRecording')}
+                      description={t('onboarding:permissions.screenRecordingDesc')}
                       status={scrStatus}
                       platform={platform}
                       onToggle={handleScrToggle}
@@ -261,8 +263,8 @@ export const PermissionsToaster: React.FC<Props> = ({ isOpen, onDismiss }) => {
                   )}
                   <PermItem
                     icon={Mic}
-                    label="Microphone"
-                    description="Required for speech transcription"
+                    label={t('onboarding:permissions.microphone')}
+                    description={t('onboarding:permissions.microphoneDesc')}
                     status={micStatus}
                     platform={platform}
                     onToggle={handleMicToggle}
@@ -298,7 +300,7 @@ export const PermissionsToaster: React.FC<Props> = ({ isOpen, onDismiss }) => {
                     
                     <span style={{ position: 'relative', zIndex: 2, display: 'flex', alignItems: 'center', gap: '8px' }}>
                       <Settings size={14} strokeWidth={2} />
-                      Open Settings
+                      {t('common:actions.openSettings')}
                     </span>
                   </motion.button>
 
@@ -320,7 +322,7 @@ export const PermissionsToaster: React.FC<Props> = ({ isOpen, onDismiss }) => {
                 }}
               >
                 {/* Close button in the top-right corner of graphics section */}
-                <button onClick={handleDismiss} aria-label="Dismiss"
+                <button onClick={handleDismiss} aria-label={t('common:actions.dismiss')}
                   style={{
                     position: 'absolute',
                     top: '16px',
@@ -389,10 +391,10 @@ export const PermissionsToaster: React.FC<Props> = ({ isOpen, onDismiss }) => {
                         {/* Prompt Text */}
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
                           <div style={{ fontSize: '10px', fontWeight: 600, color: colors.step1TextPrimary, lineHeight: 1.3, letterSpacing: '-0.01em' }}>
-                            "Natively" wants to record the screen.
+                            {t('onboarding:permissions.macScreenPrompt')}
                           </div>
                           <div style={{ fontSize: '8.5px', color: colors.step1TextMuted, lineHeight: 1.25 }}>
-                            Enable access in Privacy & Security settings.
+                            {t('onboarding:permissions.macScreenHint')}
                           </div>
                         </div>
                       </div>
@@ -405,10 +407,10 @@ export const PermissionsToaster: React.FC<Props> = ({ isOpen, onDismiss }) => {
                           transition={{ repeat: Infinity, duration: 2.2, ease: "easeInOut", repeatDelay: 0.5 }}
                           style={{ padding: '4px 8px', borderRadius: '5px', background: colors.step1BtnBg, border: colors.step1BtnBorder, fontSize: '8px', fontWeight: 600, color: colors.step1BtnText, letterSpacing: '-0.01em' }}
                         >
-                          Open Settings
+                          {t('common:actions.openSettings')}
                         </motion.div>
                         <div style={{ padding: '4px 8px', borderRadius: '5px', background: '#007AFF', fontSize: '8px', fontWeight: 600, color: '#FFFFFF', letterSpacing: '-0.01em', boxShadow: '0 2px 6px rgba(0,122,255,0.3)' }}>
-                          Deny
+                          {t('onboarding:permissions.deny')}
                         </div>
                       </div>
                     </motion.div>
@@ -479,7 +481,7 @@ export const PermissionsToaster: React.FC<Props> = ({ isOpen, onDismiss }) => {
 
                   {/* Breadcrumb Info text */}
                   <p style={{ fontSize: '9.5px', fontWeight: 500, color: t3, lineHeight: 1.4, margin: '4px 0 0', textAlign: 'center', opacity: 0.8, letterSpacing: '0.02em', textTransform: 'uppercase' }}>
-                    System Settings → Privacy & Security
+                    {t('onboarding:permissions.macSettingsPath')}
                   </p>
                 </div>
               </motion.div>
@@ -504,6 +506,7 @@ function PermItem({
   reduced:     boolean;
   isLight:     boolean;
 }) {
+  const { t } = useTranslation(['onboarding', 'common']);
   const isGranted = status === 'granted';
   const isDenied  = status === 'denied' || status === 'restricted';
   const isLoading = status === 'loading' || status === 'not-determined';
@@ -542,7 +545,7 @@ function PermItem({
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ fontSize: '13.5px', fontWeight: 580, color: t1, letterSpacing: '-0.01em' }}>{label}</div>
         <div style={{ fontSize: '11.5px', color: t3, marginTop: '2px' }}>
-          {platform !== 'darwin' ? description : isGranted ? 'Access granted' : isDenied ? 'Re-enable in Settings' : description}
+          {platform !== 'darwin' ? description : isGranted ? t('onboarding:permissions.granted') : isDenied ? t('onboarding:permissions.reEnable') : description}
         </div>
       </div>
 

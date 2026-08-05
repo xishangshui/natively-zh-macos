@@ -4,5 +4,71 @@
   },
   "shortcuts": {
     "title": "键盘快捷键"
+  },
+  "support": {
+    "title": "支持 Natively",
+    "line1": "一个人做的。",
+    "line2": "成千上万人在用。",
+    "body": "Natively 由一位开发者独立开发与维护。如果它已经是你日常工作流的一部分，你的支持能让它继续往前走。",
+    "cta": "支持作者",
+    "later": "以后再说"
+  },
+  "about": {
+    "title": "关于 Natively",
+    "tagline": "为「隐形、聪明、可信」而设计。",
+    "buildSection": "构建版本",
+    "zhBuildNotice": "这是社区版简体中文构建。它不会自动下载或安装官方更新。安装官方发行版会替换掉这个构建，中文界面也会随之消失。",
+    "viewUpstream": "查看上游版本",
+    "whatsNew": "v2.7 新增内容",
+    "news": {
+      "uiStylesTitle": "两种新的会议界面风格",
+      "uiStylesBody": "新增「液态玻璃」与「现代深色」两种沉浸式界面主题，彻底重塑实时浮层的观感。",
+      "deepseekTitle": "接入 DeepSeek AI",
+      "deepseekBody": "完整支持 DeepSeek 的高级推理模型，提供更聪明且更具成本优势的对话回复。",
+      "audioTitle": "音频与 TCC 权限问题已解决",
+      "audioBody": "加固了 macOS 系统音频进程抓取与安全权限关卡，确保采集流稳定可靠。",
+      "modesTitle": "模式管理大幅优化",
+      "modesBody": "画像智能矩阵与模式管理经过深度优化，上下文处理响应更快、延迟极低。",
+      "updatesTitle": "应用内更新",
+      "updatesBody": "在桌面应用内一键完成更新，不再需要手动安装的来回折腾。"
+    },
+    "howItWorks": "Natively 如何工作",
+    "how": {
+      "hybridTitle": "混合智能",
+      "hybridBody": "在追求即时速度的极快模型与处理复杂任务的推理模型（Gemini、OpenAI、Claude）之间无缝调度。语音识别由 7 家以上企业级供应商提供。",
+      "ragTitle": "本地 RAG 与记忆"
+    },
+    "privacySection": "隐私与数据",
+    "privacy": {
+      "stealthTitle": "隐身与控制",
+      "stealthBody": "提供「不可检测模式」以从 Dock 隐藏，以及「伪装」以显示为系统应用。哪些数据离开你的设备，完全由你决定。",
+      "noRecordingTitle": "不做录制",
+      "noRecordingBody": "Natively 只在激活时监听。它不录制视频，不在没有指令时任意截图，也不做后台监控。"
+    },
+    "communitySection": "社区",
+    "community": {
+      "website": "官方网站",
+      "visitWebsite": "访问网站",
+      "telegram": "Telegram 社区",
+      "joinChat": "加入群聊",
+      "linkedin": "LinkedIn 公司主页",
+      "followPage": "关注主页"
+    },
+    "creatorRole": "创作者",
+    "creatorQuote1": "我做的软件，尽量不打扰你。",
+    "creatorQuote2": "<0></0>的目标是快、安静，并且尊重你的隐私。",
+    "support": {
+      "starTitle": "在 GitHub 上加星",
+      "starBody": "喜欢 Natively？给仓库加个星就是支持。",
+      "issueTitle": "反馈问题",
+      "issueBody": "发现 Bug？告诉我们，我们来修。",
+      "contactTitle": "联系我们",
+      "contactBody": "欢迎专业合作与工作机会。",
+      "contactCta": "联系我",
+      "donateTitle": "支持开发",
+      "donateBody": "Natively 是独立的开源软件。",
+      "donateCta": "支持项目"
+    },
+    "coreTechnology": "核心技术"
   }
 }

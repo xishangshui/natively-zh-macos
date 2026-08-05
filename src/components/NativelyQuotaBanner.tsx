@@ -3,6 +3,7 @@
 // Checks on every startup — no throttle.
 
 import React, { useEffect, useState } from 'react';
+import { Trans, useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AlertTriangle, X, ArrowUpRight } from 'lucide-react';
 
@@ -20,6 +21,7 @@ const THRESHOLD_PCT    = 90;
 const UPGRADE_URL      = 'https://checkout.dodopayments.com/buy/pdt_0NbFixGmD8CSeawb5qvVl';
 
 export const NativelyQuotaBanner: React.FC = () => {
+    const { t } = useTranslation(['updates', 'settings', 'common']);
     const [nearLimitBuckets, setNearLimitBuckets] = useState<NearLimitBucket[]>([]);
     const [visible, setVisible] = useState(false);
 
@@ -47,9 +49,9 @@ export const NativelyQuotaBanner: React.FC = () => {
 
                 const near: NearLimitBucket[] = (
                     [
-                        { label: 'AI requests',   bucket: ai            },
-                        { label: 'Transcription', bucket: transcription },
-                        { label: 'Web searches',  bucket: search        },
+                        { label: t('settings:nativelyApi.quota.aiRequests'),   bucket: ai            },
+                        { label: t('settings:nativelyApi.quota.transcription'), bucket: transcription },
+                        { label: t('settings:nativelyApi.quota.webSearches'),  bucket: search        },
                     ] as Array<{ label: string; bucket: QuotaBucket }>
                 )
                     .filter(({ bucket }) => bucket.limit > 0 && (bucket.used / bucket.limit) * 100 >= THRESHOLD_PCT)
@@ -91,7 +93,7 @@ export const NativelyQuotaBanner: React.FC = () => {
                     <div className="flex items-start justify-between gap-2">
                         <div className="flex items-center gap-2">
                             <AlertTriangle size={14} className="text-amber-400 shrink-0 mt-[1px]" strokeWidth={2} />
-                            <span className="text-[13px] font-semibold text-[#E0E0E0]">Natively quota almost full</span>
+                            <span className="text-[13px] font-semibold text-[#E0E0E0]">{t('updates:quota.almostFull')}</span>
                         </div>
                         <button
                             onClick={() => setVisible(false)}
@@ -115,12 +117,12 @@ export const NativelyQuotaBanner: React.FC = () => {
 
                     {/* Footer */}
                     <div className="flex items-center justify-between pt-0.5">
-                        <span className="text-[11px] text-white/30">Resets on your next billing date</span>
+                        <span className="text-[11px] text-white/30">{t('updates:quota.resetsNextBilling')}</span>
                         <button
                             onClick={() => (window.electronAPI as any)?.openExternal?.(UPGRADE_URL)}
                             className="flex items-center gap-1 text-[11px] font-semibold text-amber-400 hover:text-amber-300 transition-colors cursor-pointer"
                         >
-                            Upgrade <ArrowUpRight size={11} strokeWidth={2.5} />
+                            {t('settings:profile.upgrade')} <ArrowUpRight size={11} strokeWidth={2.5} />
                         </button>
                     </div>
                 </div>

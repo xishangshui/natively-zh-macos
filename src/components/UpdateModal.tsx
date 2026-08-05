@@ -1,4 +1,5 @@
 import React from 'react';
+import { Trans, useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import { isMac } from '../utils/platformUtils';
 
@@ -28,6 +29,7 @@ interface UpdateModalProps {
 }
 
 const CopyBlock = ({ command }: { command: string }) => {
+    const { t } = useTranslation(['updates', 'common']);
     const [copied, setCopied] = React.useState(false);
     const handleCopy = () => {
         navigator.clipboard.writeText(command);
@@ -42,12 +44,12 @@ const CopyBlock = ({ command }: { command: string }) => {
             <button
                 onClick={handleCopy}
                 className="h-6 px-2.5 rounded-md bg-white/5 hover:bg-white/10 active:bg-white/15 flex items-center justify-center transition-colors border border-white/5 flex-shrink-0"
-                title="Copy to clipboard"
+                title={t('updates:modal.copyToClipboard')}
             >
                 {copied ? (
-                    <span className="text-[10px] font-semibold text-green-400">Copied</span>
+                    <span className="text-[10px] font-semibold text-green-400">{t('common:actions.copied')}</span>
                 ) : (
-                    <span className="text-[10px] font-medium text-white/50 group-hover:text-white/80">Copy</span>
+                    <span className="text-[10px] font-medium text-white/50 group-hover:text-white/80">{t('common:actions.copy')}</span>
                 )}
             </button>
         </div>
@@ -80,9 +82,10 @@ const UpdateModal: React.FC<UpdateModalProps> = ({
     errorMessage,
     instructionsArch
 }) => {
+    const { t } = useTranslation(['updates', 'common']);
     // Helper to format version string
     const formatVersion = (v: string) => {
-        if (!v) return 'Unknown';
+        if (!v) return t('common:state.unknown');
         if (v === 'latest') return 'Latest';
         if (v === 'vlatest') return 'Latest';
         return v.startsWith('v') ? v : `v${v}`;
@@ -176,7 +179,7 @@ const UpdateModal: React.FC<UpdateModalProps> = ({
                             <div className="p-8 flex flex-col items-center justify-center h-full text-center">
                                 <div className="space-y-2 mb-6">
                                     <h2 className="text-[17px] font-semibold text-white tracking-tight">
-                                        Update Failed
+                                        {t('updates:modal.failedTitle')}
                                     </h2>
                                     {errorMessage && (
                                         <p className="text-[13px] text-red-400 font-medium">
@@ -184,44 +187,44 @@ const UpdateModal: React.FC<UpdateModalProps> = ({
                                         </p>
                                     )}
                                     <p className="text-[13px] text-white/40">
-                                        Check your internet connection or download the update manually from GitHub.
+                                        {t('updates:modal.failedBody')}
                                     </p>
                                 </div>
                                 <button
                                     onClick={onDismiss}
                                     className="px-5 py-[6px] bg-white/10 hover:bg-white/20 text-white text-[13px] font-medium rounded-lg transition-colors"
                                 >
-                                    Close
+                                    {t('common:actions.close')}
                                 </button>
                             </div>
                         ) : status === 'instructions' ? (
                             <div className="p-8 flex flex-col h-full relative text-left w-full max-w-full">
                                 <div className="space-y-1.5 mb-5 text-center mt-2">
                                     <h2 className="text-[17px] font-semibold text-white tracking-tight">
-                                        Manual Update Required
+                                        {t('updates:modal.manualTitle')}
                                     </h2>
                                     <p className="text-[13px] text-white/40 font-medium leading-relaxed">
-                                        The download has started in your browser. Follow these steps to install the update:
+                                        {t('updates:modal.manualBody')}
                                     </p>
                                 </div>
                                 <div className="flex-1 overflow-y-auto custom-scrollbar pr-2 mb-4 space-y-2 w-full">
                                     {isMac ? (
                                         <>
                                             <div className="space-y-1 w-full">
-                                                <p className="text-[12px] font-medium text-white/80">1. Clear quarantine on the downloaded file:</p>
+                                                <p className="text-[12px] font-medium text-white/80">{t('updates:modal.manualStep1')}</p>
                                                 <CopyBlock command={`xattr -cr ~/Downloads/Natively-${displayVersion.replace('v', '')}-${instructionsArch || 'arm64'}.dmg`} />
                                             </div>
                                             <div className="space-y-1 mt-1 pl-0.5">
-                                                <p className="text-[12px] font-medium text-white/80">2. Open the file and install Natively.</p>
+                                                <p className="text-[12px] font-medium text-white/80">{t('updates:modal.manualStep2')}</p>
                                             </div>
                                             <div className="space-y-1 mt-3 w-full">
-                                                <p className="text-[12px] font-medium text-white/80">3. Clear quarantine on the installed app:</p>
+                                                <p className="text-[12px] font-medium text-white/80">{t('updates:modal.manualStep3')}</p>
                                                 <CopyBlock command="xattr -cr /Applications/Natively.app" />
                                             </div>
                                         </>
                                     ) : (
                                         <div className="space-y-1 w-full">
-                                            <p className="text-[12px] font-medium text-white/80">Run the downloaded installer (.exe) and follow the prompts. Natively will restart when finished.</p>
+                                            <p className="text-[12px] font-medium text-white/80">{t('updates:modal.windowsInstallHint')}</p>
                                         </div>
                                     )}
                                 </div>
@@ -230,7 +233,7 @@ const UpdateModal: React.FC<UpdateModalProps> = ({
                                         onClick={onDismiss}
                                         className="px-6 py-[6px] bg-white/10 hover:bg-white/20 text-white text-[13px] font-medium rounded-lg transition-colors w-[200px]"
                                     >
-                                        Done
+                                        {t('updates:modal.done')}
                                     </button>
                                 </div>
                             </div>
@@ -240,10 +243,10 @@ const UpdateModal: React.FC<UpdateModalProps> = ({
                                 {/* 1. Header Text */}
                                 <div className="space-y-1.5 mb-8">
                                     <h2 className="text-[17px] font-semibold text-white tracking-tight">
-                                        Downloading Update...
+                                        {t('updates:modal.downloading')}
                                     </h2>
                                     <p className="text-[13px] text-white/40 font-medium">
-                                        {downloadProgress < 100 ? 'Please wait while we prepare the update.' : 'Finalizing package...'}
+                                        {downloadProgress < 100 ? t('updates:modal.preparing') : t('updates:modal.finalizing')}
                                     </p>
                                 </div>
 
@@ -263,10 +266,10 @@ const UpdateModal: React.FC<UpdateModalProps> = ({
                                         </div>
                                         <div className="space-y-0.5">
                                             <p className="text-[12px] font-medium text-white/80 leading-tight">
-                                                If macOS says "App is damaged"
+                                                {t('updates:modal.macDamagedTitle')}
                                             </p>
                                             <p className="text-[11px] text-white/40 leading-snug">
-                                                Move app to Applications folder, then run:
+                                                {t('updates:modal.macDamagedHint')}
                                             </p>
                                         </div>
                                     </div>
@@ -279,12 +282,12 @@ const UpdateModal: React.FC<UpdateModalProps> = ({
                                         <button
                                             onClick={handleCopyCommand}
                                             className="h-6 px-2.5 rounded-md bg-white/5 hover:bg-white/10 active:bg-white/15 flex items-center justify-center transition-colors border border-white/5"
-                                            title="Copy to clipboard"
+                                            title={t('updates:modal.copyToClipboard')}
                                         >
                                             {copied ? (
-                                                <span className="text-[10px] font-semibold text-green-400">Copied</span>
+                                                <span className="text-[10px] font-semibold text-green-400">{t('common:actions.copied')}</span>
                                             ) : (
-                                                <span className="text-[10px] font-medium text-white/50 group-hover:text-white/80">Copy</span>
+                                                <span className="text-[10px] font-medium text-white/50 group-hover:text-white/80">{t('common:actions.copy')}</span>
                                             )}
                                         </button>
                                     </div>
@@ -302,7 +305,7 @@ const UpdateModal: React.FC<UpdateModalProps> = ({
                                         />
                                     </div>
                                     <p className="text-[11px] font-medium text-white/30 tabular-nums">
-                                        {Math.round(downloadProgress)}% Complete
+                                        {t('updates:modal.percentComplete', { percent: Math.round(downloadProgress) })}
                                     </p>
                                 </div>
 
@@ -310,7 +313,7 @@ const UpdateModal: React.FC<UpdateModalProps> = ({
                                     onClick={onDismiss}
                                     className="text-[13px] font-medium text-white/30 hover:text-white/60 transition-colors mt-auto mb-1"
                                 >
-                                    Hide
+                                    {t('common:actions.hide')}
                                 </button>
                             </div>
                         ) : (
@@ -318,10 +321,10 @@ const UpdateModal: React.FC<UpdateModalProps> = ({
                                 {/* Header Group */}
                                 <div className="flex flex-col gap-0.5 text-center relative flex-shrink-0 pt-1">
                                     <h2 className="text-[19px] font-semibold text-white tracking-tight">
-                                        Update Available
+                                        {t('updates:modal.availableTitle')}
                                     </h2>
                                     <p className="text-[13px] text-white/50 font-medium tracking-wide">
-                                        Version {displayVersion} is ready to install.
+                                        {t('updates:modal.versionReady', { version: displayVersion })}
                                     </p>
                                 </div>
 
@@ -335,7 +338,7 @@ const UpdateModal: React.FC<UpdateModalProps> = ({
                                 >
                                     {showFallback ? (
                                         <p className="text-[13px] text-white/60 text-center leading-relaxed mt-8">
-                                            Includes performance improvements and bug fixes.
+                                            {t('updates:modal.defaultNotes')}
                                         </p>
                                     ) : (
                                         <div className="space-y-5 px-1">
@@ -373,7 +376,7 @@ const UpdateModal: React.FC<UpdateModalProps> = ({
                                         onClick={onDismiss}
                                         className="text-[13px] font-medium text-white/40 hover:text-white/70 transition-colors"
                                     >
-                                        Not Now
+                                        {t('updates:modal.notNow')}
                                     </button>
 
                                     {/* Primary Action - Right Aligned, System Blue */}
@@ -382,14 +385,14 @@ const UpdateModal: React.FC<UpdateModalProps> = ({
                                             onClick={() => window.electronAPI.restartAndInstall()}
                                             className="px-5 py-[6px] bg-[#007AFF] hover:bg-[#0062CC] text-white text-[13px] font-medium rounded-lg shadow-sm transition-colors"
                                         >
-                                            Restart & Install
+                                            {t('updates:modal.restartInstall')}
                                         </button>
                                     ) : (
                                         <button
                                             onClick={handleUpdateClick}
                                             className="px-5 py-[6px] bg-[#007AFF] hover:bg-[#0062CC] text-white text-[13px] font-medium rounded-lg shadow-sm transition-colors"
                                         >
-                                            Update Now
+                                            {t('updates:modal.updateNow')}
                                         </button>
                                     )}
                                 </div>

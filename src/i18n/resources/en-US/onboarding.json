@@ -3,8 +3,46 @@
     "title": "Welcome to Natively"
   },
   "permissions": {
-    "microphone": {
-      "title": "Microphone access"
-    }
+    "microphone": "Microphone",
+    "title": "Permissions",
+    "subtitle": "Let's get you set up",
+    "body": "Natively needs a few permissions to capture meetings and transcribe speech.",
+    "screenRecording": "Screen Recording",
+    "screenRecordingDesc": "Required to capture meeting content",
+    "microphoneDesc": "Required for speech transcription",
+    "macScreenPrompt": "\"Natively\" wants to record the screen.",
+    "macScreenHint": "Enable access in Privacy & Security settings.",
+    "macSettingsPath": "System Settings → Privacy & Security",
+    "deny": "Deny",
+    "granted": "Access granted",
+    "reEnable": "Re-enable in Settings"
+  },
+  "startup": {
+    "welcome": "Welcome to Natively",
+    "tagline": "The ultimate AI meeting assistant",
+    "continue": "Continue",
+    "assistantLine1": "Real-time meeting assistant,",
+    "assistantLine2": "always ready to help",
+    "consent": "By clicking Continue, you agree to our <0>Terms &amp; Conditions</0> and <1>Privacy Policy</1>."
+  },
+  "full": {
+    "body": "Allow Natively the following system accesses to enable premium recording, real-time assist tools, and seamless audio transcriptions.",
+    "assistLabel": "Allow Natively to assist",
+    "assistDesc": "Natively can prompt you to start taking notes when you join a meeting.",
+    "micLabel": "Allow Natively to hear you",
+    "micDesc": "Natively needs to capture your voice to transcribe your meetings in real-time.",
+    "screenLabel": "Allow Natively to see your screen",
+    "screenDesc": "Natively can answer questions about what you're viewing.",
+    "openScreenSettings": "Open screen settings",
+    "requestingAccess": "Requesting access…",
+    "requestMic": "Request microphone access",
+    "allSetContinue": "All set — continue",
+    "skipForNow": "Skip for now",
+    "iconAlt": "Natively Icon",
+    "macPrompt": "\"Natively\" would like to record this computer's screen and audio.",
+    "macPromptHint": "Grant access to this application in Privacy & Security settings, located in System Settings.",
+    "openSystemSettings": "Open System Settings",
+    "screenAudioTitle": "Screen & System Audio Recording",
+    "systemPanelHint": "Allow the applications below to record the content of your screen and audio, even while using other applications."
   }
 }

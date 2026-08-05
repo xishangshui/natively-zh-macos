@@ -4,5 +4,71 @@
   },
   "shortcuts": {
     "title": "Keyboard shortcuts"
+  },
+  "support": {
+    "title": "Support Natively",
+    "line1": "Built by one.",
+    "line2": "Used by thousands.",
+    "body": "Natively is built and maintained by one developer. If it's part of your daily workflow, your support keeps it moving forward.",
+    "cta": "Support the Builder",
+    "later": "Maybe later"
+  },
+  "about": {
+    "title": "About Natively",
+    "tagline": "Designed to be invisible, intelligent, and trusted.",
+    "buildSection": "Build",
+    "zhBuildNotice": "This is a community Simplified Chinese build. It never downloads or installs official updates automatically. Installing an official release will replace this build and remove the Chinese interface.",
+    "viewUpstream": "View Upstream Releases",
+    "whatsNew": "What's New in v2.7",
+    "news": {
+      "uiStylesTitle": "Two New Meeting UI Styles",
+      "uiStylesBody": "Introduced two gorgeous, immersive interface themes, Liquid Glass and Modern Dark, to completely redefine your real-time overlay experience.",
+      "deepseekTitle": "DeepSeek AI Integrated",
+      "deepseekBody": "Full support for DeepSeek's advanced reasoning models, delivering ultra-smart and cost-effective chat replies.",
+      "audioTitle": "Audio &amp; TCC Resolved",
+      "audioBody": "Hardened macOS system audio process tapping and security permission gates to guarantee robust capture streams.",
+      "modesTitle": "Optimized Modes Manager",
+      "modesBody": "The Profile Intelligence matrix and Modes Manager have been optimized like crazy for responsive, ultra-low latency context processing.",
+      "updatesTitle": "In-App Updates",
+      "updatesBody": "Enjoy seamless, single-click updates directly inside the desktop app with zero manual installation loops."
+    },
+    "howItWorks": "How Natively Works",
+    "how": {
+      "hybridTitle": "Hybrid Intelligence",
+      "hybridBody": "Seamlessly routes queries between ultra-fast models for instant speed and reasoning models (Gemini, OpenAI, Claude) for complex tasks. Powered by enterprise-grade speech recognition from 7+ providers.",
+      "ragTitle": "Local RAG & Memory"
+    },
+    "privacySection": "Privacy & Data",
+    "privacy": {
+      "stealthTitle": "Stealth & Control",
+      "stealthBody": "Features \"Undetectable Mode\" to hide from the dock and \"Masquerading\" to disguise as system apps. You control exactly what data leaves your device.",
+      "noRecordingTitle": "No Recording",
+      "noRecordingBody": "Natively listens only when active. It does not record video, take arbitrary screenshots without command, or perform background surveillance."
+    },
+    "communitySection": "Community",
+    "community": {
+      "website": "Official Website",
+      "visitWebsite": "Visit Website",
+      "telegram": "Telegram Community",
+      "joinChat": "Join Chat",
+      "linkedin": "LinkedIn Company Page",
+      "followPage": "Follow Page"
+    },
+    "creatorRole": "Creator",
+    "creatorQuote1": "I build software that stays out of the way.",
+    "creatorQuote2": "<0></0> is made to feel fast, quiet, and respectful of your privacy.",
+    "support": {
+      "starTitle": "Star on GitHub",
+      "starBody": "Love Natively? Support us by starring the repo.",
+      "issueTitle": "Report an Issue",
+      "issueBody": "Found a bug? Let us know so we can fix it.",
+      "contactTitle": "Get in Touch",
+      "contactBody": "Open for professional collaborations and job offers.",
+      "contactCta": "Contact Me",
+      "donateTitle": "Support Development",
+      "donateBody": "Natively is independent open-source software.",
+      "donateCta": "Support Project"
+    },
+    "coreTechnology": "Core Technology"
   }
 }

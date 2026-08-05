@@ -8,6 +8,7 @@
 // Violet/purple accent — consistent with the trial brand throughout the app.
 
 import React, { useState, useEffect } from 'react';
+import { Trans, useTranslation } from 'react-i18next';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { X, ArrowRight, MessageSquareCode, AudioLines, Compass } from 'lucide-react';
 import { useResolvedTheme } from '../../hooks/useResolvedTheme';
@@ -44,6 +45,7 @@ interface Props {
 export const TrialPromoToaster: React.FC<Props> = ({
   isOpen, hasNativelyKey, hasTrialToken, onDismiss, onStartTrial, onManualSetup,
 }) => {
+    const { t } = useTranslation(['updates', 'common', 'errors']);
   const [visible,  setVisible]  = useState(false);
   const [starting, setStarting] = useState(false);
   const [error,    setError]    = useState<string | null>(null);
@@ -100,7 +102,7 @@ export const TrialPromoToaster: React.FC<Props> = ({
       markToasterAsShown('trial_promo');
       setVisible(false);
     } catch (e: any) {
-      setError(e.message || 'Could not start trial. Check your connection.');
+      setError(e.message || t('errors:trial.startFailed'));
       setStarting(false);
     }
   };
@@ -177,9 +179,9 @@ export const TrialPromoToaster: React.FC<Props> = ({
               {/* Header */}
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '22px', paddingBottom: '16px' }}>
                 <span style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: t3 }}>
-                  Natively Trial
+                  {t('updates:trial.promoTitle')}
                 </span>
-                <button onClick={handleDismiss} aria-label="Dismiss"
+                <button onClick={handleDismiss} aria-label={t('common:actions.dismiss')}
                   style={{ 
                     background: 'none', border: 'none', cursor: 'pointer', width: '26px', height: '26px', 
                     display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%', 
@@ -207,16 +209,16 @@ export const TrialPromoToaster: React.FC<Props> = ({
                     </span>
                     {/* Stacked label column — tight stack at bottom */}
                     <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', gap: '3px', paddingBottom: '6px' }}>
-                      <span style={{ fontSize: '13px', fontWeight: 700, color: isLight ? '#7C3AED' : 'rgba(167,139,250,0.9)', letterSpacing: '0.08em', lineHeight: 1, textTransform: 'uppercase' }}>min</span>
-                      <span style={{ fontSize: '10px', fontWeight: 600, color: t4, textTransform: 'uppercase', letterSpacing: '0.12em', lineHeight: 1 }}>free</span>
+                      <span style={{ fontSize: '13px', fontWeight: 700, color: isLight ? '#7C3AED' : 'rgba(167,139,250,0.9)', letterSpacing: '0.08em', lineHeight: 1, textTransform: 'uppercase' }}>{t('updates:trial.minutesUnit')}</span>
+                      <span style={{ fontSize: '10px', fontWeight: 600, color: t4, textTransform: 'uppercase', letterSpacing: '0.12em', lineHeight: 1 }}>{t('updates:trial.free')}</span>
                     </div>
                   </div>
 
                   <h2 style={{ ...GT, fontSize: '21px', fontWeight: 720, letterSpacing: '-0.03em', lineHeight: 1.2, margin: '0 0 9px' }}>
-                    Try everything. No card needed.
+                    {t('updates:trial.tryEverything')}
                   </h2>
                   <p style={{ fontSize: '13px', lineHeight: 1.66, color: t3, margin: '0 auto', maxWidth: '330px' }}>
-                    Full Natively API access — AI chat, meeting transcription, and company research — free for 10 minutes. Bound to this device. No sign-in.
+                    {t('updates:trial.promoBody')}
                   </p>
                 </motion.div>
 
@@ -224,9 +226,9 @@ export const TrialPromoToaster: React.FC<Props> = ({
                 <motion.div variants={ITEM}>
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px' }}>
                     {[
-                      { icon: MessageSquareCode, label: 'AI Chat',       sub: '10 requests' },
-                      { icon: AudioLines,        label: 'Transcription', sub: '10 min STT' },
-                      { icon: Compass,           label: 'Research',      sub: '2 searches' },
+                      { icon: MessageSquareCode, label: t('updates:trial.featAiChat'),       sub: t('updates:trial.featAiChatSub') },
+                      { icon: AudioLines,        label: t('updates:trial.featTranscription'), sub: t('updates:trial.featTranscriptionSub') },
+                      { icon: Compass,           label: t('updates:trial.featResearch'),      sub: t('updates:trial.featResearchSub') },
                     ].map(({ icon: Icon, label, sub }) => (
                       <motion.div 
                         key={label}
@@ -288,7 +290,7 @@ export const TrialPromoToaster: React.FC<Props> = ({
                 {/* CTAs */}
                 <motion.div variants={ITEM} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                   <VioletCTA
-                    label={starting ? 'Starting trial…' : 'Start free trial'}
+                    label={starting ? t('settings:nativelyApi.startingTrial') : t('updates:trial.startFree')}
                     onClick={handleStartTrial}
                     disabled={starting}
                     reduced={reduced}
@@ -306,7 +308,7 @@ export const TrialPromoToaster: React.FC<Props> = ({
                     onMouseEnter={e => (e.currentTarget.style.color = t3)}
                     onMouseLeave={e => (e.currentTarget.style.color = t4)}
                   >
-                    I'll set up manually
+                    {t('updates:trial.setUpManually')}
                   </button>
                 </motion.div>
               </motion.div>

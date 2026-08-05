@@ -302,7 +302,9 @@
     "weekClear": "Your week is clear for now.",
     "noCalendars": "No calendars",
     "connectHint": "Get started by connecting a Google account.",
-    "join": "Join"
+    "join": "Join",
+    "connected": "Calendar Connected",
+    "connect": "Connect calendar"
   },
   "nativelyApi": {
     "plans": {

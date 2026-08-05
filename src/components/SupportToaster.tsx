@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Trans, useTranslation } from 'react-i18next';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { Heart, X } from 'lucide-react';
 import { cn } from '../lib/utils';
@@ -10,6 +11,7 @@ interface SupportToasterProps {
 }
 
 export const SupportToaster: React.FC<SupportToasterProps> = ({ className }) => {
+    const { t } = useTranslation(['help', 'common']);
     const isLight = useResolvedTheme() === 'light';
     const reduced = useReducedMotion() ?? false;
     const [isVisible, setIsVisible] = useState(false);
@@ -160,9 +162,9 @@ export const SupportToaster: React.FC<SupportToasterProps> = ({ className }) => 
                             {/* Top header with dismiss button */}
                             <div className="relative z-10 w-full flex justify-between items-center px-6 pt-5 pb-3" style={{ borderBottom: `1px solid ${rule}` }}>
                                 <span style={{ fontSize: '10.5px', fontWeight: 660, letterSpacing: '0.15em', textTransform: 'uppercase', color: t2 }}>
-                                    Support Natively
+                                    {t('help:support.title')}
                                 </span>
-                                <button onClick={handleDismiss} aria-label="Dismiss"
+                                <button onClick={handleDismiss} aria-label={t('common:actions.dismiss')}
                                     className="w-7 h-7 flex items-center justify-center rounded-full opacity-45 transition-all animate-none"
                                     style={{ background: 'none', border: 'none', cursor: 'pointer' }}
                                     onMouseEnter={e => { e.currentTarget.style.opacity = '0.8'; e.currentTarget.style.background = isLight ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.1)'; }}
@@ -227,11 +229,11 @@ export const SupportToaster: React.FC<SupportToasterProps> = ({ className }) => 
                                 {/* Typography */}
                                 <div className="text-center px-[40px] mb-[28px]">
                                     <h3 style={{ color: t1 }} className="text-[26px] font-[750] leading-[1.2] tracking-[-0.02em] mb-[12px] antialiased">
-                                        Built by one.<br />
-                                        Used by thousands.
+                                        {t('help:support.line1')}<br />
+                                        {t('help:support.line2')}
                                     </h3>
                                     <p style={{ color: t3 }} className="text-[13.5px] leading-[1.6] max-w-[340px] mx-auto font-medium antialiased">
-                                        Natively is built and maintained by one developer. If it's part of your daily workflow, your support keeps it moving forward.
+                                        {t('help:support.body')}
                                     </p>
                                 </div>
 
@@ -250,7 +252,7 @@ export const SupportToaster: React.FC<SupportToasterProps> = ({ className }) => 
 
                                         {/* Shimmer */}
                                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />
-                                        <span className="relative z-20">Support the Builder</span>
+                                        <span className="relative z-20">{t('help:support.cta')}</span>
                                     </motion.button>
 
                                     {/* Social Proof & Dismiss */}
@@ -259,7 +261,7 @@ export const SupportToaster: React.FC<SupportToasterProps> = ({ className }) => 
                                             onClick={handleDismiss}
                                             className={`text-[11px] font-bold uppercase tracking-[0.2em] mt-1 transition-colors duration-200 border-none bg-none cursor-pointer ${isLight ? 'text-black/30 hover:text-black/50' : 'text-white/30 hover:text-white/50'}`}
                                         >
-                                            Maybe later
+                                            {t('help:support.later')}
                                         </button>
                                     </div>
                                 </div>

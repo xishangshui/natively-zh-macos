@@ -36,7 +36,19 @@
     "src/components/ui/KeyRecorder.tsx",
     "src/components/MeetingDetails.tsx",
     "src/components/ProfileIntelligenceSettings.tsx",
-    "src/components/Cropper.tsx"
+    "src/components/Cropper.tsx",
+    "src/components/StartupSequence.tsx",
+    "src/components/onboarding/PermissionsToaster.tsx",
+    "src/components/onboarding/PermissionsOnboardingFull.tsx",
+    "src/components/AboutSection.tsx",
+    "src/components/NativelyQuotaBanner.tsx",
+    "src/components/SupportToaster.tsx",
+    "src/components/UpdateBanner.tsx",
+    "src/components/UpdateModal.tsx",
+    "src/components/trial/FreeTrialBanner.tsx",
+    "src/components/trial/FreeTrialModal.tsx",
+    "src/components/trial/TrialPromoToaster.tsx",
+    "src/components/ui/ConnectCalendarButton.tsx"
   ],
   "excluded": []
 }

@@ -3,8 +3,46 @@
     "title": "欢迎使用 Natively"
   },
   "permissions": {
-    "microphone": {
-      "title": "麦克风权限"
-    }
+    "microphone": "麦克风",
+    "title": "权限",
+    "subtitle": "先把它配置好",
+    "body": "Natively 需要几项权限才能采集会议并转写语音。",
+    "screenRecording": "屏幕录制",
+    "screenRecordingDesc": "采集会议画面所必需",
+    "microphoneDesc": "语音转写所必需",
+    "macScreenPrompt": "“Natively”想要录制此电脑的屏幕。",
+    "macScreenHint": "请在「隐私与安全性」设置中允许访问。",
+    "macSettingsPath": "系统设置 → 隐私与安全性",
+    "deny": "不允许",
+    "granted": "已授权",
+    "reEnable": "在设置中重新开启"
+  },
+  "startup": {
+    "welcome": "欢迎使用 Natively",
+    "tagline": "最好用的 AI 会议助手",
+    "continue": "继续",
+    "assistantLine1": "实时会议助手，",
+    "assistantLine2": "随时待命",
+    "consent": "点击「继续」即表示你同意我们的<0>条款与条件</0>和<1>隐私政策</1>。"
+  },
+  "full": {
+    "body": "请允许 Natively 使用以下系统权限，以启用录制、实时辅助工具与流畅的语音转写。",
+    "assistLabel": "允许 Natively 提供辅助",
+    "assistDesc": "加入会议时 Natively 可以提醒你开始记录。",
+    "micLabel": "允许 Natively 听到你的声音",
+    "micDesc": "Natively 需要采集你的语音才能实时转写会议。",
+    "screenLabel": "允许 Natively 看到你的屏幕",
+    "screenDesc": "Natively 可以回答关于你正在查看内容的问题。",
+    "openScreenSettings": "打开屏幕录制设置",
+    "requestingAccess": "正在请求权限…",
+    "requestMic": "请求麦克风权限",
+    "allSetContinue": "全部就绪 —— 继续",
+    "skipForNow": "暂时跳过",
+    "iconAlt": "Natively 图标",
+    "macPrompt": "“Natively”想要录制此电脑的屏幕和音频。",
+    "macPromptHint": "请在「系统设置」的「隐私与安全性」中为本应用授予权限。",
+    "openSystemSettings": "打开系统设置",
+    "screenAudioTitle": "屏幕与系统音频录制",
+    "systemPanelHint": "允许下列应用录制你的屏幕内容与音频，即使在使用其他应用时也可以。"
   }
 }

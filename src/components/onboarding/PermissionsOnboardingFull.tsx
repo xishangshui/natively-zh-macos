@@ -9,6 +9,7 @@
 // Refined with Emil Kowalski's Design Engineering principles.
 
 import React, { useState, useEffect, useCallback } from 'react';
+import { Trans, useTranslation } from 'react-i18next';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { X, Monitor, Mic, Lightbulb, Check, AlertCircle, ArrowRight, Lock } from 'lucide-react';
 import { NativelyLogoMark } from '../NativelyLogoMark';
@@ -194,6 +195,7 @@ function PermRow({
 
 // ─── Main PermissionsOnboardingFull Component ───────────────────
 export const PermissionsOnboardingFull: React.FC<Props> = ({ isOpen, onDismiss }) => {
+    const { t } = useTranslation(['onboarding', 'common']);
   const [platform,   setPlatform]   = useState<string>('darwin');
   const [micStatus,  setMicStatus]  = useState<PermStatus>('loading');
   const [scrStatus,  setScrStatus]  = useState<PermStatus>('loading');
@@ -267,20 +269,20 @@ export const PermissionsOnboardingFull: React.FC<Props> = ({ isOpen, onDismiss }
   const getButtonConfig = () => {
     if (platform === 'darwin' && scrStatus !== 'granted') {
       return {
-        label: 'Open screen settings',
+        label: t('onboarding:full.openScreenSettings'),
         action: openScreenSettings,
         active: true,
       };
     }
     if (micStatus !== 'granted') {
       return {
-        label: requesting ? 'Requesting access…' : 'Request microphone access',
+        label: requesting ? t('onboarding:full.requestingAccess') : t('onboarding:full.requestMic'),
         action: handleMicRequest,
         active: !requesting,
       };
     }
     return {
-      label: 'All set — continue',
+      label: t('onboarding:full.allSetContinue'),
       action: handleDismiss,
       active: true,
     };
@@ -344,7 +346,7 @@ export const PermissionsOnboardingFull: React.FC<Props> = ({ isOpen, onDismiss }
             <motion.div variants={itemVariants} style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '16px' }}>
               <button 
                 onClick={handleDismiss} 
-                aria-label="Skip for now"
+                aria-label={t('onboarding:full.skipForNow')}
                 style={{
                   background: 'none',
                   border: 'none',
@@ -360,7 +362,7 @@ export const PermissionsOnboardingFull: React.FC<Props> = ({ isOpen, onDismiss }
                 onMouseEnter={e => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.backgroundColor = '#F4F5F7'; }}
                 onMouseLeave={e => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.backgroundColor = 'transparent'; }}
               >
-                Skip for now
+                {t('onboarding:full.skipForNow')}
               </button>
             </motion.div>
 
@@ -378,7 +380,7 @@ export const PermissionsOnboardingFull: React.FC<Props> = ({ isOpen, onDismiss }
                   fontFamily: "'Inter', sans-serif",
                 }}
               >
-                Let's get you set up
+                {t('onboarding:permissions.subtitle')}
               </motion.h2>
               <motion.p
                 variants={itemVariants}
@@ -390,7 +392,7 @@ export const PermissionsOnboardingFull: React.FC<Props> = ({ isOpen, onDismiss }
                   fontFamily: "'Inter', sans-serif",
                 }}
               >
-                Allow Natively the following system accesses to enable premium recording, real-time assist tools, and seamless audio transcriptions.
+                {t('onboarding:full.body')}
               </motion.p>
 
               {/* High-Fidelity Permission list items */}
@@ -399,8 +401,8 @@ export const PermissionsOnboardingFull: React.FC<Props> = ({ isOpen, onDismiss }
                 {/* Item 1: Assist Toggle */}
                 <PermRow
                   icon={Lightbulb}
-                  label="Allow Natively to assist"
-                  description="Natively can prompt you to start taking notes when you join a meeting."
+                  label={t('onboarding:full.assistLabel')}
+                  description={t('onboarding:full.assistDesc')}
                   checked={assistActive}
                   onToggle={() => setAssistActive(!assistActive)}
                   hasBadge={true}
@@ -409,8 +411,8 @@ export const PermissionsOnboardingFull: React.FC<Props> = ({ isOpen, onDismiss }
                 {/* Item 2: Microphone Permission */}
                 <PermRow
                   icon={Mic}
-                  label="Allow Natively to hear you"
-                  description="Natively needs to capture your voice to transcribe your meetings in real-time."
+                  label={t('onboarding:full.micLabel')}
+                  description={t('onboarding:full.micDesc')}
                   checked={micStatus === 'granted'}
                   onToggle={micStatus !== 'granted' ? handleMicRequest : () => {}}
                   hasBadge={true}
@@ -419,8 +421,8 @@ export const PermissionsOnboardingFull: React.FC<Props> = ({ isOpen, onDismiss }
                 {/* Item 3: Screen Capture Permission */}
                 <PermRow
                   icon={Monitor}
-                  label="Allow Natively to see your screen"
-                  description="Natively can answer questions about what you're viewing."
+                  label={t('onboarding:full.screenLabel')}
+                  description={t('onboarding:full.screenDesc')}
                   checked={scrStatus === 'granted'}
                   onToggle={openScreenSettings}
                 />
@@ -546,7 +548,7 @@ export const PermissionsOnboardingFull: React.FC<Props> = ({ isOpen, onDismiss }
                 }}>
                   <img
                     src={nativelyIcon}
-                    alt="Natively Icon"
+                    alt={t('onboarding:full.iconAlt')}
                     style={{
                       width: '42px',
                       height: '42px',
@@ -581,7 +583,7 @@ export const PermissionsOnboardingFull: React.FC<Props> = ({ isOpen, onDismiss }
                     lineHeight: 1.35,
                     fontFamily: "'Inter', sans-serif",
                   }}>
-                    "Natively" would like to record this computer's screen and audio.
+                    {t('onboarding:full.macPrompt')}
                   </div>
                   <div style={{
                     fontSize: '10px',
@@ -589,7 +591,7 @@ export const PermissionsOnboardingFull: React.FC<Props> = ({ isOpen, onDismiss }
                     lineHeight: 1.4,
                     fontFamily: "'Inter', sans-serif",
                   }}>
-                    Grant access to this application in Privacy & Security settings, located in System Settings.
+                    {t('onboarding:full.macPromptHint')}
                   </div>
                 </div>
               </div>
@@ -613,7 +615,7 @@ export const PermissionsOnboardingFull: React.FC<Props> = ({ isOpen, onDismiss }
                   onMouseEnter={e => e.currentTarget.style.backgroundColor = '#E5E7EB'}
                   onMouseLeave={e => e.currentTarget.style.backgroundColor = '#F3F4F6'}
                 >
-                  Open System Settings
+                  {t('onboarding:full.openSystemSettings')}
                 </button>
                 <button
                   onClick={handleDismiss}
@@ -632,7 +634,7 @@ export const PermissionsOnboardingFull: React.FC<Props> = ({ isOpen, onDismiss }
                   onMouseEnter={e => e.currentTarget.style.opacity = '0.9'}
                   onMouseLeave={e => e.currentTarget.style.opacity = '1'}
                 >
-                  Deny
+                  {t('onboarding:permissions.deny')}
                 </button>
               </div>
             </div>
@@ -658,10 +660,10 @@ export const PermissionsOnboardingFull: React.FC<Props> = ({ isOpen, onDismiss }
               {/* Settings Header */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginBottom: '14px' }}>
                 <div style={{ fontSize: '12px', fontWeight: 700, color: COLORS.charcoalInk }}>
-                  Screen & System Audio Recording
+                  {t('onboarding:full.screenAudioTitle')}
                 </div>
                 <div style={{ fontSize: '9.5px', color: COLORS.mutedSteel, lineHeight: 1.3 }}>
-                  Allow the applications below to record the content of your screen and audio, even while using other applications.
+                  {t('onboarding:full.systemPanelHint')}
                 </div>
               </div>
 

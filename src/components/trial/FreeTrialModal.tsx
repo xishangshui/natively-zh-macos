@@ -8,6 +8,7 @@
 // dominant CTA, trust footer — all tuned for maximum conversion.
 
 import React, { useState } from 'react';
+import { Trans, useTranslation } from 'react-i18next';
 import { motion, useReducedMotion } from 'framer-motion';
 import { Zap, Key, ArrowRight, Loader2, CheckCircle, Brain, Mic, Flame, ShieldCheck } from 'lucide-react';
 import { NativelyLogoMark } from '../NativelyLogoMark';
@@ -105,6 +106,7 @@ interface TrialModalProps {
 type Step = 'choose' | 'wiping' | 'done';
 
 export const FreeTrialModal: React.FC<TrialModalProps> = ({ usage, onByok, onStandard, onDone }) => {
+  const { t } = useTranslation(['updates', 'settings', 'common', 'errors']);
   const [step,  setStep]  = useState<Step>('choose');
   const [error, setError] = useState<string | null>(null);
   const reduced = useReducedMotion() ?? false;
@@ -115,7 +117,7 @@ export const FreeTrialModal: React.FC<TrialModalProps> = ({ usage, onByok, onSta
     setStep('wiping');
     setError(null);
     try   { await onByok(); setStep('done'); }
-    catch (e: any) { setError(e.message || 'Something went wrong. Restart the app.'); setStep('choose'); }
+    catch (e: any) { setError(e.message || t('errors:trial.somethingWrong')); setStep('choose'); }
   };
 
   return (
@@ -206,6 +208,7 @@ function ChooseState({ usage, error, reduced, onPro, onMax, onUltra, onStandard,
   error: string|null; reduced:boolean;
   onPro:()=>void; onMax:()=>void; onUltra:()=>void; onStandard:()=>void; onByok:()=>void;
 }) {
+  const { t } = useTranslation(['updates', 'settings', 'common', 'errors']);
   const sttMin = (usage.stt_seconds/60).toFixed(1);
   return (
     <div style={{display:'flex',flexDirection:'column',gap:'10px'}}>
@@ -216,9 +219,9 @@ function ChooseState({ usage, error, reduced, onPro, onMax, onUltra, onStandard,
           <NativelyLogoMark size={16} className="text-violet-400" />
         </div>
         <div>
-          <div style={{fontSize:'14px',fontWeight:650,color:C.t1,letterSpacing:'-.02em',lineHeight:1.2}}>Keep the momentum going</div>
+          <div style={{fontSize:'14px',fontWeight:650,color:C.t1,letterSpacing:'-.02em',lineHeight:1.2}}>{t('settings:nativelyApi.keepMomentum')}</div>
           <div style={{fontSize:'11.5px',color:C.t4,marginTop:'2px'}}>
-            {usage.ai} AI · {sttMin} min · {usage.search} searches used in your trial
+            {t('updates:trial.usedInTrial', { ai: usage.ai, stt: sttMin, search: usage.search })}
           </div>
         </div>
       </div>
@@ -235,15 +238,15 @@ function ChooseState({ usage, error, reduced, onPro, onMax, onUltra, onStandard,
         <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'6px'}}>
           <TierCard title="Max"   price="$25" period="/mo" icon={Brain}
             spec="2,000 AI · 1,000 min · 200 searches · Pro App included"
-            badge="Best value" accent="indigo" onClick={onMax} />
+            badge={t('updates:trial.badgeBestValue')} accent="indigo" onClick={onMax} />
           <TierCard title="Ultra" price="$35" period="/mo" icon={Flame}
             spec="3,000 AI · 2,000 min · 300 searches · Pro App included"
-            badge="Power" accent="amber" onClick={onUltra} />
+            badge={t('updates:trial.badgePower')} accent="amber" onClick={onUltra} />
         </div>
 
         <TierCard title="Standard" price="$8" period="/mo" icon={Mic}
             spec="500 AI · 200 min · 20 searches"
-            badge="No Pro App" badgeWarn accent="slate" onClick={onStandard} />
+            badge={t('updates:trial.badgeNoProApp')} badgeWarn accent="slate" onClick={onStandard} />
       </div>
 
       {/* ── BYOK + trust ─── */}
@@ -251,7 +254,7 @@ function ChooseState({ usage, error, reduced, onPro, onMax, onUltra, onStandard,
 
       <div style={{display:'flex',alignItems:'center',justifyContent:'center',gap:'4px',marginTop:'-2px'}}>
         <ShieldCheck size={9.5} strokeWidth={2} color={C.t3} />
-        <span style={{fontSize:'10px',color:C.t3}}>Cancel anytime · Secure checkout via Dodo Payments</span>
+        <span style={{fontSize:'10px',color:C.t3}}>{t('updates:trial.checkoutNote')}</span>
       </div>
 
       {error && <p style={{fontSize:'11px',color:'rgba(248,113,113,.85)',textAlign:'center',margin:0}}>{error}</p>}
@@ -267,6 +270,7 @@ function HeroCard({ title, price, period, icon: Icon, spec, accent, reduced, onC
   title:string; price:string; period:string; icon:React.ElementType;
   spec:string; accent:'violet'; reduced:boolean; onClick:()=>void;
 }) {
+  const { t } = useTranslation(['updates', 'settings', 'common', 'errors']);
   const a = ACC[accent];
   const [hov, setHov] = useState(false);
 
@@ -293,7 +297,7 @@ function HeroCard({ title, price, period, icon: Icon, spec, accent, reduced, onC
             <span style={{
               fontSize:'7.5px',fontWeight:720,letterSpacing:'.12em',textTransform:'uppercase',
               color:a.bandText, background:a.bandBg, padding:'2px 6px', borderRadius:'4px',
-            }}>Popular</span>
+            }}>{t('updates:trial.popular')}</span>
           </div>
           <div style={{display:'flex',alignItems:'baseline',gap:'2px'}}>
             <span style={{fontSize:'22px',fontWeight:760,color:C.t1,letterSpacing:'-.05em',lineHeight:1}}>{price}</span>
@@ -326,7 +330,7 @@ function HeroCard({ title, price, period, icon: Icon, spec, accent, reduced, onC
             />
           )}
           <span style={{position:'relative',zIndex:1,fontSize:'12.5px',fontWeight:650,color:a.btnColor,letterSpacing:'-.015em'}}>
-            Start {title}
+            {t('updates:trial.startPlan', { plan: title })}
           </span>
           <motion.span style={{position:'relative',zIndex:1,display:'flex',alignItems:'center'}}
             animate={reduced?{}:{x:hov?3:0}} transition={{duration:.16}}>
@@ -345,6 +349,7 @@ function TierCard({ title, price, period, icon: Icon, spec, accent, badge, badge
   title:string; price:string; period:string; icon:React.ElementType;
   spec:string; accent:'indigo'|'amber'|'slate'; badge:string|null; badgeWarn?:boolean; onClick:()=>void;
 }) {
+  const { t } = useTranslation(['updates', 'settings', 'common', 'errors']);
   const a = ACC[accent];
   const [hov, setHov] = useState(false);
   const reduced = useReducedMotion() ?? false;
@@ -407,7 +412,7 @@ function TierCard({ title, price, period, icon: Icon, spec, accent, badge, badge
           transition:`background 180ms ${EASE}`,
         }}
       >
-        Start {title} <ArrowRight size={10} strokeWidth={2.3} />
+        {t('updates:trial.startPlan', { plan: title })} <ArrowRight size={10} strokeWidth={2.3} />
       </button>
     </div>
   );
@@ -420,6 +425,7 @@ function SlimCard({ title, price, icon: Icon, spec, accent, onClick }: {
   title:string; price:string; icon:React.ElementType;
   spec:string; accent:'slate'; onClick:()=>void;
 }) {
+  const { t } = useTranslation(['updates', 'settings', 'common', 'errors']);
   const a = ACC[accent];
   const [hov, setHov] = useState(false);
   const reduced = useReducedMotion() ?? false;
@@ -457,7 +463,7 @@ function SlimCard({ title, price, icon: Icon, spec, accent, onClick }: {
           display:'flex', alignItems:'center', gap:'4px',
         }}
       >
-        Start <ArrowRight size={9} strokeWidth={2.3} />
+        {t('updates:trial.start')} <ArrowRight size={9} strokeWidth={2.3} />
       </button>
     </div>
   );
@@ -466,6 +472,7 @@ function SlimCard({ title, price, icon: Icon, spec, accent, onClick }: {
 // ─── BYOK row ─────────────────────────────────────────────────
 
 function ByokRow({ onClick }: { onClick:()=>void }) {
+  const { t } = useTranslation(['updates', 'settings', 'common', 'errors']);
   const [hov, setHov] = useState(false);
   const reduced = useReducedMotion() ?? false;
   return (
@@ -497,12 +504,12 @@ function ByokRow({ onClick }: { onClick:()=>void }) {
         <div style={{flex:1}}>
           <div style={{display:'flex',alignItems:'center',gap:'7px'}}>
             <span style={{fontSize:'12px',fontWeight:580,color:hov ? C.t1 : C.t2,transition:`color 180ms ${EASE}`}}>
-              Use my own API keys
+              {t('updates:trial.byokTitle')}
             </span>
-            <span style={{fontSize:'7.5px',fontWeight:700,letterSpacing:'.08em',textTransform:'uppercase',color:C.t4,border:`1px solid rgba(255,255,255,0.12)`,padding:'1.5px 4px',borderRadius:'3px'}}>free</span>
+            <span style={{fontSize:'7.5px',fontWeight:700,letterSpacing:'.08em',textTransform:'uppercase',color:C.t4,border:`1px solid rgba(255,255,255,0.12)`,padding:'1.5px 4px',borderRadius:'3px'}}>{t('updates:trial.free')}</span>
           </div>
           <div style={{fontSize:'10.5px',color:C.t4,marginTop:'1px'}}>
-            Natively API disabled · No Pro features
+            {t('updates:trial.byokHint')}
           </div>
         </div>
         <ArrowRight size={11} strokeWidth={2} color={hov ? C.t2 : C.t3} style={{flexShrink:0,transition:`color 180ms ${EASE}`}} />
@@ -514,29 +521,31 @@ function ByokRow({ onClick }: { onClick:()=>void }) {
 // ─── Intermediate states ──────────────────────────────────────
 
 function WipingState() {
+  const { t } = useTranslation(['updates', 'settings', 'common', 'errors']);
   return (
     <div style={{padding:'52px 28px',display:'flex',flexDirection:'column',alignItems:'center',gap:'18px',textAlign:'center'}}>
       <motion.div animate={{rotate:360}} transition={{duration:1,repeat:Infinity,ease:'linear'}}>
         <Loader2 size={24} strokeWidth={1.5} color={C.t4} />
       </motion.div>
       <div>
-        <div style={{fontSize:'14px',fontWeight:560,color:C.t2,marginBottom:'6px',fontFamily:F}}>Cleaning up trial data…</div>
-        <div style={{fontSize:'12px',color:C.t4,lineHeight:1.6,fontFamily:F}}>Wiping cached company research and Pro data.</div>
+        <div style={{fontSize:'14px',fontWeight:560,color:C.t2,marginBottom:'6px',fontFamily:F}}>{t('updates:trial.cleaningTitle')}</div>
+        <div style={{fontSize:'12px',color:C.t4,lineHeight:1.6,fontFamily:F}}>{t('updates:trial.cleaningBody')}</div>
       </div>
     </div>
   );
 }
 
 function DoneState({ onDone }: { onDone?:()=>void }) {
+  const { t } = useTranslation(['updates', 'settings', 'common', 'errors']);
   return (
     <div style={{padding:'52px 28px',display:'flex',flexDirection:'column',alignItems:'center',gap:'18px',textAlign:'center'}}>
       <div style={{width:'52px',height:'52px',borderRadius:'50%',background:'rgba(52,211,153,.1)',border:'1px solid rgba(52,211,153,.2)',display:'flex',alignItems:'center',justifyContent:'center'}}>
         <CheckCircle size={22} strokeWidth={1.5} color="#34D399" />
       </div>
       <div>
-        <div style={{fontSize:'15px',fontWeight:600,color:C.t1,marginBottom:'6px',fontFamily:F}}>All set.</div>
+        <div style={{fontSize:'15px',fontWeight:600,color:C.t1,marginBottom:'6px',fontFamily:F}}>{t('updates:trial.doneTitle')}</div>
         <div style={{fontSize:'12.5px',color:C.t3,lineHeight:1.65,maxWidth:'240px',margin:'0 auto',fontFamily:F}}>
-          Trial data wiped. Add your API keys in Settings → AI Providers to get started.
+          {t('updates:trial.doneBody')}
         </div>
       </div>
       {onDone && (
@@ -550,7 +559,7 @@ function DoneState({ onDone }: { onDone?:()=>void }) {
           onMouseEnter={e=>{e.currentTarget.style.background='rgba(255,255,255,.1)';e.currentTarget.style.color=C.t2;}}
           onMouseLeave={e=>{e.currentTarget.style.background='rgba(255,255,255,.06)';e.currentTarget.style.color=C.t3;}}
         >
-          Continue →
+          {t('updates:trial.continueArrow')}
         </button>
       )}
     </div>

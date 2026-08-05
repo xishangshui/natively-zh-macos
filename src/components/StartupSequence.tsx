@@ -1,4 +1,5 @@
 import React from 'react';
+import { Trans, useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import logoAsset from '../assets/logo.png';
 import celebFont from '../font/Masterfont - Celeb MF Medium.otf?url';
@@ -90,6 +91,7 @@ const PressLogos: React.FC = () => (
 
 // ─── Main Subsystem ───────────────────────────────────────────────────────
 const StartupSequence: React.FC<StartupSequenceProps> = ({ onComplete }) => {
+    const { t } = useTranslation(['onboarding', 'common']);
     return (
         <div
             className="fixed inset-0 z-[100] flex overflow-hidden lg:grid lg:grid-cols-[1fr_1fr]"
@@ -148,7 +150,7 @@ const StartupSequence: React.FC<StartupSequenceProps> = ({ onComplete }) => {
                             fontWeight: 500
                         }}
                     >
-                        Welcome to Natively
+                        {t('onboarding:startup.welcome')}
                     </motion.h1>
 
                     <motion.p
@@ -156,7 +158,7 @@ const StartupSequence: React.FC<StartupSequenceProps> = ({ onComplete }) => {
                         className="text-[25px] text-center mb-12 text-[#a7a7ad]"
                         style={{ fontFamily: FONTS.celebLight, fontWeight: 300 }}
                     >
-                        The ultimate AI meeting assistant
+                        {t('onboarding:startup.tagline')}
                     </motion.p>
 
                     {/* High-Fidelity "Continue" Button */}
@@ -176,7 +178,7 @@ const StartupSequence: React.FC<StartupSequenceProps> = ({ onComplete }) => {
                             <span className="absolute top-1 left-2 right-2 h-[40%] rounded-full bg-gradient-to-b from-white/70 to-white/5 blur-[0.5px] pointer-events-none z-10" />
 
                             <span className="relative z-20 flex items-center">
-                                Continue <span className="ml-[10px] text-[22px] opacity-90">›</span>
+                                {t('onboarding:startup.continue')} <span className="ml-[10px] text-[22px] opacity-90">›</span>
                             </span>
                         </motion.button>
                     </motion.div>
@@ -185,21 +187,21 @@ const StartupSequence: React.FC<StartupSequenceProps> = ({ onComplete }) => {
                 {/* Footer Component */}
                 <motion.div variants={itemVariants} className="mt-auto flex flex-col items-center w-full">
                     <p className="text-[12px] opacity-60 mb-6 text-center" style={{ color: '#a7a7ad' }}>
-                        By clicking Continue, you agree to our{' '}
-                        <span
-                            onClick={() => (window.electronAPI as any)?.openExternal?.('https://natively.software/termsandconditions')}
-                            className="font-semibold text-[#2f2f34] underline underline-offset-[3px] decoration-[#2f2f34]/30 hover:decoration-[#2f2f34]/70 cursor-pointer transition-colors"
-                        >
-                            Terms &amp; Conditions
-                        </span>
-                        {' '}and{' '}
-                        <span
-                            onClick={() => (window.electronAPI as any)?.openExternal?.('https://natively.software/privacy')}
-                            className="font-semibold text-[#2f2f34] underline underline-offset-[3px] decoration-[#2f2f34]/30 hover:decoration-[#2f2f34]/70 cursor-pointer transition-colors"
-                        >
-                            Privacy Policy
-                        </span>
-                        .
+                        <Trans
+                            i18nKey="onboarding:startup.consent"
+                            components={[
+                                <span
+                                    key="terms"
+                                    onClick={() => (window.electronAPI as any)?.openExternal?.('https://natively.software/termsandconditions')}
+                                    className="font-semibold text-[#2f2f34] underline underline-offset-[3px] decoration-[#2f2f34]/30 hover:decoration-[#2f2f34]/70 cursor-pointer transition-colors"
+                                />,
+                                <span
+                                    key="privacy"
+                                    onClick={() => (window.electronAPI as any)?.openExternal?.('https://natively.software/privacy')}
+                                    className="font-semibold text-[#2f2f34] underline underline-offset-[3px] decoration-[#2f2f34]/30 hover:decoration-[#2f2f34]/70 cursor-pointer transition-colors"
+                                />,
+                            ]}
+                        />
                     </p>
                     <PressLogos />
                 </motion.div>
@@ -271,8 +273,8 @@ const StartupSequence: React.FC<StartupSequenceProps> = ({ onComplete }) => {
                         className="text-[36px] font-medium leading-[1.25] tracking-tight"
                         style={{ color: COLORS.charcoalInk }}
                     >
-                        Real-time meeting assistant,<br />
-                        always ready to help
+                        {t('onboarding:startup.assistantLine1')}<br />
+                        {t('onboarding:startup.assistantLine2')}
                     </h2>
                 </motion.div>
 

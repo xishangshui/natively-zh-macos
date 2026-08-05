@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Trans, useTranslation } from 'react-i18next';
 import { ArrowRight, Loader, Check } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -8,6 +9,7 @@ interface ConnectCalendarButtonProps extends React.ButtonHTMLAttributes<HTMLButt
 }
 
 const ConnectCalendarButton: React.FC<ConnectCalendarButtonProps> = ({ className = '', variant = 'default', ...props }) => {
+    const { t } = useTranslation(['settings', 'common']);
     const [loading, setLoading] = useState(false);
     const [connected, setConnected] = useState(false);
 
@@ -126,7 +128,7 @@ const ConnectCalendarButton: React.FC<ConnectCalendarButtonProps> = ({ className
 
                     {/* Text: High-End Typography */}
                     <span className="text-[13px] font-medium tracking-wide text-white flex flex-col leading-none gap-0.5" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.1)' }}>
-                        <span className="font-semibold text-white/95">Calendar Connected</span>
+                        <span className="font-semibold text-white/95">{t('settings:calendar.connected')}</span>
                     </span>
                 </span>
             </motion.div>
@@ -195,7 +197,7 @@ const ConnectCalendarButton: React.FC<ConnectCalendarButtonProps> = ({ className
                     </svg>
                 )}
 
-                {loading ? 'Connecting...' : 'Connect calendar'}
+                {loading ? t('settings:calendar.connecting') : t('settings:calendar.connect')}
 
                 {!loading && (
                     <ArrowRight
