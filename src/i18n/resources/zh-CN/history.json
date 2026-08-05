@@ -8,5 +8,24 @@
   },
   "summary": {
     "meetingCount": "{{count}} 场会议"
+  },
+  "cropper": {
+    "selectArea": "选择区域",
+    "toCancel": "取消"
+  },
+  "details": {
+    "nextSteps": "后续行动",
+    "coaching": "辅导建议",
+    "followUpDraft": "跟进邮件草稿",
+    "noTranscript": "暂无转写内容。",
+    "noUsageHistory": "暂无用量记录。",
+    "copySummary": "复制完整摘要",
+    "copyTranscript": "复制完整转写",
+    "copyUsage": "复制用量",
+    "actionItemPlaceholder": "输入一项待办…",
+    "keyPointPlaceholder": "输入一个要点…",
+    "deadlineBy": "截止 {{deadline}}",
+    "aiAvatarAlt": "AI 头像",
+    "askPlaceholder": "就这场会议提问…"
   }
 }

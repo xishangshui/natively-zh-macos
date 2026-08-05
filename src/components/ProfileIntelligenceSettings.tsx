@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Trans, useTranslation } from 'react-i18next';
 import {
     X, RefreshCw, Upload, Briefcase, Trash2, Pencil, Check, Globe,
     Building2, Search, AlertCircle, Gift, Info, Star, Sparkles, User, CheckCircle, ArrowUpRight
@@ -503,7 +504,7 @@ const StarRating = ({ value, size = 11 }: { value: number; size?: number }) => {
 };
 
 // Cache premium state in localStorage so the CTA renders in its correct
-// state on first paint — avoids the "Unlock Pro" → "Manage Pro" flash for
+// state on first paint — avoids the t('settings:profile.unlockPro') → t('settings:profile.managePro') flash for
 // activated users while the async licenseGetDetails() call is in flight.
 // Cleared whenever the canonical check returns non-premium (or on deactivate).
 const PI_PREMIUM_CACHE_KEY = 'pi:isPremium';
@@ -536,6 +537,7 @@ const writePremiumCache = (isPremium: boolean, plan: string) => {
 };
 
 export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }) {
+    const { t } = useTranslation(['settings', 'common', 'errors', 'providers']);
     // Premium Status — seed from cache so the header CTA paints correctly
     // before licenseGetDetails() resolves.
     const cachedPremium = readPremiumCache();
@@ -633,17 +635,17 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
     }, [hasProfileAccess]);
 
     const handleRemoveTavilyKey = async () => {
-        if (!confirm('Are you sure you want to remove your Tavily API key?')) return;
+        if (!confirm(t('settings:profile.removeTavilyConfirm'))) return;
         try {
             const res = await window.electronAPI?.setTavilyApiKey?.('');
             if (res && res.success) {
                 setHasStoredTavilyKey(false);
                 setTavilyApiKey('');
             } else {
-                alert(res?.error || 'Failed to remove API key');
+                alert(res?.error || t('errors:profile.removeKeyFailed'));
             }
         } catch (e) {
-            alert('Error removing key');
+            alert(t('errors:profile.removeKeyError'));
         }
     };
 
@@ -666,17 +668,17 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                     </div>
                     <div>
                         <div className="flex items-center gap-2.5 mb-1.5">
-                            <h2 className="text-[22px] font-bold text-text-primary leading-none" style={{ letterSpacing: '-0.025em' }}>Profile Intelligence</h2>
-                            <span className="pi-beta-badge">BETA</span>
+                            <h2 className="text-[22px] font-bold text-text-primary leading-none" style={{ letterSpacing: '-0.025em' }}>{t('settings:profile.title')}</h2>
+                            <span className="pi-beta-badge">{t('common:badge.beta')}</span>
                             {isPremium && premiumPlan && (
-                                <span className="pi-meta-badge pi-meta-badge--plan">{premiumPlan} Plan</span>
+                                <span className="pi-meta-badge pi-meta-badge--plan">{t('settings:profile.planBadge', { plan: premiumPlan })}</span>
                             )}
                             {isTrialActive && !isPremium && (
-                                <span className="pi-meta-badge pi-meta-badge--trial">Free Trial</span>
+                                <span className="pi-meta-badge pi-meta-badge--trial">{t('settings:profile.freeTrial')}</span>
                             )}
                         </div>
                         <p className="text-[13px] text-text-secondary" style={{ letterSpacing: '-0.005em' }}>
-                            Manage your persona, career history, and active job description
+                            {t('settings:profile.subtitle')}
                         </p>
                     </div>
                 </div>
@@ -684,9 +686,9 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                     <button
                         onClick={() => setIsPremiumModalOpen(true)}
                         className={`pi-cta-group${isTrialActive && !isPremium ? ' pi-cta-group--trial' : ''}`}
-                        aria-label={isPremium ? 'Manage Pro' : isTrialActive ? 'Upgrade trial' : 'Unlock Pro'}
+                        aria-label={isPremium ? t('settings:profile.managePro') : isTrialActive ? t('settings:profile.upgradeTrial') : t('settings:profile.unlockPro')}
                     >
-                        <span>{isPremium ? 'Manage Pro' : isTrialActive ? 'Upgrade' : 'Unlock Pro'}</span>
+                        <span>{isPremium ? t('settings:profile.managePro') : isTrialActive ? t('settings:profile.upgrade') : t('settings:profile.unlockPro')}</span>
                         <span className="pi-cta-icon-ring">
                             {isPremium
                                 ? <CheckCircle size={14} strokeWidth={2.5} />
@@ -698,7 +700,7 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                     <button
                         onClick={onClose}
                         className="pi-close-btn"
-                        aria-label="Close"
+                        aria-label={t('common:actions.close')}
                     >
                         <X size={18} strokeWidth={2} />
                     </button>
@@ -710,9 +712,9 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                 <div className="max-w-3xl mx-auto p-5 pb-12">
                     <div className="space-y-6">
                         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15, ...spring }} className="mb-4 pt-2">
-                            <h3 className="text-lg font-bold text-text-primary tracking-tight">Professional Identity</h3>
+                            <h3 className="text-lg font-bold text-text-primary tracking-tight">{t('settings:profile.identityTitle')}</h3>
                             <p className="text-[13px] text-text-secondary mt-1">
-                                This engine constructs an intelligent representation of your career history and skills graph.
+                                {t('settings:profile.identityBody')}
                             </p>
                         </motion.div>
 
@@ -730,10 +732,10 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                         </div>
                                                         <div>
                                                             <h4 className="text-sm font-bold text-text-primary tracking-tight">
-                                                                {profileData?.identity?.name || 'Identity Node Inactive'}
+                                                                {profileData?.identity?.name || t('settings:profile.identityInactive')}
                                                             </h4>
                                                             <p className="text-xs text-text-secondary mt-0.5 tracking-wide">
-                                                                {profileData?.identity?.email || 'Upload a resume to begin mapping.'}
+                                                                {profileData?.identity?.email || t('settings:profile.identityInactiveHint')}
                                                             </p>
                                                         </div>
                                                     </div>
@@ -742,7 +744,7 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                         {profileStatus.hasProfile && (
                                                             <button
                                                                 onClick={async () => {
-                                                                    if (!confirm('Are you sure you want to delete your mapped persona? This will destroy all structured timeline data.')) return;
+                                                                    if (!confirm(t('settings:profile.deletePersonaConfirm'))) return;
                                                                     try {
                                                                         await window.electronAPI?.profileDelete?.();
                                                                         setProfileStatus({ hasProfile: false, profileMode: false });
@@ -751,13 +753,13 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                                 }}
                                                                 className="text-[12px] font-medium text-text-tertiary hover:text-red-500 transition-colors px-3 py-1.5 rounded-full hover:bg-red-500/10"
                                                             >
-                                                                Disconnect
+                                                                {t('settings:profile.disconnect')}
                                                             </button>
                                                         )}
 
                                                         {/* High-fidelity Toggle */}
-                                                        <div className={`flex items-center gap-2 bg-bg-input px-3 py-1.5 rounded-full border border-border-subtle ${!hasProfileAccess ? 'opacity-40 cursor-not-allowed' : ''}`} title={!hasProfileAccess ? 'Requires Pro license' : ''}>
-                                                            <span className="text-xs font-medium text-text-secondary">Persona Engine</span>
+                                                        <div className={`flex items-center gap-2 bg-bg-input px-3 py-1.5 rounded-full border border-border-subtle ${!hasProfileAccess ? 'opacity-40 cursor-not-allowed' : ''}`} title={!hasProfileAccess ? t('settings:profile.requiresPro') : ''}>
+                                                            <span className="text-xs font-medium text-text-secondary">{t('settings:profile.personaEngine')}</span>
                                                             <div
                                                                 onClick={async () => {
                                                                     if (!profileStatus.hasProfile || !hasProfileAccess) return;
@@ -785,7 +787,7 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                         <span className="text-[20px] font-bold text-text-primary tracking-tight leading-none mb-1">{profileData?.experienceCount || 0}</span>
                                                         <div className="flex items-center gap-1.5">
                                                             <div className="w-1.5 h-1.5 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.4)]" />
-                                                            <span className="text-[10px] font-semibold text-text-secondary uppercase tracking-widest">Experience</span>
+                                                            <span className="text-[10px] font-semibold text-text-secondary uppercase tracking-widest">{t('settings:profile.stats.experience')}</span>
                                                         </div>
                                                     </div>
 
@@ -795,7 +797,7 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                         <span className="text-[20px] font-bold text-text-primary tracking-tight leading-none mb-1">{profileData?.projectCount || 0}</span>
                                                         <div className="flex items-center gap-1.5">
                                                             <div className="w-1.5 h-1.5 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.4)]" />
-                                                            <span className="text-[10px] font-semibold text-text-secondary uppercase tracking-widest">Projects</span>
+                                                            <span className="text-[10px] font-semibold text-text-secondary uppercase tracking-widest">{t('settings:profile.stats.projects')}</span>
                                                         </div>
                                                     </div>
 
@@ -805,7 +807,7 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                         <span className="text-[20px] font-bold text-text-primary tracking-tight leading-none mb-1">{profileData?.nodeCount || 0}</span>
                                                         <div className="flex items-center gap-1.5">
                                                             <div className="w-1.5 h-1.5 rounded-full bg-purple-500 shadow-[0_0_8px_rgba(168,85,247,0.4)]" />
-                                                            <span className="text-[10px] font-semibold text-text-secondary uppercase tracking-widest">Nodes</span>
+                                                            <span className="text-[10px] font-semibold text-text-secondary uppercase tracking-widest">{t('settings:profile.stats.nodes')}</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -818,13 +820,13 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                     // legacy/array shape.
                                                     const raw = profileData?.skills;
                                                     const CATS: { key: string; label: string }[] = [
-                                                        { key: 'languages', label: 'Languages' },
-                                                        { key: 'frameworks', label: 'Frameworks' },
-                                                        { key: 'cloud', label: 'Cloud' },
-                                                        { key: 'databases', label: 'Databases' },
-                                                        { key: 'ml', label: 'AI / ML' },
-                                                        { key: 'devops', label: 'DevOps' },
-                                                        { key: 'tools', label: 'Tools' },
+                                                        { key: 'languages', label: t('settings:profile.skills.languages') },
+                                                        { key: 'frameworks', label: t('settings:profile.skills.frameworks') },
+                                                        { key: 'cloud', label: t('settings:profile.skills.cloud') },
+                                                        { key: 'databases', label: t('settings:profile.skills.databases') },
+                                                        { key: 'ml', label: t('settings:profile.skills.aiMl') },
+                                                        { key: 'devops', label: t('settings:profile.skills.devops') },
+                                                        { key: 'tools', label: t('settings:profile.skills.tools') },
                                                     ];
                                                     const chip = (skill: string, i: number) => (
                                                         <span key={i} className="text-[10px] font-medium text-text-secondary px-2 py-1 rounded-md border border-border-subtle bg-bg-input">
@@ -851,7 +853,7 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                     if (flat.length === 0) return null;
                                                     return (
                                                         <div className="mt-5">
-                                                            <div className="text-[10px] font-bold text-text-primary uppercase tracking-wide mb-2">Top Skills</div>
+                                                            <div className="text-[10px] font-bold text-text-primary uppercase tracking-wide mb-2">{t('settings:profile.topSkills')}</div>
                                                             <div className="flex flex-wrap gap-1.5">
                                                                 {flat.slice(0, 15).map((s: string, i: number) => chip(s, i))}
                                                             </div>
@@ -872,15 +874,15 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                     </div>
                                                     <div className="min-w-0 flex-1">
                                                         <h4 className="text-[15px] font-bold text-text-primary mb-1 tracking-tight flex items-center flex-wrap gap-1.5">
-                                                            <span>{profileStatus.hasProfile ? 'Overwrite Source Document' : 'Initialize Knowledge Base'}</span>
+                                                            <span>{profileStatus.hasProfile ? t('settings:profile.overwriteSource') : t('settings:profile.initKnowledgeBase')}</span>
                                                             {!hasProfileAccess && (
-                                                                <span className="pi-upload-pill__pro-badge !ml-0" aria-label="Pro feature">Pro</span>
+                                                                <span className="pi-upload-pill__pro-badge !ml-0" aria-label={t('settings:profile.proFeatureAria')}>Pro</span>
                                                             )}
                                                         </h4>
                                                         <p className="text-xs text-text-secondary leading-relaxed pr-2">
                                                             {!hasProfileAccess
-                                                                ? 'Resume ingestion is a Natively Pro feature. The Custom Context box below stays free.'
-                                                                : 'Provide a resume file to seed the intelligence engine.'}
+                                                                ? t('settings:profile.resumeProNote')
+                                                                : t('settings:profile.resumeSeedHint')}
                                                         </p>
                                                     </div>
                                                 </div>
@@ -905,10 +907,10 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                                 const data = await window.electronAPI?.profileGetProfile?.();
                                                                 if (data) setProfileData(data);
                                                             } else {
-                                                                setProfileError(result?.error || 'Upload failed');
+                                                                setProfileError(result?.error || t('errors:profile.uploadFailed'));
                                                             }
                                                         } catch (e: any) {
-                                                            setProfileError(e.message || 'Upload failed');
+                                                            setProfileError(e.message || t('errors:profile.uploadFailed'));
                                                         } finally {
                                                             setProfileUploading(false);
                                                         }
@@ -916,7 +918,7 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                     disabled={profileUploading}
                                                     className={`pi-upload-pill${profileStatus.hasProfile ? ' pi-upload-pill--secondary' : ''}`}
                                                     aria-busy={profileUploading}
-                                                    aria-label={profileUploading ? 'Ingesting resume' : 'Select resume file'}
+                                                    aria-label={profileUploading ? t('settings:profile.ingestingResume') : t('settings:profile.selectResume')}
                                                 >
                                                     {profileUploading && <span className="pi-upload-pill__fill" aria-hidden="true" />}
                                                     <span className="pi-upload-pill__content">
@@ -925,8 +927,8 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                             : <Upload size={14} strokeWidth={2.5} />}
                                                         <span className="pi-upload-pill__label">
                                                             {profileUploading
-                                                                ? 'Ingesting · Processing structural semantics…'
-                                                                : profileStatus.hasProfile ? 'Replace resume file' : 'Select resume file'}
+                                                                ? t('settings:profile.ingestingStatus')
+                                                                : profileStatus.hasProfile ? t('settings:profile.replaceResume') : t('settings:profile.selectResume')}
                                                         </span>
                                                     </span>
                                                     <span className="pi-upload-pill__ring">
@@ -954,15 +956,15 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                     </div>
                                                     <div className="min-w-0 flex-1">
                                                         <h4 className="text-[15px] font-bold text-text-primary mb-1 tracking-tight flex items-center flex-wrap gap-1.5">
-                                                            <span>{profileData?.hasActiveJD ? `${profileData.activeJD?.title} @ ${profileData.activeJD?.company}` : 'Upload Job Description'}</span>
+                                                            <span>{profileData?.hasActiveJD ? `${profileData.activeJD?.title} @ ${profileData.activeJD?.company}` : t('settings:profile.uploadJd')}</span>
                                                             {!hasProfileAccess && (
-                                                                <span className="pi-upload-pill__pro-badge !ml-0" aria-label="Pro feature">Pro</span>
+                                                                <span className="pi-upload-pill__pro-badge !ml-0" aria-label={t('settings:profile.proFeatureAria')}>Pro</span>
                                                             )}
                                                         </h4>
                                                         {profileData?.hasActiveJD ? (
                                                             <div className="flex items-center gap-3 mt-1 flex-wrap">
                                                                 <span className="text-[9px] font-bold text-blue-500 px-1.5 py-0.5 bg-blue-500/10 rounded uppercase tracking-wide border border-blue-500/20">
-                                                                    {profileData.activeJD?.level || 'mid'}-level
+                                                                    {t('settings:profile.jdLevel', { level: profileData.activeJD?.level || 'mid' })}
                                                                 </span>
                                                                 <div className="flex gap-1.5 flex-wrap">
                                                                     {profileData.activeJD?.technologies?.slice(0, 3).map((t: string, i: number) => (
@@ -973,8 +975,8 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                         ) : (
                                                             <p className="text-xs text-text-secondary leading-relaxed pr-2">
                                                                 {!hasProfileAccess
-                                                                    ? 'Job description parsing is a Natively Pro feature. The Custom Context box below stays free.'
-                                                                    : 'Upload a JD to enable persona tuning and company research.'}
+                                                                    ? t('settings:profile.jdProNote')
+                                                                    : t('settings:profile.jdHint')}
                                                             </p>
                                                         )}
                                                     </div>
@@ -987,7 +989,7 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                                 setCompanyDossier(null);
                                                             }}
                                                             className="shrink-0 mt-0.5 px-2.5 py-2 rounded-full text-xs text-text-tertiary hover:text-red-500 hover:bg-red-500/10 transition-all border border-transparent hover:border-red-500/20"
-                                                            aria-label="Remove job description"
+                                                            aria-label={t('settings:profile.removeJd')}
                                                         >
                                                             <Trash2 size={14} />
                                                         </button>
@@ -1012,10 +1014,10 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                                 const data = await window.electronAPI?.profileGetProfile?.();
                                                                 if (data) setProfileData(data);
                                                             } else {
-                                                                setJdError(result?.error || 'JD upload failed');
+                                                                setJdError(result?.error || t('errors:profile.jdUploadFailed'));
                                                             }
                                                         } catch (e: any) {
-                                                            setJdError(e.message || 'JD upload failed');
+                                                            setJdError(e.message || t('errors:profile.jdUploadFailed'));
                                                         } finally {
                                                             setJdUploading(false);
                                                         }
@@ -1024,7 +1026,7 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                     className={`pi-upload-pill${profileData?.hasActiveJD ? ' pi-upload-pill--secondary' : ''}`}
                                                     data-accent="blue"
                                                     aria-busy={jdUploading}
-                                                    aria-label={jdUploading ? 'Parsing job description' : (profileData?.hasActiveJD ? 'Replace job description' : 'Upload job description')}
+                                                    aria-label={jdUploading ? t('settings:profile.parsingJd') : (profileData?.hasActiveJD ? t('settings:profile.replaceJd') : t('settings:profile.uploadJdAria'))}
                                                 >
                                                     {jdUploading && <span className="pi-upload-pill__fill" aria-hidden="true" />}
                                                     <span className="pi-upload-pill__content">
@@ -1033,8 +1035,8 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                             : <Briefcase size={14} strokeWidth={2.5} />}
                                                         <span className="pi-upload-pill__label">
                                                             {jdUploading
-                                                                ? 'Parsing · Decoding JD structure…'
-                                                                : profileData?.hasActiveJD ? 'Replace job description' : 'Upload job description'}
+                                                                ? t('settings:profile.parsingJdStatus')
+                                                                : profileData?.hasActiveJD ? t('settings:profile.replaceJd') : t('settings:profile.uploadJdAria')}
                                                         </span>
                                                     </span>
                                                     <span className="pi-upload-pill__ring">
@@ -1062,15 +1064,15 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                     </div>
                                                     <div className="flex-1 min-w-0">
                                                         <div className="flex items-center gap-2">
-                                                            <h4 className="text-sm font-bold text-text-primary">Custom Context</h4>
+                                                            <h4 className="text-sm font-bold text-text-primary">{t('settings:profile.customContext')}</h4>
                                                             {customNotesSaved && (
                                                                 <span className="text-[9px] font-bold text-emerald-500 px-1.5 py-0.5 bg-emerald-500/10 rounded-full border border-emerald-500/20 uppercase tracking-wide flex items-center gap-1">
-                                                                    <Check size={8} /> Saved
+                                                                    <Check size={8} /> {t('providers:apiKey.saved')}
                                                                 </span>
                                                             )}
                                                         </div>
                                                         <p className="text-[11px] text-text-secondary mt-0.5">
-                                                            Add any context the AI should know about you — saved across all sessions.
+                                                            {t('settings:profile.customContextHint')}
                                                         </p>
                                                     </div>
                                                 </div>
@@ -1097,7 +1099,7 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                     />
                                                     <div className="flex items-center justify-between px-0.5">
                                                         <p className="text-[10px] text-text-tertiary">
-                                                            Auto-saved · Works with all modes and providers
+                                                            {t('settings:profile.customContextAutoSaved')}
                                                         </p>
                                                         <span className={`text-[10px] tabular-nums ${customNotes.length > 3600 ? 'text-amber-500' : 'text-text-tertiary'}`}>
                                                             {customNotes.length}/4000
@@ -1115,15 +1117,15 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                     </div>
                                                     <div className="flex-1 min-w-0">
                                                         <div className="flex items-center gap-2">
-                                                            <h4 className="text-sm font-bold text-text-primary">AI Persona</h4>
+                                                            <h4 className="text-sm font-bold text-text-primary">{t('settings:profile.aiPersona')}</h4>
                                                             {personaSaved && hasProfileAccess && (
                                                                 <span className="text-[9px] font-bold text-emerald-500 px-1.5 py-0.5 bg-emerald-500/10 rounded-full border border-emerald-500/20 uppercase tracking-wide flex items-center gap-1">
-                                                                    <Check size={8} /> Updated
+                                                                    <Check size={8} /> {t('settings:profile.updated')}
                                                                 </span>
                                                             )}
                                                         </div>
                                                         <p className="text-[11px] text-text-secondary mt-0.5">
-                                                            Set the AI's behavior, tone, and role across providers.
+                                                            {t('settings:profile.aiPersonaHint')}
                                                         </p>
                                                     </div>
                                                 </div>
@@ -1155,14 +1157,14 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                     onFocus={() => {
                                                         if (!hasProfileAccess) setIsPremiumModalOpen(true);
                                                     }}
-                                                    placeholder="Example: You are a senior hiring manager. Keep answers concise and ask one focused follow-up when needed."
+                                                    placeholder={t('settings:profile.personaPlaceholder')}
                                                     rows={5}
                                                     disabled={!hasProfileAccess}
                                                     className={`w-full bg-bg-input border border-border-subtle rounded-lg px-3 py-2.5 text-xs text-text-primary placeholder-text-tertiary focus:outline-none focus:border-accent-primary/50 focus:ring-1 focus:ring-accent-primary/20 transition-all resize-none leading-relaxed ${!hasProfileAccess ? 'opacity-60 cursor-not-allowed' : ''}`}
                                                 />
                                                 <div className="flex items-center justify-between px-0.5 mt-3">
                                                     <p className="text-[10px] text-text-tertiary">
-                                                        {hasProfileAccess ? 'Auto-saved · Treated as user-provided context' : 'Upgrade to Pro to personalize AI persona'}
+                                                        {hasProfileAccess ? t('settings:profile.personaAutoSaved') : t('settings:profile.personaProGate')}
                                                     </p>
                                                     <span className={`text-[10px] tabular-nums ${persona.length > 3600 ? 'text-amber-500' : 'text-text-tertiary'}`}>
                                                         {persona.length}/4000
@@ -1179,13 +1181,13 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                     </div>
                                                     <div>
                                                         <div className="flex items-center gap-2">
-                                                            <h4 className="text-sm font-bold text-text-primary">Tavily Search API</h4>
+                                                            <h4 className="text-sm font-bold text-text-primary">{t('settings:profile.tavilyTitle')}</h4>
                                                             {hasStoredTavilyKey && (
-                                                                <span className="text-[9px] font-bold text-emerald-500 px-1.5 py-0.5 bg-emerald-500/10 rounded-full border border-emerald-500/20 uppercase tracking-wide">Connected</span>
+                                                                <span className="text-[9px] font-bold text-emerald-500 px-1.5 py-0.5 bg-emerald-500/10 rounded-full border border-emerald-500/20 uppercase tracking-wide">{t('providers:test.connected')}</span>
                                                             )}
                                                         </div>
                                                         <p className="text-[11px] text-text-secondary mt-0.5">
-                                                            Powers live web search for company research.
+                                                            {t('settings:profile.tavilyHint')}
                                                         </p>
                                                     </div>
                                                 </div>
@@ -1193,14 +1195,14 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                 <div className="space-y-3">
                                                     <div>
                                                         <div className="flex justify-between items-center mb-1.5">
-                                                            <label className="text-[10px] font-semibold text-text-secondary uppercase tracking-wide block">API Key</label>
+                                                            <label className="text-[10px] font-semibold text-text-secondary uppercase tracking-wide block">{t('settings:profile.apiKeyLabel')}</label>
                                                             {hasStoredTavilyKey && (
                                                                 <button
                                                                     onClick={handleRemoveTavilyKey}
                                                                     className="text-[10px] flex items-center gap-1 text-red-400 hover:text-red-300 transition-colors bg-red-500/10 hover:bg-red-500/20 px-1.5 py-0.5 rounded"
-                                                                    title="Remove API Key"
+                                                                    title={t('providers:apiKey.remove')}
                                                                 >
-                                                                    <Trash2 size={10} strokeWidth={2} /> Remove
+                                                                    <Trash2 size={10} strokeWidth={2} /> {t('common:actions.remove')}
                                                                 </button>
                                                             )}
                                                         </div>
@@ -1208,7 +1210,7 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                             type="password"
                                                             value={tavilyApiKey}
                                                             onChange={(e) => { setTavilyApiKey(e.target.value); setTavilyError(''); }}
-                                                            placeholder={hasStoredTavilyKey ? '••••••••••••' : 'Enter Tavily API key (tvly-...)'}
+                                                            placeholder={hasStoredTavilyKey ? '••••••••••••' : t('settings:profile.tavilyPlaceholder')}
                                                             className="w-full bg-bg-input border border-border-subtle rounded-lg px-3 py-2 text-xs text-text-primary placeholder-text-tertiary focus:outline-none focus:border-accent-primary/50 focus:ring-1 focus:ring-accent-primary/20 transition-all"
                                                         />
                                                     </div>
@@ -1223,13 +1225,13 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                             try {
                                                                 const result = await window.electronAPI?.setTavilyApiKey?.(tavilyApiKey.trim());
                                                                 if (result && !result.success) {
-                                                                    setTavilyError(result.error ?? 'Failed to save API key.');
+                                                                    setTavilyError(result.error ?? t('errors:profile.saveKeyFailed'));
                                                                 } else {
                                                                     setHasStoredTavilyKey(true);
                                                                     setTavilyApiKey('');
                                                                 }
                                                             } catch (e: any) {
-                                                                setTavilyError(e?.message ?? 'Unexpected error saving API key.');
+                                                                setTavilyError(e?.message ?? t('errors:profile.saveKeyUnexpected'));
                                                             } finally {
                                                                 setTavilySaving(false);
                                                             }
@@ -1238,14 +1240,26 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                         primary={true}
                                                         className="w-full"
                                                     >
-                                                        {tavilySaving ? 'Saving...' : 'Save API Key'}
+                                                        {tavilySaving ? t('common:state.saving') : t('settings:profile.saveApiKey')}
                                                     </MagneticButton>
                                                 </div>
 
                                                 <div className="mt-3 flex items-start gap-2 px-3 py-2.5 bg-bg-input/50 rounded-lg">
                                                     <Info size={12} className="text-text-tertiary shrink-0 mt-0.5" />
                                                     <p className="text-[10px] text-text-tertiary leading-relaxed">
-                                                        If not provided, LLM general knowledge is used for company research, which may be outdated. Get your free API key at <span className="text-emerald-500/80 hover:text-emerald-400 underline underline-offset-2 cursor-pointer" onClick={() => window.electronAPI?.openExternal?.('https://app.tavily.com/home')}>app.tavily.com</span>. Keys start with <code className="text-emerald-500/80">tvly-</code>.
+                                                        <Trans
+                                                            i18nKey="settings:profile.tavilyNote"
+                                                            components={[
+                                                                <span
+                                                                    key="link"
+                                                                    className="text-emerald-500/80 hover:text-emerald-400 underline underline-offset-2 cursor-pointer"
+                                                                    onClick={() => window.electronAPI?.openExternal?.('https://app.tavily.com/home')}
+                                                                >
+                                                                    app.tavily.com
+                                                                </span>,
+                                                                <code className="text-emerald-500/80" key="prefix">tvly-</code>,
+                                                            ]}
+                                                        />
                                                     </p>
                                                 </div>
                                             </div>
@@ -1262,12 +1276,12 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                         <div>
                                                             <div className="flex items-center gap-2">
                                                                 <h4 className="text-sm font-bold text-text-primary">
-                                                                    Company Intel: <span className="text-purple-400">{profileData.activeJD.company}</span>
+                                                                    {t('settings:profile.companyIntelPrefix')} <span className="text-purple-400">{profileData.activeJD.company}</span>
                                                                 </h4>
-                                                                <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full tracking-widest uppercase bg-purple-500/15 text-purple-400 border border-purple-500/25">Beta</span>
+                                                                <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full tracking-widest uppercase bg-purple-500/15 text-purple-400 border border-purple-500/25">{t('common:badge.beta')}</span>
                                                             </div>
                                                             <p className="text-[11px] text-text-secondary mt-0.5">
-                                                                {companyDossier ? 'Research complete' : 'Run research to get hiring strategy, salaries & competitors'}
+                                                                {companyDossier ? t('settings:profile.researchComplete') : t('settings:profile.researchHint')}
                                                             </p>
                                                         </div>
                                                     </div>
@@ -1293,7 +1307,7 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                         disabled={companyResearching}
                                                     >
                                                         {companyResearching ? <RefreshCw size={14} className="animate-spin" /> : <Search size={14} />}
-                                                        {companyResearching ? 'Researching...' : companyDossier ? 'Refresh' : 'Research Now'}
+                                                        {companyResearching ? t('settings:profile.researching') : companyDossier ? t('common:actions.refresh') : t('settings:profile.researchNow')}
                                                     </MagneticButton>
                                                 </div>
 
@@ -1302,8 +1316,16 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                     <div className="flex items-start gap-2.5 px-3 py-2.5 rounded-xl bg-amber-500/8 border border-amber-500/20 text-[11px] text-amber-400 leading-relaxed">
                                                         <span className="shrink-0 mt-[1px]">⚠</span>
                                                         <span>
-                                                            Web search credits exhausted for this month — showing AI-only research instead.
-                                                            Resets next billing cycle or <span className="underline cursor-pointer" onClick={() => (window.electronAPI as any)?.openExternal?.('https://checkout.dodopayments.com/buy/pdt_0NbFixGmD8CSeawb5qvVl')}>upgrade your plan</span>.
+                                                            <Trans
+                                                                i18nKey="settings:profile.research.creditsExhausted"
+                                                                components={[
+                                                                    <span
+                                                                        key="upgrade"
+                                                                        className="underline cursor-pointer"
+                                                                        onClick={() => (window.electronAPI as any)?.openExternal?.('https://checkout.dodopayments.com/buy/pdt_0NbFixGmD8CSeawb5qvVl')}
+                                                                    />,
+                                                                ]}
+                                                            />
                                                         </span>
                                                     </div>
                                                 )}
@@ -1315,7 +1337,7 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                         {/* Hiring Strategy */}
                                                         {companyDossier.hiring_strategy && (
                                                             <div>
-                                                                <div className="text-[10px] font-bold text-text-primary uppercase tracking-wide mb-1">Hiring Strategy</div>
+                                                                <div className="text-[10px] font-bold text-text-primary uppercase tracking-wide mb-1">{t('settings:profile.research.hiringStrategy')}</div>
                                                                 <p className="text-xs text-text-secondary leading-relaxed bg-bg-input p-3 rounded-lg">{companyDossier.hiring_strategy}</p>
                                                             </div>
                                                         )}
@@ -1324,7 +1346,7 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                         {companyDossier.interview_focus && (
                                                             <div>
                                                                 <div className="flex items-center gap-2 mb-1">
-                                                                    <div className="text-[10px] font-bold text-text-primary uppercase tracking-wide">Interview Focus</div>
+                                                                    <div className="text-[10px] font-bold text-text-primary uppercase tracking-wide">{t('settings:profile.research.interviewFocus')}</div>
                                                                     {companyDossier.interview_difficulty && (
                                                                         <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded border ${
                                                                             companyDossier.interview_difficulty === 'easy' ? 'bg-green-500/10 text-green-500 border-green-500/20' :
@@ -1343,7 +1365,7 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                         {/* Salary Estimates */}
                                                         {companyDossier.salary_estimates?.length > 0 && (
                                                             <div>
-                                                                <div className="text-[10px] font-bold text-text-primary uppercase tracking-wide mb-1">Salary Estimates</div>
+                                                                <div className="text-[10px] font-bold text-text-primary uppercase tracking-wide mb-1">{t('settings:profile.research.salaryEstimates')}</div>
                                                                 <div className="space-y-2 bg-bg-input p-3 rounded-lg">
                                                                     {companyDossier.salary_estimates.map((s: any, i: number) => (
                                                                         <div key={i} className="flex items-center justify-between pb-2 mb-2 border-b border-border-subtle last:border-0 last:pb-0 last:mb-0">
@@ -1366,7 +1388,7 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                         {companyDossier.culture_ratings && typeof companyDossier.culture_ratings === 'object' &&
                                                           Object.values(companyDossier.culture_ratings).some(v => typeof v === 'number' && (v as number) > 0) && (
                                                             <div>
-                                                                <div className="text-[10px] font-bold text-text-primary uppercase tracking-wide mb-2">Work Culture</div>
+                                                                <div className="text-[10px] font-bold text-text-primary uppercase tracking-wide mb-2">{t('settings:profile.research.workCulture')}</div>
                                                                 <div className="bg-bg-input p-3 rounded-lg">
                                                                     {/* Overall score hero */}
                                                                     <div className="flex items-center justify-between mb-3 pb-3 border-b border-border-subtle">
@@ -1391,11 +1413,11 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                                     {/* Sub-ratings grid */}
                                                                     <div className="grid grid-cols-2 gap-x-4 gap-y-2">
                                                                         {[
-                                                                            { label: 'Work-Life Balance', key: 'work_life_balance' },
-                                                                            { label: 'Career Growth', key: 'career_growth' },
-                                                                            { label: 'Compensation', key: 'compensation' },
-                                                                            { label: 'Management', key: 'management' },
-                                                                            { label: 'Diversity & Inclusion', key: 'diversity' },
+                                                                            { label: t('settings:profile.culture.workLife'), key: 'work_life_balance' },
+                                                                            { label: t('settings:profile.culture.growth'), key: 'career_growth' },
+                                                                            { label: t('settings:profile.culture.compensation'), key: 'compensation' },
+                                                                            { label: t('settings:profile.culture.management'), key: 'management' },
+                                                                            { label: t('settings:profile.culture.diversity'), key: 'diversity' },
                                                                         ].map(({ label, key }) => {
                                                                             const raw = (companyDossier.culture_ratings as any)[key];
                                                                             const val: number = typeof raw === 'number' ? raw : 0;
@@ -1417,7 +1439,7 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                         {/* Employee Reviews */}
                                                         {companyDossier.employee_reviews?.length > 0 && (
                                                             <div>
-                                                                <div className="text-[10px] font-bold text-text-primary uppercase tracking-wide mb-2">Employee Reviews</div>
+                                                                <div className="text-[10px] font-bold text-text-primary uppercase tracking-wide mb-2">{t('settings:profile.research.employeeReviews')}</div>
                                                                 <div className="space-y-2">
                                                                     {companyDossier.employee_reviews.map((r: any, i: number) => (
                                                                         <div key={i} className="bg-bg-input p-3 rounded-lg">
@@ -1441,7 +1463,7 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                             <div>
                                                                 <div className="flex items-center gap-1.5 mb-2">
                                                                     <AlertCircle size={11} className="text-orange-400" />
-                                                                    <div className="text-[10px] font-bold text-text-primary uppercase tracking-wide">Common Complaints</div>
+                                                                    <div className="text-[10px] font-bold text-text-primary uppercase tracking-wide">{t('settings:profile.research.commonComplaints')}</div>
                                                                 </div>
                                                                 <div className="space-y-2">
                                                                     {companyDossier.critics.map((c: any, i: number) => (
@@ -1468,7 +1490,7 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                             <div>
                                                                 <div className="flex items-center gap-1.5 mb-2">
                                                                     <Gift size={11} className="text-emerald-400" />
-                                                                    <div className="text-[10px] font-bold text-text-primary uppercase tracking-wide">Benefits & Perks</div>
+                                                                    <div className="text-[10px] font-bold text-text-primary uppercase tracking-wide">{t('settings:profile.research.benefits')}</div>
                                                                 </div>
                                                                 <div className="flex flex-wrap gap-1.5">
                                                                     {companyDossier.benefits.map((b: string, i: number) => (
@@ -1481,7 +1503,7 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                         {/* Core Values */}
                                                         {companyDossier.core_values?.length > 0 && (
                                                             <div>
-                                                                <div className="text-[10px] font-bold text-text-primary uppercase tracking-wide mb-2">Core Values</div>
+                                                                <div className="text-[10px] font-bold text-text-primary uppercase tracking-wide mb-2">{t('settings:profile.research.coreValues')}</div>
                                                                 <div className="flex flex-wrap gap-1.5">
                                                                     {companyDossier.core_values.map((v: string, i: number) => (
                                                                         <span key={i} className="text-[11px] text-purple-400/90 px-2.5 py-1 rounded-full bg-purple-500/10 border border-purple-500/20">{v}</span>
@@ -1493,7 +1515,7 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                         {/* Recent News */}
                                                         {companyDossier.recent_news && (
                                                             <div>
-                                                                <div className="text-[10px] font-bold text-text-primary uppercase tracking-wide mb-1">Recent News</div>
+                                                                <div className="text-[10px] font-bold text-text-primary uppercase tracking-wide mb-1">{t('settings:profile.research.recentNews')}</div>
                                                                 <p className="text-xs text-text-secondary leading-relaxed bg-bg-input p-3 rounded-lg">{companyDossier.recent_news}</p>
                                                             </div>
                                                         )}
@@ -1501,7 +1523,7 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                         {/* Competitors */}
                                                         {companyDossier.competitors?.length > 0 && (
                                                             <div>
-                                                                <div className="text-[10px] font-bold text-text-primary uppercase tracking-wide mb-2">Competitors</div>
+                                                                <div className="text-[10px] font-bold text-text-primary uppercase tracking-wide mb-2">{t('settings:profile.research.competitors')}</div>
                                                                 <div className="flex flex-wrap gap-2">
                                                                     {companyDossier.competitors.map((c: string, i: number) => (
                                                                         <span key={i} className="text-[11px] text-text-secondary px-2.5 py-1 rounded-full bg-bg-input flex items-center gap-1.5">
@@ -1515,7 +1537,7 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                         {/* Sources count */}
                                                         {companyDossier.sources?.length > 0 && (
                                                             <div className="text-[10px] text-text-tertiary mt-2">
-                                                                Sources: {companyDossier.sources.filter(Boolean).length} references
+                                                                {t('settings:profile.research.sources', { count: companyDossier.sources.filter(Boolean).length })}
                                                             </div>
                                                         )}
 
@@ -1523,7 +1545,7 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                         <div className="mt-4 flex items-start gap-2 px-3 py-2.5 rounded-lg bg-purple-500/5 border border-purple-500/15">
                                                             <span className="text-purple-400/70 mt-px shrink-0">⚠</span>
                                                             <p className="text-[10px] text-text-tertiary leading-relaxed">
-                                                                <span className="font-semibold text-purple-400/80">Beta feature.</span> Company research is AI-generated and may contain inaccuracies. Verify salary figures and hiring details independently before use.
+                                                                <span className="font-semibold text-purple-400/80">{t('settings:profile.research.betaLead')}</span> {t('settings:profile.research.betaDisclaimer')}
                                                             </p>
                                                         </div>
                                                     </div>
@@ -1551,9 +1573,9 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                                 )}
                                                             </div>
                                                             <div>
-                                                                <h3 className="text-[13px] font-bold text-text-primary tracking-tight">Negotiation Script</h3>
+                                                                <h3 className="text-[13px] font-bold text-text-primary tracking-tight">{t('settings:profile.negotiation.title')}</h3>
                                                                 <p className="text-[10px] text-text-tertiary mt-0.5 tracking-wide uppercase">
-                                                                    {negotiationScript ? `Tailored for ${profileData?.activeJD?.company || 'this role'}` : 'AI-powered salary coaching'}
+                                                                    {negotiationScript ? t('settings:profile.negotiation.tailoredFor', { target: profileData?.activeJD?.company || t('settings:profile.negotiation.thisRole') }) : t('settings:profile.negotiation.subtitle')}
                                                                 </p>
                                                             </div>
                                                         </div>
@@ -1568,13 +1590,13 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                                             if (result?.success && result.script) {
                                                                                 setNegotiationScript(result.script);
                                                                             } else {
-                                                                                setNegotiationError(result?.error || 'Failed to regenerate');
+                                                                                setNegotiationError(result?.error || t('errors:profile.regenerateFailed'));
                                                                             }
-                                                                        } catch { setNegotiationError('Generation failed'); }
+                                                                        } catch { setNegotiationError(t('errors:profile.generationFailed')); }
                                                                         finally { setNegotiationGenerating(false); }
                                                                     }}
                                                                     disabled={negotiationGenerating}
-                                                                    title="Regenerate script"
+                                                                    title={t('settings:profile.negotiation.regenerate')}
                                                                     className="w-7 h-7 rounded-lg flex items-center justify-center text-text-tertiary hover:text-text-primary hover:bg-bg-input transition-all border border-border-subtle"
                                                                 >
                                                                     <RefreshCw size={12} className={negotiationGenerating ? 'animate-spin' : ''} />
@@ -1590,9 +1612,9 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                                             if (result?.success && result.script) {
                                                                                 setNegotiationScript(result.script);
                                                                             } else {
-                                                                                setNegotiationError(result?.error || 'Failed to generate');
+                                                                                setNegotiationError(result?.error || t('errors:profile.generateFailed'));
                                                                             }
-                                                                        } catch { setNegotiationError('Generation failed'); }
+                                                                        } catch { setNegotiationError(t('errors:profile.generationFailed')); }
                                                                         finally { setNegotiationGenerating(false); }
                                                                     }}
                                                                     disabled={negotiationGenerating}
@@ -1600,7 +1622,7 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                                     style={{ background: 'linear-gradient(135deg, rgba(16,185,129,0.2) 0%, rgba(6,182,212,0.15) 100%)', border: '1px solid rgba(16,185,129,0.3)', color: '#34d399' }}
                                                                 >
                                                                     {negotiationGenerating ? <RefreshCw size={11} className="animate-spin" /> : <Sparkles size={11} />}
-                                                                    {negotiationGenerating ? 'Generating…' : 'Generate Script'}
+                                                                    {negotiationGenerating ? t('settings:profile.negotiation.generating') : t('settings:profile.negotiation.generate')}
                                                                 </MagneticButton>
                                                             )}
                                                         </div>
@@ -1620,8 +1642,8 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                                 <Briefcase size={20} className="text-emerald-500/50" />
                                                             </div>
                                                             <div className="text-center">
-                                                                <p className="text-[12px] font-medium text-text-secondary">No script yet</p>
-                                                                <p className="text-[10px] text-text-tertiary mt-0.5">Generate a personalized opening, justification &amp; counter-offer</p>
+                                                                <p className="text-[12px] font-medium text-text-secondary">{t('settings:profile.negotiation.empty')}</p>
+                                                                <p className="text-[10px] text-text-tertiary mt-0.5">{t('settings:profile.negotiation.emptyHint')}</p>
                                                             </div>
                                                         </div>
                                                     )}
@@ -1650,14 +1672,14 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                             {negotiationScript.salary_range && (
                                                                 <div className="rounded-xl p-4 flex items-center justify-between" style={{ background: 'linear-gradient(135deg, rgba(16,185,129,0.08) 0%, rgba(6,182,212,0.06) 100%)', border: '1px solid rgba(16,185,129,0.18)' }}>
                                                                     <div>
-                                                                        <div className="text-[9px] font-bold uppercase tracking-widest text-emerald-500/70 mb-1">Target Compensation</div>
+                                                                        <div className="text-[9px] font-bold uppercase tracking-widest text-emerald-500/70 mb-1">{t('settings:profile.negotiation.targetComp')}</div>
                                                                         <div className="text-xl font-bold tracking-tight" style={{ color: '#34d399' }}>
                                                                             {negotiationScript.salary_range.currency} {negotiationScript.salary_range.min.toLocaleString()}
                                                                             <span className="text-text-tertiary font-normal mx-2">–</span>
                                                                             {negotiationScript.salary_range.max.toLocaleString()}
                                                                         </div>
                                                                         {negotiationScript.sources?.length > 0 && (
-                                                                            <div className="text-[9px] text-text-tertiary mt-1">{negotiationScript.sources.length} market source{negotiationScript.sources.length > 1 ? 's' : ''}</div>
+                                                                            <div className="text-[9px] text-text-tertiary mt-1">{t('settings:profile.negotiation.marketSources', { count: negotiationScript.sources.length })}</div>
                                                                         )}
                                                                     </div>
                                                                     <span className={`text-[9px] font-bold px-2 py-1 rounded-full tracking-wide ${
@@ -1674,8 +1696,8 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                             {[
                                                                 {
                                                                     step: '01',
-                                                                    label: 'Opening',
-                                                                    sublabel: 'When asked about salary expectations',
+                                                                    label: t('settings:profile.negotiation.opening'),
+                                                                    sublabel: t('settings:profile.negotiation.openingSub'),
                                                                     content: negotiationScript.opening_line,
                                                                     accent: '#10b981',
                                                                     accentBg: 'rgba(16,185,129,0.07)',
@@ -1684,8 +1706,8 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                                 },
                                                                 {
                                                                     step: '02',
-                                                                    label: 'Justify Your Ask',
-                                                                    sublabel: 'Link your track record to the number',
+                                                                    label: t('settings:profile.negotiation.justify'),
+                                                                    sublabel: t('settings:profile.negotiation.justifySub'),
                                                                     content: negotiationScript.justification,
                                                                     accent: '#60a5fa',
                                                                     accentBg: 'rgba(96,165,250,0.07)',
@@ -1694,8 +1716,8 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                                 },
                                                                 {
                                                                     step: '03',
-                                                                    label: 'Counter & Hold',
-                                                                    sublabel: 'If they come back lower',
+                                                                    label: t('settings:profile.negotiation.counter'),
+                                                                    sublabel: t('settings:profile.negotiation.counterSub'),
                                                                     content: negotiationScript.counter_offer_fallback,
                                                                     accent: '#fb923c',
                                                                     accentBg: 'rgba(251,146,60,0.07)',
@@ -1706,16 +1728,16 @@ export function ProfileIntelligenceSettings({ onClose }: { onClose: () => void }
                                                                 <div key={s.step} className="rounded-xl overflow-hidden" style={{ border: `1px solid ${s.accentBorder}`, background: s.accentBg }}>
                                                                     <div className="flex items-center justify-between px-3.5 pt-3 pb-2">
                                                                         <div className="flex items-center gap-2">
-                                                                            <span className="text-[10px] font-black tracking-widest" style={{ color: s.accent, opacity: 0.6 }}>STEP {s.step}</span>
+                                                                            <span className="text-[10px] font-black tracking-widest" style={{ color: s.accent, opacity: 0.6 }}>{t('settings:profile.negotiation.stepNumber', { step: s.step })}</span>
                                                                             <span className="text-[11px] font-bold text-text-primary">{s.label}</span>
                                                                         </div>
                                                                         <button
                                                                             onClick={() => navigator.clipboard?.writeText(s.content)}
-                                                                            title="Copy to clipboard"
+                                                                            title={t('settings:profile.negotiation.copyToClipboard')}
                                                                             className="flex items-center gap-1 px-2 py-0.5 rounded-md text-[9px] font-medium transition-all hover:bg-bg-input text-text-tertiary hover:text-text-secondary"
                                                                         >
                                                                             <Check size={9} />
-                                                                            Copy
+                                                                            {t('common:actions.copy')}
                                                                         </button>
                                                                     </div>
                                                                     <p className="text-[10px] text-text-tertiary px-3.5 pb-2 -mt-1 tracking-wide">{s.sublabel}</p>

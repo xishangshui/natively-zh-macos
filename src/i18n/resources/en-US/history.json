@@ -8,5 +8,24 @@
   },
   "summary": {
     "meetingCount": "{{count}} meetings"
+  },
+  "cropper": {
+    "selectArea": "Select area",
+    "toCancel": "to cancel"
+  },
+  "details": {
+    "nextSteps": "Next Steps",
+    "coaching": "Coaching",
+    "followUpDraft": "Follow-up Draft",
+    "noTranscript": "No transcript available.",
+    "noUsageHistory": "No usage history.",
+    "copySummary": "Copy full summary",
+    "copyTranscript": "Copy full transcript",
+    "copyUsage": "Copy usage",
+    "actionItemPlaceholder": "Type an action item...",
+    "keyPointPlaceholder": "Type a key point...",
+    "deadlineBy": "by {{deadline}}",
+    "aiAvatarAlt": "AI",
+    "askPlaceholder": "Ask about this meeting..."
   }
 }

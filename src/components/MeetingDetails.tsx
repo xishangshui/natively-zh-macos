@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useResolvedTheme } from '../hooks/useResolvedTheme';
 import { ArrowLeft, Search, Mail, Link, ChevronDown, Play, ArrowUp, Copy, Check, MoreHorizontal, Settings, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -171,6 +172,7 @@ interface MeetingDetailsProps {
 }
 
 const MeetingDetails: React.FC<MeetingDetailsProps> = ({ meeting: initialMeeting }) => {
+  const { t } = useTranslation(['history', 'common', 'meeting']);
     const isLight = useResolvedTheme() === 'light';
     // We need local state for the meeting object to reflect optimistic updates
     const [meeting, setMeeting] = useState<Meeting>(initialMeeting);
@@ -369,7 +371,7 @@ ${meeting.detailedSummary.keyPoints?.map(item => `- ${item}`).join('\n') || 'Non
                             className="flex items-center gap-2 text-xs font-medium text-text-secondary hover:text-text-primary transition-colors"
                         >
                             {isCopied ? <Check size={14} className="text-emerald-500" /> : <Copy size={14} />}
-                            {isCopied ? 'Copied' : activeTab === 'summary' ? 'Copy full summary' : activeTab === 'transcript' ? 'Copy full transcript' : 'Copy usage'}
+                            {isCopied ? t('common:actions.copied') : activeTab === 'summary' ? t('history:details.copySummary') : activeTab === 'transcript' ? t('history:details.copyTranscript') : t('history:details.copyUsage')}
                         </button>
                     </div>
 
@@ -428,7 +430,7 @@ ${meeting.detailedSummary.keyPoints?.map(item => `- ${item}`).join('\n') || 'Non
                                                             onSave={(val) => handleActionItemSave(i, val)}
                                                             tagName="p"
                                                             className="text-sm text-text-secondary leading-relaxed -ml-2 px-2 rounded-sm transition-colors"
-                                                            placeholder="Type an action item..."
+                                                            placeholder={t('history:details.actionItemPlaceholder')}
                                                             onEnter={() => {
                                                                 const newItems = [...(meeting.detailedSummary?.actionItems || [])];
                                                                 newItems.splice(i + 1, 0, "");
@@ -478,7 +480,7 @@ ${meeting.detailedSummary.keyPoints?.map(item => `- ${item}`).join('\n') || 'Non
                                                             onSave={(val) => handleKeyPointSave(i, val)}
                                                             tagName="p"
                                                             className="text-sm text-text-secondary leading-relaxed -ml-2 px-2 rounded-sm transition-colors"
-                                                            placeholder="Type a key point..."
+                                                            placeholder={t('history:details.keyPointPlaceholder')}
                                                             onEnter={() => {
                                                                 const newItems = [...(meeting.detailedSummary?.keyPoints || [])];
                                                                 newItems.splice(i + 1, 0, "");
@@ -506,7 +508,7 @@ ${meeting.detailedSummary.keyPoints?.map(item => `- ${item}`).join('\n') || 'Non
                                     pre-Phase-7 meetings still look the same. */}
                                 {meeting.detailedSummary?.actionItemsStructured && meeting.detailedSummary.actionItemsStructured.length > 0 && (
                                     <section className="mb-8">
-                                        <h2 className="text-lg font-semibold text-text-primary mb-4">Next Steps</h2>
+                                        <h2 className="text-lg font-semibold text-text-primary mb-4">{t('history:details.nextSteps')}</h2>
                                         <ul className="space-y-2">
                                             {meeting.detailedSummary.actionItemsStructured.map(item => (
                                                 <li key={item.id} className="flex items-start gap-3 group">
@@ -517,7 +519,7 @@ ${meeting.detailedSummary.keyPoints?.map(item => `- ${item}`).join('\n') || 'Non
                                                             <p className="text-[11px] text-text-tertiary mt-0.5">
                                                                 {item.owner && <span className="font-medium">{item.owner}</span>}
                                                                 {item.owner && item.deadline && <span> · </span>}
-                                                                {item.deadline && <span>by {item.deadline}</span>}
+                                                                {item.deadline && <span>{t('history:details.deadlineBy', { deadline: item.deadline })}</span>}
                                                             </p>
                                                         )}
                                                     </div>
@@ -530,7 +532,7 @@ ${meeting.detailedSummary.keyPoints?.map(item => `- ${item}`).join('\n') || 'Non
                                 {/* Phase 7 — Coaching insights (mode-specific opportunities). */}
                                 {meeting.detailedSummary?.coachingInsights && meeting.detailedSummary.coachingInsights.length > 0 && (
                                     <section className="mb-8">
-                                        <h2 className="text-lg font-semibold text-text-primary mb-4">Coaching</h2>
+                                        <h2 className="text-lg font-semibold text-text-primary mb-4">{t('history:details.coaching')}</h2>
                                         <ul className="space-y-3">
                                             {meeting.detailedSummary.coachingInsights.map(insight => {
                                                 const tone = insight.severity === 'warning'
@@ -556,7 +558,7 @@ ${meeting.detailedSummary.keyPoints?.map(item => `- ${item}`).join('\n') || 'Non
                                 {meeting.detailedSummary?.followUpDraft && meeting.detailedSummary.followUpDraft.trim() && (
                                     <section className="mb-8">
                                         <div className="flex items-center justify-between mb-3">
-                                            <h2 className="text-lg font-semibold text-text-primary">Follow-up Draft</h2>
+                                            <h2 className="text-lg font-semibold text-text-primary">{t('history:details.followUpDraft')}</h2>
                                             <button
                                                 type="button"
                                                 onClick={() => {
@@ -564,7 +566,7 @@ ${meeting.detailedSummary.keyPoints?.map(item => `- ${item}`).join('\n') || 'Non
                                                 }}
                                                 className="text-[11px] px-2 py-1 rounded-md bg-white/5 hover:bg-white/10 text-text-secondary border border-white/10 transition-colors"
                                             >
-                                                Copy
+                                                {t('common:actions.copy')}
                                             </button>
                                         </div>
                                         <pre className="text-[12.5px] text-text-secondary leading-relaxed whitespace-pre-wrap font-sans select-text cursor-text p-3 rounded-[10px] border border-white/10 bg-white/[0.02]">{meeting.detailedSummary.followUpDraft}</pre>
@@ -609,14 +611,14 @@ ${meeting.detailedSummary.keyPoints?.map(item => `- ${item}`).join('\n') || 'Non
                                         console.log('Filtered Transcript:', filteredTranscript);
 
                                         if (filteredTranscript.length === 0) {
-                                            return <p className="text-text-tertiary">No transcript available.</p>;
+                                            return <p className="text-text-tertiary">{t('history:details.noTranscript')}</p>;
                                         }
 
                                         return filteredTranscript.map((entry, i) => (
                                             <div key={i} className="group">
                                                 <div className="flex items-center gap-2 mb-1">
                                                     <span className="text-xs font-semibold text-text-secondary">
-                                                        {entry.speaker === 'user' ? 'Me' : 'Them'}
+                                                        {entry.speaker === 'user' ? t('meeting:channel.you') : t('meeting:channel.interviewer')}
                                                     </span>
                                                     <span className="text-xs text-text-tertiary font-mono">{entry.timestamp ? formatTime(entry.timestamp) : '0:00'}</span>
                                                 </div>
@@ -645,7 +647,7 @@ ${meeting.detailedSummary.keyPoints?.map(item => `- ${item}`).join('\n') || 'Non
                                         {interaction.answer && (
                                             <div className="flex items-start gap-4">
                                                 <div className="mt-1 w-6 h-6 rounded-full bg-bg-input flex items-center justify-center border border-border-subtle shrink-0">
-                                                    <img src={NativelyLogo} alt="AI" className="w-4 h-4 opacity-50 object-contain force-black-icon" />
+                                                    <img src={NativelyLogo} alt={t('history:details.aiAvatarAlt')} className="w-4 h-4 opacity-50 object-contain force-black-icon" />
                                                 </div>
                                                 <div>
                                                     <div className="text-[11px] text-text-tertiary mb-1.5 font-medium">{formatTime(interaction.timestamp)}</div>
@@ -672,7 +674,7 @@ ${meeting.detailedSummary.keyPoints?.map(item => `- ${item}`).join('\n') || 'Non
                                                                         <div className="my-3 rounded-xl overflow-hidden border border-white/[0.08] shadow-lg bg-zinc-800/60 backdrop-blur-md">
                                                                             <div className="bg-white/[0.04] px-3 py-1.5 border-b border-white/[0.08]">
                                                                                 <span className="text-[10px] uppercase tracking-widest font-semibold text-white/40 font-mono">
-                                                                                    {lang || 'CODE'}
+                                                                                    {lang || t('meeting:answer.codeBadge')}
                                                                                 </span>
                                                                             </div>
                                                                             <div className="bg-transparent">
@@ -713,7 +715,7 @@ ${meeting.detailedSummary.keyPoints?.map(item => `- ${item}`).join('\n') || 'Non
                                         )}
                                     </div>
                                 ))}
-                                {!meeting.usage?.length && <p className="text-text-tertiary">No usage history.</p>}
+                                {!meeting.usage?.length && <p className="text-text-tertiary">{t('history:details.noUsageHistory')}</p>}
                             </motion.section>
                         )}
                     </div>
@@ -729,7 +731,7 @@ ${meeting.detailedSummary.keyPoints?.map(item => `- ${item}`).join('\n') || 'Non
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
                         onKeyDown={handleInputKeyDown}
-                        placeholder="Ask about this meeting..."
+                        placeholder={t('history:details.askPlaceholder')}
                         className="w-full pl-5 pr-12 py-3 bg-transparent backdrop-blur-[24px] backdrop-saturate-[140%] shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-white/20 rounded-full text-sm text-text-primary placeholder-text-tertiary/70 focus:outline-none transition-shadow duration-200"
                     />
                     <button

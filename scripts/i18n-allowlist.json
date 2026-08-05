@@ -320,6 +320,21 @@
       "file": "src/components/settings/NativelyProSettings.tsx",
       "literal": "natively.contact@gmail.com",
       "reason": "真实联系邮箱，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/Cropper.tsx",
+      "literal": "ESC",
+      "reason": "键盘按键名，按设计规格 3.2 不翻译"
+    },
+    {
+      "file": "src/components/ProfileIntelligenceSettings.tsx",
+      "literal": "Pro",
+      "reason": "产品档位名，按设计规格 3.2 不翻译（Pro 功能徽标）"
+    },
+    {
+      "file": "src/components/ProfileIntelligenceSettings.tsx",
+      "literal": "tvly-",
+      "reason": "Tavily API Key 的固定前缀，用户需据此核对自己的密钥"
     }
   ]
 }

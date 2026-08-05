@@ -66,5 +66,16 @@
     "activationFailedRetry": "激活失败，请重试。",
     "activationFailed": "激活失败。",
     "deactivationFailed": "解除授权失败。"
+  },
+  "profile": {
+    "removeKeyFailed": "移除 API Key 失败",
+    "removeKeyError": "移除密钥时出错",
+    "uploadFailed": "上传失败",
+    "jdUploadFailed": "岗位描述上传失败",
+    "saveKeyFailed": "保存 API Key 失败。",
+    "saveKeyUnexpected": "保存 API Key 时出现意外错误。",
+    "regenerateFailed": "重新生成失败",
+    "generateFailed": "生成失败",
+    "generationFailed": "生成失败"
   }
 }

@@ -66,5 +66,16 @@
     "activationFailedRetry": "Activation failed. Please try again.",
     "activationFailed": "Activation failed.",
     "deactivationFailed": "Deactivation failed."
+  },
+  "profile": {
+    "removeKeyFailed": "Failed to remove API key",
+    "removeKeyError": "Error removing key",
+    "uploadFailed": "Upload failed",
+    "jdUploadFailed": "JD upload failed",
+    "saveKeyFailed": "Failed to save API key.",
+    "saveKeyUnexpected": "Unexpected error saving API key.",
+    "regenerateFailed": "Failed to regenerate",
+    "generateFailed": "Failed to generate",
+    "generationFailed": "Generation failed"
   }
 }
