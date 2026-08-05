@@ -12,7 +12,7 @@
 [![i18n](https://img.shields.io/badge/i18n-1380%20keys%20%C2%B7%2057%20files-success?style=flat-square)](docs/zh-cn/i18n-allowlist.md)
 [![Unofficial](https://img.shields.io/badge/unofficial-fork-orange?style=flat-square)](#与官方的关系)
 
-[安装](#安装) · [从源码运行](#从源码运行) · [汉化范围](#汉化范围) · [与上游的差异](#与上游的差异) · [已知限制](#已知限制) · [English](#english)
+[界面预览](#界面预览) · [安装](#安装) · [从源码运行](#从源码运行) · [汉化范围](#汉化范围) · [与上游的差异](#与上游的差异) · [已知限制](#已知限制) · [English](#english)
 
 </div>
 
@@ -42,6 +42,27 @@ i18n 资源层：
 | 语音识别默认值 | 英语 | 中文（`zh-CN` / `chinese`） |
 | 发行标识 | 官方 | **完全隔离**，可与官方版并存 |
 | 官方自动更新 | 启用 | **禁用**，只保留手动查看上游版本 |
+
+## 界面预览
+
+<table>
+<tr>
+<td width="50%"><img src="assets/screenshots/01-launcher.png" alt="启动器"></td>
+<td width="50%"><img src="assets/screenshots/02-settings.png" alt="设置总览"></td>
+</tr>
+<tr>
+<td><b>启动器</b><br/>产品名 <code>Natively</code> 与模型名保持原文，其余全部本地化。</td>
+<td><b>设置总览</b><br/>侧栏 14 个页签、开关说明与状态文案；<code>Natively API</code> / <code>Natively Pro</code> 作为产品名不译。</td>
+</tr>
+<tr>
+<td><img src="assets/screenshots/03-meeting-overlay.png" alt="会议浮层"></td>
+<td><img src="assets/screenshots/04-about-build.png" alt="关于 - 构建版本"></td>
+</tr>
+<tr>
+<td><b>会议浮层</b><br/>注意「音频采集异常」下方<b>保留了供应商的英文原始错误</b> —— 中文摘要负责让你看懂，原文负责让你能复制去排错（设计规格 §11）。<br/>输入框提示里的 <code>Ctrl</code>+<code>Shift</code>+<code>H</code> 徽标嵌在句中，是用 <code>&lt;Trans&gt;</code> 整句键渲染的，中英语序不同也不会错位。</td>
+<td><b>关于 → 构建版本</b><br/>明确告知这是社区中文构建、不会自动下载或安装官方更新，以及安装官方发行版会移除中文界面。「查看上游版本」只打开 GitHub releases 页面。</td>
+</tr>
+</table>
 
 ### 三类语言设置互不干扰
 
