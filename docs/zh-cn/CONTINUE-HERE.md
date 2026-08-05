@@ -1,6 +1,6 @@
 # 新会话接手指南
 
-最后更新：2026-08-04
+最后更新：2026-08-05
 分支：`feat/zh-cn-localization`
 上游基线：tag `v2.7.0` / commit `be7280bf17f2de027b2cfde25551e46d89ca9d10`
 
@@ -98,30 +98,47 @@ Task 15 的 `electron-builder` 需求更高，届时可能仍不够。
 
 ## 3. 当前进度
 
-已完成 Task 1–7、7.5、8，以及 **Task 9 的第 1 批**。共 15 个提交，工作树 clean。
+**Task 1–15 的代码与文档部分全部完成。** 工作树 clean。
 
-计划复选框：**42/75**（Task 8 已勾完；Task 9 的 5 个尚未勾，因为 Task 9 未完）。
+计划复选框：**69/75**。未勾的 6 个都是**必须人工在真机上做**的验收，
+不是代码遗漏：
 
-### Task 9 只做完了一半——接手第一件事就是做完它
-
-第 1 批（提交 `666a29e`）迁移了 11 个文件并**删光了 225 条
-`reason="migrated in Task 9"` 暂放条目**，词典新增 371 个键。
-
-第 2 批**尚未开始**，剩两个文件、约 220 处：
-
-| 文件 | 待迁移处数 |
+| 未勾项 | 为什么不能自动化 |
 |---|---|
-| `src/components/settings/NativelyApiSettings.tsx` | 119 |
-| `src/components/settings/NativelyProSettings.tsx` | 101 |
+| Task 13 Step 4（多缩放视觉验收） | 需真机目视检查三档缩放 |
+| Task 15 Step 3（安装到 `D:\Natively-ZH`） | NSIS 是交互式安装 |
+| Task 15 Step 4（界面验收矩阵） | 需真机目视 |
+| Task 15 Step 5（中文语音与 AI 回复） | 需飞书 + 有效云端密钥 |
+| Task 15 Step 6（更新与回退） | 需实际安装后验证 |
+| Task 15 Step 7（提交证据并打标签） | 等上面几项回填后再打 |
 
-这两个文件**目前不在 `enforcedFiles` 里**（`i18n-scope.json` 的 `_progress`
-已写明原因），所以门禁是绿的。做完第 2 批后必须把它们加回 `enforcedFiles`，
-再勾 Task 9 的 5 个复选框。
+待办清单在 `evidence/task-15/manual-qa.md`，逐项留空待回填。
+执行顺序按 `release-checklist.md` 第 5–8 节。
 
-`NativelyProSettings.tsx` 里有退款政策、邮箱、Device ID 等文案，
-注意 `natively.contact@gmail.com` 属于联系方式，不翻译（进 allowlist）。
+### 交付物现状
 
-### 迁移过程中沉淀的四个坑（Task 10–14 会重复遇到）
+| 项 | 状态 |
+|---|---|
+| 安装包 | `release\Natively-ZH-Setup-2.7.0-zh.1.exe`（619.5 MB，不入库） |
+| SHA-256 | `6DE9EC4FB15B7E0542D9D8FBC0B92EDF33C717A4E0D76960B5D705D6B1E01221` |
+| 门禁范围 | `src/` 下全部 57 个 `.tsx`，零残留、零过期条目 |
+| 词典 | 中英各 10 个 namespace，约 1400 个键 |
+| allowlist | 153 条，全部永久性，**无暂放条目** |
+| 文档 | `release-checklist.md`、`rollback.md`、`i18n-allowlist.md`、四份 evidence |
+
+### 三条已知限制（详见 `evidence/task-15/build-manifest.txt`）
+
+1. **exe 嵌入元数据仍是 Electron 默认值。** rcedit 在 winCodeSign 包里，
+   该包含 macOS 符号链接，Windows 上创建符号链接需管理员权限或开发者模式，
+   本机都不满足。用 `--config.win.signAndEditExecutable=false` 绕过完成打包。
+   影响仅限 exe 图标与版本资源，安装包身份与数据隔离都正常。
+   **修复只需一次管理员权限的重跑。**
+2. **上游 `package.json` 的 `react-query` 别名缺 `npm:` 前缀**，是死代码且
+   阻塞打包，已删除（非本地化改动，已记录）。
+3. **C 盘余量低**，打包必须把 `TEMP`/`TMP`/`ELECTRON_BUILDER_CACHE`
+   指向 D 盘。
+
+### 迁移过程中沉淀的坑（后续维护或合并上游时会再遇到）
 
 **1. 字面量兼作样式判别器。** `badge === 'Saved'` 既是显示文案又决定绿色徽标配色。
 直接把调用点换成译文会连带破坏配色。做法是把内部令牌降为小写
@@ -141,13 +158,53 @@ Task 15 的 `electron-builder` 需求更高，届时可能仍不够。
 对象字面量里的 `label: t('k')` 不受影响。
 **批量替换后一定跑 `npx tsc --noEmit`**——它是唯一能抓到这类错的门禁。
 
-顺带一条：`t('updates.checking')` 少了命名空间分隔符会去查
+**5. 局部变量遮蔽翻译函数。** HelpSettings 里有个
+`const t = {颜色表}`，导致同作用域后续的 `t('...')` 拿到颜色对象，
+`tsc` 报「表达式不可调用」。AIProvidersSettings 里也有 `.map(t => ...)`。
+**注入 hook 前先 grep 该文件有没有别的 `t` 绑定。**
+
+**6. 模块作用域的数据表用不了 hook。** `PLANS`、`MOCK_BUTTONS` 这类
+`as const` 数组在模块求值期就固定了。做法是字段里存**词典键**
+（`labelKey` / `descriptionKey`），渲染时再 `t()`。同时注意：如果某字段
+既是显示文案又被当判别器（如 `plan.name === 'Pro'` 决定配色），
+就必须保留原值，只在展示层翻译。
+
+**7. 给多行类型注解的函数注入 hook 要认准函数体。**
+`function X({ a }: {` 行尾的 `{` 是类型字面量的开始，不是函数体。
+误插会产生几十个语法错误。正确锚点是类型注解闭合后的 `}) {`。
+
+顺带两条：`t('updates.checking')` 少了命名空间分隔符会去查
 `common:updates.checking`（defaultNS 是 common），必须写 `t('updates:status.checking')`。
-另外词典键名规范要求**至少一层点号**，顶层扁平键（如 `checking`）会被门禁拒绝。
+词典键名规范要求**至少一层点号**，顶层扁平键（如 `checking`）会被门禁拒绝。
+
+### 门禁现在是三道，不是两道
+
+`npm run check:i18n` 依次跑：
+
+1. `check-i18n-catalogs.mjs` —— 中英键集合、插值变量、键名规范、非空值
+2. `check-i18n-coverage.mjs` —— 残留英文扫描 + allowlist 过期检查
+3. `check-i18n-key-refs.mjs` —— **源码引用的键是否真的存在**
+
+第 3 道是本次新增的。前两道都不管「t() 引用了一个不存在的键」，
+而这种情况会**静默回退成键名本身显示给用户**，是最容易漏的一类问题。
+以点号结尾的静态前缀（模板字符串拼出的动态键）会跳过，静态检查无从判断。
+
+另外 `npm run test:i18n` 现在是 44 项（词典 7 + 覆盖 30 + locale 格式化 7）。
 
 ### 提交历史
 
 ```
+f011fc9  build: 产出 Windows x64 安装包并记录构建证据   Task 15（Step 2）
+0afbb93  test: 门禁覆盖渲染层全部界面文件并冻结允许名单 Task 14（收尾）
+ad9ac58  feat: 本地化帮助与配置指南                    Task 11（第 2 批，收尾）
+e06cee7  docs: 补充发布前检查清单与回退说明            Task 15（Step 1）
+41202ad  fix: 修复 Radix Toast 视口的英文 aria-label   Task 14（部分）
+e50700b  feat: 本地化 Electron 托盘与原生文案          Task 12
+2efd008  fix: 加入中文字体栈并统一 locale 格式化        Task 13（Step 1–3）
+7b6eaad  feat: 本地化首次启动、权限引导、试用与更新界面 Task 11（第 1 批）
+8d59d0b  feat: 本地化会议详情、画像智能与截图裁剪器     Task 10
+243ac8f  feat: 本地化 Natively API 与 Pro 订阅页       Task 9（第 2 批）
+1980cea  docs: 记录 Task 9 第 1 批进度与四个迁移陷阱
 666a29e  feat: 本地化设置总览与供应商配置              Task 9（第 1 批）
 7a3d071  feat: 本地化会议主界面                        Task 8（收尾）
 2ae27c9  docs: 补充新会话接手指南并修正门禁范围
@@ -246,57 +303,67 @@ Compare-Object $base $now | Where-Object { $_.SideIndicator -eq '=>' }   # 必�
 
 ### allowlist 规则
 
-`scripts/i18n-allowlist.json` 当前 234 条：
+`scripts/i18n-allowlist.json` 当前 **153 条，全部永久，无暂放条目**：
+产品名与供应商名、模型 ID、API 字段、可执行命令、密钥前缀、
+键盘按键名、语言地区代码、云区域 ID、真实联系方式、技术栈名。
 
-- **17 条永久**：产品名（Natively AI、Gmail）、模型名（GPT 5.4、Sonnet 4.6…）、
-  键盘按键名（Tab、Shift）
-- **225 条暂放**：全部标 `reason: "migrated in Task 9"`，
-  是 `SettingsOverlay.tsx` 的存量，**Task 9 必须全部删除**
+人工审查清单由 `scripts/gen-i18n-allowlist-doc.mjs` 生成到
+`docs/zh-cn/i18n-allowlist.md`——**刻意从数据源生成而不是手写**，
+手写的文档一定会和名单漂移。改名单后重新跑一次即可。
 
 **过期条目会导致门禁失败**——这是有意设计，防止名单膨胀成挡箭牌。
-因此**不要给尚未纳入 scope 的文件提前加条目**（本会话犯过这个错）。
+因此**不要给尚未纳入 scope 的文件提前加条目**。
+反过来也要注意：把某处文案改成插值实参后，原先的 allowlist 条目会变成
+过期（扫描器不再报告它），必须一并删掉——本项目在 SettingsOverlay 与
+HelpSettings 上各遇到过一次。
 
 ---
 
-## 6. 剩余工作
+## 6. 剩余工作：只剩人工验收
 
-### 立即要做：Task 9 第 2 批
+代码与文档已全部完成。剩下的全部是**必须在真机上做**的验收，
+清单在 `evidence/task-15/manual-qa.md`，执行顺序按
+`release-checklist.md` 第 5–8 节。
 
-见 §3 的表格：`NativelyApiSettings.tsx`（119 处）与
-`NativelyProSettings.tsx`（101 处）。做完后把两个文件加回 `enforcedFiles`，
-勾 Task 9 的 5 个复选框，再进 Task 10。
+### 立即要做
 
-门禁范围现含 30 个文件，allowlist 51 条（全部是永久性的产品名、模型名、
-供应商名、API 字段、示例命令、按键名、区域 ID、日志路径）——
-**已无任何暂放条目**。
+1. **装一遍安装包。** `release\Natively-ZH-Setup-2.7.0-zh.1.exe`，
+   安装时**显式选择** `D:\Natively-ZH`。装前装后各记一次 `D:\Natively`
+   的最后修改时间，确认未变。
+2. **三档缩放的界面矩阵**（100% / 125% / 150%）。重点看中文换行后
+   按钮是否变形、侧栏是否被挤窄、长句是否截断。
+3. **中文语音双通道 + AI 中文回复。** 需要飞书或等价软件、不含客户信息的
+   普通话测试材料，以及有效的云端密钥。
+   **密钥无效时记为「外部依赖未通过」，不要写成本地化失败或成功。**
+4. **更新与回退。** 应用跑够 10 秒再退出，确认没有后台下载、没有退出时安装；
+   然后按 `rollback.md` 走一遍。
+5. 回填 `manual-qa.md`，提交，打标签 `natively-v2.7.0-zh.1`。
 
-**迁移中踩到的一类坑，Task 10–12 会反复遇到：**
+### 想让 exe 元数据也正确的话
+
+当前 exe 的 `ProductName` 还是 `Electron`（原因见 §3 已知限制 1）。
+修法是**用管理员权限的终端**重跑一次打包，不加
+`--config.win.signAndEditExecutable=false`：
+
+```powershell
+$env:TEMP='D:\zh-build-temp'; $env:TMP='D:\zh-build-temp'
+$env:ELECTRON_BUILDER_CACHE='D:\zh-build-temp\eb-cache'
+npx electron-builder --win nsis --x64
+```
+
+或者先打开 Windows「开发者模式」，之后普通权限也能创建符号链接。
+
+### 迁移方法论（合并上游新版本时会再用到）
+
 上游有若干测试拿**英文字面量**当「结构未被回退」的锚点
 （如 `assert.match(src, /Repair Permissions/)`）。文案迁走后它们必然转红。
 正确处理是**把锚点换成语义键、保留原结构断言、再补一条词典断言**
 （该键在中英两侧都存在且非空），**不是**删断言。
-本次两个实例见 `evidence/task-08/README.md` 末节。
+本项目一共遇到 5 个实例：`evidence/task-08/README.md` 末节 2 个，
+Task 9 第 1 批的提交信息里 3 个。
+
 顺带注意：同类 NEGATIVE 用例（断言某英文字面量**不**出现）迁移后会变成
 空转通过——也要一并换锚点，否则守护能力静默消失。
-
-### Task 9–15
-
-按计划执行。几个要点：
-
-- **Task 9** 第 1 批已完成（含 `SettingsOverlay.tsx` 3194 行），
-  225 条暂放 allowlist 已删光；剩两个文件见上
-- **Task 12** 改 Electron 主进程托盘/对话框/数据库种子，风险最高，
-  务必比对基线失败集合
-- **Task 13** 字体栈目前**不含任何中文字体**（运行时实测为 Tailwind 默认值），
-  按设计规格 §10 加 `Microsoft YaHei UI` / `PingFang SC` / `Noto Sans CJK SC`
-- **Task 14** 必须处理一个静态扫描**永远扫不到**的残留：
-  `@radix-ui/react-toast` 的 `Viewport` 默认 `label` 是 `"Notifications ({hotkey})"`，
-  五个窗口的 DOM 里都有 `aria-label="Notifications (F8)"`。
-  来源在 node_modules，不在项目源码。修法是给 `src/App.tsx` 的
-  `<ToastViewport />` 显式传 `label`。运行时 DOM 读取才发现，见
-  `evidence/task-08/README.md`
-- **Task 15** 打包前记得清 `ELECTRON_RUN_AS_NODE`；C 盘余量偏低，
-  建议把 `TEMP`/`TMP` 指向 D 盘；提交内存不足时先设 `GOMAXPROCS`（见 §2）
 
 ---
 
