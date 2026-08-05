@@ -238,6 +238,15 @@ export function initializeIpcHandlers(appState: AppState): void {
       // 广播到全部窗口——启动器、设置、会议界面、浮层必须同时切换，
       // 否则会出现部分窗口停留在旧语言的割裂状态。
       appState.broadcast('ui-locale-changed', applied);
+      // 托盘不是 BrowserWindow，收不到广播——必须显式重建，
+      // 否则窗口都切了语言、右下角托盘还停在旧语言。
+      try {
+        appState.updateTrayMenu?.();
+      } catch (trayError) {
+        // 托盘刷新失败不应回滚已生效的语言切换：窗口已经切好了，
+        // 托盘会在下次重建时自愈。只记日志。
+        console.error('[IPC] tray refresh after locale change failed:', trayError);
+      }
       return { success: true, locale: applied };
     } catch (error) {
       // 保存失败时不广播：宁可整体停留在原语言，也不要让界面已切换、

@@ -4,6 +4,8 @@ import path from "path"
 import fs from "fs"
 import { autoUpdater } from "electron-updater"
 import { DISTRIBUTION, configureDistributionUserData } from "./config/distribution"
+import { getLocaleManager } from "./i18n/LocaleManager"
+import { nativeT } from "./i18n/nativeI18n"
 if (!app.isPackaged) {
   require('dotenv').config();
 }
@@ -4861,15 +4863,19 @@ export class AppState {
     const toggleAccel = toggleKb || 'CommandOrControl+B';
     const displayToggle = formatAccel(toggleAccel);
 
+    // 托盘每次重建时读取当前 locale——语言切换后 updateTrayMenu() 会被再调一次，
+    // 菜单文字随之更新。快捷键字符串本身不翻译（设计规格 3.2）。
+    const trayLocale = getLocaleManager().getLocale()
+
     const contextMenu = Menu.buildFromTemplate([
       {
-        label: 'Show Natively',
+        label: nativeT('tray.show', {}, trayLocale),
         click: () => {
           this.centerAndShowWindow()
         }
       },
       {
-        label: `Toggle Window (${displayToggle})`,
+        label: nativeT('tray.toggleWindow', { accelerator: displayToggle }, trayLocale),
         click: () => {
           this.toggleMainWindow()
         }
@@ -4878,7 +4884,7 @@ export class AppState {
         type: 'separator'
       },
       {
-        label: `Take Screenshot (${displayScreenshot})`,
+        label: nativeT('tray.takeScreenshot', { accelerator: displayScreenshot }, trayLocale),
         accelerator: screenshotAccel,
         click: async () => {
           try {
@@ -4900,7 +4906,7 @@ export class AppState {
         type: 'separator'
       },
       {
-        label: 'Quit',
+        label: nativeT('tray.quit', {}, trayLocale),
         accelerator: 'Command+Q',
         click: () => {
           app.quit()

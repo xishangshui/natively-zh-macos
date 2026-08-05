@@ -3,6 +3,8 @@
 // Extracted from IntelligenceManager to decouple DB operations from LLM orchestration.
 
 import { SessionTracker, TranscriptSegment } from './SessionTracker';
+import { getLocaleManager } from './i18n/LocaleManager';
+import { nativeT } from './i18n/nativeI18n';
 import { LLMHelper } from './LLMHelper';
 import { DatabaseManager, Meeting } from './db/DatabaseManager';
 import { GROQ_TITLE_PROMPT, GROQ_SUMMARY_JSON_PROMPT } from './llm';
@@ -144,7 +146,10 @@ export class MeetingPersistence {
         // active when meeting stopped, not whatever mode is active when async processing runs.
         modeSnapshot?: { id: string; name: string; templateType: string } | null
     ): Promise<void> {
-        let title = "Untitled Session";
+        // 兜底标题会被写进数据库，所以按创建时的 uiLocale 定稿一次，之后不再变——
+        // 跟着界面语言动态改写历史记录会让用户的会议列表在切换语言后「变了内容」。
+        // 既有英文记录保持原样，不做批量改写（那会污染用户数据）。
+        let title = nativeT('meeting.untitled', {}, getLocaleManager().getLocale());
         let summaryData: { overview?: string; actionItems: string[], keyPoints: string[], sections?: Array<{ title: string; bullets: string[] }> } = { actionItems: [], keyPoints: [] };
         // Phase 6 — post_call_summary lifecycle telemetry. Wrapped in try/catch
         // around track calls so a telemetry sink fault never breaks persistence.
