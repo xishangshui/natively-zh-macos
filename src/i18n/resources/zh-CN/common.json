@@ -53,5 +53,8 @@
   },
   "label": {
     "optional": "（可选）"
+  },
+  "a11y": {
+    "notificationsViewport": "通知（{hotkey}）"
   }
 }

@@ -53,5 +53,8 @@
   },
   "label": {
     "optional": "(Optional)"
+  },
+  "a11y": {
+    "notificationsViewport": "Notifications ({hotkey})"
   }
 }

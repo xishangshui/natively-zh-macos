@@ -1,4 +1,5 @@
 import * as React from "react"
+import { useTranslation } from "react-i18next"
 import * as ToastPrimitive from "@radix-ui/react-toast"
 import { cn } from "../../lib/utils"
 import { X } from "lucide-react"
@@ -14,16 +15,25 @@ export type ToastMessage = {
 const ToastViewport = React.forwardRef<
   React.ElementRef<typeof ToastPrimitive.Viewport>,
   React.ComponentPropsWithoutRef<typeof ToastPrimitive.Viewport>
->(({ className, ...props }, ref) => (
-  <ToastPrimitive.Viewport
-    ref={ref}
-    className={cn(
-      "bg-transparent fixed bottom-0 right-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px]",
-      className
-    )}
-    {...props}
-  />
-))
+>(({ className, label, ...props }, ref) => {
+  const { t } = useTranslation(['common'])
+  return (
+    <ToastPrimitive.Viewport
+      ref={ref}
+      // @radix-ui/react-toast 的 Viewport 默认 label 是 "Notifications ({hotkey})"，
+      // 会以 aria-label 出现在每个窗口的 DOM 里。它来自 node_modules，
+      // 项目源码里没有这个字面量，静态扫描器**永远扫不到**——
+      // 这处残留是靠 CDP 读取运行时 DOM 才发现的（见 evidence/task-08）。
+      // 在包装组件里给默认值，四个调用点一次覆盖。{hotkey} 由 Radix 自己替换。
+      label={label ?? t('common:a11y.notificationsViewport')}
+      className={cn(
+        "bg-transparent fixed bottom-0 right-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px]",
+        className
+      )}
+      {...props}
+    />
+  )
+})
 ToastViewport.displayName = ToastPrimitive.Viewport.displayName
 
 type ToastVariant = "neutral" | "success" | "error"
