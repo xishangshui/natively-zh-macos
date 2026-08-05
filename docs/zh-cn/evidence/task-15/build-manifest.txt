@@ -1,0 +1,117 @@
+Natively ZH — Windows x64 构建清单
+=====================================
+
+日期：2026-08-05
+分支：feat/zh-cn-localization
+上游基线：tag v2.7.0 / commit be7280bf17f2de027b2cfde25551e46d89ca9d10
+
+工具链
+------
+node    v20.20.2          （全局 D:\Node 是 v26，better-sqlite3 不支持）
+npm     10.8.2
+rustc   1.97.1 (8bab26f4f 2026-07-14)
+cargo   1.97.1 (c980f4866 2026-06-30)
+MSVC    D:\BuildTools 14.44 + Windows SDK 22621
+Electron 33.4.11
+
+门禁结果
+--------
+check:i18n              通过 —— 57 个文件在范围内，零残留、零过期条目、键引用全部命中
+test:i18n               44 项通过（词典完整性 7 + 覆盖扫描 30 + locale 格式化 7）
+tsc --noEmit            通过（渲染层）
+typecheck:electron      通过（主进程）
+build                   通过
+build:electron          通过
+build:native            通过 —— index.win32-x64-msvc.node 已验证
+npm test                88 条唯一失败，与 baseline-test-failures.tsv 双向零差异
+                        （判定标准不是全绿，见 CONTINUE-HERE §4）
+
+产物
+----
+文件      release\Natively-ZH-Setup-2.7.0-zh.1.exe
+大小      619.5 MB
+SHA-256   6DE9EC4FB15B7E0542D9D8FBC0B92EDF33C717A4E0D76960B5D705D6B1E01221
+
+安装包身份
+----------
+appId          com.natively.zh.desktop
+productName    Natively ZH
+shortcutName   Natively ZH
+artifactName   Natively-ZH-Setup-${version}.${ext}
+build.publish  无（已移除，防止误用官方 release feed）
+oneClick       false（可选择安装目录）
+perMachine     false
+
+隔离验证（安装前）
+------------------
+D:\Natively                最后修改 2026/8/3 17:45:17 —— 本次工作期间未变动
+%APPDATA%\natively         最后修改 2026/8/3 17:57:34 —— 本次工作期间未变动
+%APPDATA%\natively-zh      2026/8/5 09:49:04 —— 由中文构建在 Task 14 运行时验证中创建，
+                           证明 configureDistributionUserData() 的目录隔离确实生效
+
+已知限制
+========
+
+1. 可执行文件的嵌入元数据仍是 Electron 默认值
+   ---------------------------------------------
+   release\win-unpacked\Natively ZH.exe 的版本资源显示：
+       FileDescription = Electron
+       ProductName     = Electron
+       FileVersion     = 33.4.11
+   而不是 Natively ZH / 2.7.0-zh.1。
+
+   原因：本次打包用 --config.win.signAndEditExecutable=false 跳过了
+   签名与 rcedit 工具链。electron-builder 把 rcedit 放在 winCodeSign
+   压缩包里，而该包内含 macOS 的符号链接
+   （darwin/10.12/lib/libcrypto.dylib 等）。在 Windows 上创建符号链接
+   需要 SeCreateSymbolicLinkPrivilege——默认只授予管理员，或在开启
+   「开发者模式」后授予普通用户。本机两者都不满足，已实测确认：
+
+       New-Item -ItemType SymbolicLink ...
+       → Administrator privilege required for this operation.
+
+   注意 winCodeSign 的解包目录名每次运行都是随机数，所以「预先手动解包
+   并跳过 darwin」的绕法无效——下一次运行会换一个新目录重新解包。
+
+   影响范围：仅限 exe 的图标与版本资源。安装包本身的产品名、快捷方式名、
+   安装目录选择、appId 与用户数据隔离都正常（见上方「安装包身份」）。
+
+   修复方式（二选一，都需要一次性的管理员操作）：
+     a) 用管理员权限的终端跑一次 npx electron-builder --win nsis --x64
+        （不加 signAndEditExecutable=false）
+     b) 打开 Windows「开发者模式」，之后普通权限即可创建符号链接，
+        再按 (a) 重跑
+
+   本构建**没有**做代码签名，这符合设计规格 12.2 的要求：
+   不得伪装成官方签名发行版。
+
+2. 上游 package.json 有一处失效的依赖别名（已修）
+   -----------------------------------------------
+   基线的 dependencies 里有：
+       "react-query": "@tanstack/react-query@^5.100.10"
+   缺少 npm 别名必需的 npm: 前缀，因此 npm 把它当成本地链接
+   （lockfile 里是 "link": true），实际目录从未生成。
+   electron-builder 扫描 node modules 时对这个悬空链接直接报
+   ENOENT 并中止打包。
+
+   全仓库只有 src/App.tsx 从 @tanstack/react-query 导入，
+   没有任何代码 import 'react-query'。因此该别名是死代码，
+   已删除并同步 lockfile。这不属于本地化改动，但它阻塞了交付物，
+   所以一并修掉并在此记录。
+
+3. C 盘余量偏低
+   -------------
+   打包时 C 盘仅剩 2.1 GB。已把 TEMP/TMP/ELECTRON_BUILDER_CACHE
+   全部指向 D:\zh-build-temp 才完成构建。后续重跑请沿用同样设置。
+   构建后 D 盘剩余 20 GB。
+
+尚未执行的验收项（需人工操作）
+==============================
+以下项目无法自动化，需在真机上人工完成，见 release-checklist.md 第 5-8 节：
+
+- 运行 NSIS 安装程序，显式选择 D:\Natively-ZH
+- 100% / 125% / 150% 三档缩放下的界面验收矩阵
+- 中文语音双通道验收（需飞书或等价软件 + 有效的云端密钥）
+- AI 中文回复验收（需有效密钥）
+- 运行超 10 秒后退出，确认没有后台下载 / 退出时安装
+- 按 rollback.md 走一遍回退流程
