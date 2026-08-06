@@ -256,7 +256,10 @@ npm test             # 全量回归
 
 ## 同步上游
 
-上游基线是 tag `v2.7.0`（commit `be7280b`），本 fork 在其之上 27 个提交。
+上游基线是 tag `v2.7.0`（commit `be7280b`），本 fork 在其之上 29 个提交。
+
+本仓库在 GitHub 上是上游的真实 fork（页面顶部有 *forked from* 标识），
+但新 clone 下来仍需自己加 `upstream` 远端：
 
 ```bash
 git remote add upstream https://github.com/Natively-AI-assistant/natively-cluely-ai-assistant.git
@@ -264,6 +267,10 @@ git fetch upstream
 git merge upstream/main        # 或某个新 tag
 npm run check:i18n             # 新增的英文文案会在这里红灯
 ```
+
+> 上游 `main` 已经走在 `v2.7.0` 之后，所以 GitHub 会显示本分支
+> 「ahead / behind」上游。这是刻意的：本 fork 锚定在 `v2.7.0` 这个
+> 已验证的基线上，而不是追踪上游的移动目标。合并新版本前请先读下面这段。
 
 合并后请读一遍
 [`docs/zh-cn/CONTINUE-HERE.md`](docs/zh-cn/CONTINUE-HERE.md)
