@@ -1,0 +1,399 @@
+name: Build Natively ZH macOS ARM64
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/build-macos-arm64.yml'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'scripts/build-native.js'
+      - 'scripts/ad-hoc-sign.js'
+      - 'scripts/rebuild-native-electron.js'
+      - 'scripts/ensure-sharp-mac-deps.js'
+      - 'scripts/ensure-sqlite-vec.js'
+      - 'scripts/verify-native-arch.js'
+      - 'build/entitlements.mac.plist'
+      - 'build/entitlements.mac.inherit.plist'
+      - 'native-module/**'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-natively-zh-macos-arm64-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build-macos-arm64:
+    name: Build and verify ARM64 DMG
+    runs-on: macos-14
+    timeout-minutes: 120
+    env:
+      CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+      NATIVELY_BUILD_ALL_MAC_ARCHES: '0'
+      npm_config_arch: arm64
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: false
+
+      - name: Confirm Apple Silicon runner
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Runner image: ${ImageOS:-unknown} ${ImageVersion:-unknown}"
+          echo "Hardware architecture: $(uname -m)"
+          echo "Node architecture before setup: $(node -p process.arch)"
+          test "$(uname -m)" = "arm64"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Setup Rust for Apple Silicon
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-darwin
+
+      - name: Install dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm ci
+          node scripts/verify-native-arch.js
+
+      - name: Verify Chinese resources and source feature inventory
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm run check:i18n
+          npm run test:i18n
+
+          required_source=(
+            "src/i18n/resources/zh-CN/common.json"
+            "src/i18n/resources/zh-CN/settings.json"
+            "src/i18n/resources/zh-CN/providers.json"
+            "electron/i18n/LocaleManager.ts"
+            "electron/audio/SystemAudioCapture.ts"
+            "electron/audio/MicrophoneCapture.ts"
+            "electron/audio/LocalWhisperSTT.ts"
+            "electron/audio/OpenAIStreamingSTT.ts"
+            "electron/ScreenshotHelper.ts"
+            "electron/services/screen/OcrProviderManager.ts"
+            "electron/services/screen/ScreenUnderstandingService.ts"
+            "electron/services/screen/VisionProviderRegistry.ts"
+            "electron/llm/ProviderRouter.ts"
+            "electron/LLMHelper.ts"
+            "electron/rag/RAGManager.ts"
+            "electron/rag/VectorStore.ts"
+            "electron/db/DatabaseManager.ts"
+            "electron/services/OllamaManager.ts"
+            "src/components/settings/AIProvidersSettings.tsx"
+            "src/components/LocalWhisperModelPanel.tsx"
+          )
+          for source_path in "${required_source[@]}"; do
+            test -s "$source_path" || {
+              echo "Missing required source module: $source_path"
+              exit 1
+            }
+          done
+
+          grep -q "curlCommand" src/components/settings/AIProvidersSettings.tsx
+          grep -q "responsePath" src/components/settings/AIProvidersSettings.tsx
+          grep -q "ollama" electron/llm/ProviderRouter.ts
+          grep -q "openai" electron/llm/ProviderRouter.ts
+          grep -q "claude" electron/llm/ProviderRouter.ts
+          grep -q "gemini" electron/llm/ProviderRouter.ts
+          grep -q "groq" electron/llm/ProviderRouter.ts
+
+      - name: Build renderer, Electron main, and Rust native module
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm run build
+          npm run build:electron
+          npm run build:native
+          node scripts/ensure-sharp-mac-deps.js
+
+          test -s native-module/index.darwin-arm64.node
+          native_desc="$(file -b native-module/index.darwin-arm64.node)"
+          echo "Rust native module: $native_desc"
+          grep -q "arm64" <<<"$native_desc"
+          if grep -q "x86_64" <<<"$native_desc"; then
+            echo "Rust native module unexpectedly contains x86_64"
+            exit 1
+          fi
+
+          required_output=(
+            "dist-electron/electron/main.js"
+            "dist-electron/electron/audio/SystemAudioCapture.js"
+            "dist-electron/electron/audio/MicrophoneCapture.js"
+            "dist-electron/electron/audio/LocalWhisperSTT.js"
+            "dist-electron/electron/ScreenshotHelper.js"
+            "dist-electron/electron/services/screen/OcrProviderManager.js"
+            "dist-electron/electron/services/screen/ScreenUnderstandingService.js"
+            "dist-electron/electron/services/screen/VisionProviderRegistry.js"
+            "dist-electron/electron/llm/ProviderRouter.js"
+            "dist-electron/electron/rag/RAGManager.js"
+            "dist-electron/electron/rag/VectorStore.js"
+            "dist-electron/electron/db/DatabaseManager.js"
+            "dist-electron/electron/services/OllamaManager.js"
+            "dist-electron/electron/i18n/LocaleManager.js"
+          )
+          for output_path in "${required_output[@]}"; do
+            test -s "$output_path" || {
+              echo "Missing required build output: $output_path"
+              exit 1
+            }
+          done
+
+      - name: Keep only macOS ARM64 dependency variants
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf \
+            node_modules/@img/sharp-darwin-x64 \
+            node_modules/@img/sharp-libvips-darwin-x64 \
+            node_modules/sqlite-vec-darwin-x64
+
+          if [ -d node_modules/onnxruntime-node/bin/napi-v3/darwin ]; then
+            find node_modules/onnxruntime-node/bin/napi-v3/darwin \
+              -mindepth 1 -maxdepth 1 -type d ! -name arm64 -exec rm -rf {} +
+          fi
+
+          test -d node_modules/@img/sharp-darwin-arm64
+          test -d node_modules/@img/sharp-libvips-darwin-arm64
+          test -d node_modules/sqlite-vec-darwin-arm64
+
+      - name: Package ad-hoc signed ARM64 DMG and ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          ./node_modules/.bin/electron-builder --mac dmg zip --arm64 --publish never
+
+      - name: Verify app bundle, modules, resources, and ad-hoc signature
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p release
+
+          APP_PATH="$(find release -maxdepth 3 -type d -name 'Natively ZH.app' -print -quit)"
+          test -n "$APP_PATH"
+          echo "APP_PATH=$APP_PATH" >> "$GITHUB_ENV"
+
+          MAIN_EXECUTABLE="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleExecutable' "$APP_PATH/Contents/Info.plist")"
+          MAIN_PATH="$APP_PATH/Contents/MacOS/$MAIN_EXECUTABLE"
+          test -x "$MAIN_PATH"
+
+          {
+            echo "App: $APP_PATH"
+            echo "Main executable: $(file -b "$MAIN_PATH")"
+          } > release/build-verification.txt
+
+          main_desc="$(file -b "$MAIN_PATH")"
+          grep -q "arm64" <<<"$main_desc"
+          if grep -q "x86_64" <<<"$main_desc"; then
+            echo "Main executable unexpectedly contains x86_64"
+            exit 1
+          fi
+
+          RUST_NODE="$APP_PATH/Contents/Resources/app.asar.unpacked/native-module/index.darwin-arm64.node"
+          test -s "$RUST_NODE"
+
+          : > release/native-architectures.txt
+          native_count=0
+          while IFS= read -r -d '' native_path; do
+            native_count=$((native_count + 1))
+            desc="$(file -b "$native_path")"
+            printf '%s: %s\n' "${native_path#"$APP_PATH"/}" "$desc" | tee -a release/native-architectures.txt
+            grep -q "arm64" <<<"$desc" || {
+              echo "Native library is not ARM64: $native_path"
+              exit 1
+            }
+            if grep -q "x86_64" <<<"$desc"; then
+              echo "Native library contains x86_64: $native_path"
+              exit 1
+            fi
+          done < <(find "$APP_PATH" -type f \( -name '*.node' -o -name '*.dylib' \) -print0)
+          test "$native_count" -gt 0
+
+          executable_count=0
+          while IFS= read -r -d '' executable_path; do
+            desc="$(file -b "$executable_path")"
+            if grep -q "Mach-O" <<<"$desc"; then
+              executable_count=$((executable_count + 1))
+              printf '%s: %s\n' "${executable_path#"$APP_PATH"/}" "$desc" | tee -a release/native-architectures.txt
+              grep -q "arm64" <<<"$desc" || {
+                echo "Mach-O executable is not ARM64: $executable_path"
+                exit 1
+              }
+              if grep -q "x86_64" <<<"$desc"; then
+                echo "Mach-O executable contains x86_64: $executable_path"
+                exit 1
+              fi
+            fi
+          done < <(find "$APP_PATH/Contents/MacOS" "$APP_PATH/Contents/Frameworks" -type f -perm -111 -print0)
+          test "$executable_count" -gt 0
+
+          grep -q "native-module/index.darwin-arm64.node" release/native-architectures.txt
+          grep -q "better_sqlite3.node" release/native-architectures.txt
+          grep -q "keytar.node" release/native-architectures.txt
+          grep -q "sharp-darwin-arm64.node" release/native-architectures.txt
+          grep -Eq "onnxruntime_binding.node|libonnxruntime" release/native-architectures.txt
+          grep -Eq "sqlite-vec-darwin-arm64|vec0.dylib" release/native-architectures.txt
+
+          test -s "$APP_PATH/Contents/Resources/models/Xenova/all-MiniLM-L6-v2/onnx/model_quantized.onnx"
+          test -s "$APP_PATH/Contents/Resources/models/Xenova/mobilebert-uncased-mnli/onnx/model_quantized.onnx"
+
+          ASAR_PATH="$APP_PATH/Contents/Resources/app.asar"
+          test -s "$ASAR_PATH"
+          node - "$ASAR_PATH" release/asar-contents.txt <<'NODE'
+          const fs = require('fs');
+          const asar = require('@electron/asar');
+          const [asarPath, outputPath] = process.argv.slice(2);
+          const entries = asar.listPackage(asarPath);
+          fs.writeFileSync(outputPath, entries.join('\n') + '\n');
+
+          const required = [
+            '/dist-electron/electron/main.js',
+            '/dist-electron/electron/audio/SystemAudioCapture.js',
+            '/dist-electron/electron/audio/MicrophoneCapture.js',
+            '/dist-electron/electron/audio/LocalWhisperSTT.js',
+            '/dist-electron/electron/ScreenshotHelper.js',
+            '/dist-electron/electron/services/screen/OcrProviderManager.js',
+            '/dist-electron/electron/services/screen/ScreenUnderstandingService.js',
+            '/dist-electron/electron/services/screen/VisionProviderRegistry.js',
+            '/dist-electron/electron/llm/ProviderRouter.js',
+            '/dist-electron/electron/rag/RAGManager.js',
+            '/dist-electron/electron/rag/VectorStore.js',
+            '/dist-electron/electron/db/DatabaseManager.js',
+            '/dist-electron/electron/services/OllamaManager.js',
+            '/dist-electron/electron/i18n/LocaleManager.js',
+          ];
+          for (const item of required) {
+            if (!entries.includes(item)) throw new Error(`Missing from app.asar: ${item}`);
+          }
+
+          for (const packageName of ['pdf-parse', 'mammoth', 'tesseract.js', 'sqlite-vec', 'onnxruntime-node']) {
+            if (!entries.some((item) => item.includes(`/node_modules/${packageName}/`))) {
+              throw new Error(`Missing packaged dependency: ${packageName}`);
+            }
+          }
+
+          const jsEntries = entries.filter((item) =>
+            item.endsWith('.js') && (item.startsWith('/dist/') || item.startsWith('/dist-electron/'))
+          );
+          let hasChinese = false;
+          let hasCustomProvider = false;
+          for (const item of jsEntries) {
+            const text = asar.extractFile(asarPath, item.replace(/^\//, '')).toString('utf8');
+            if (text.includes('简体中文') || text.includes('一键切换中文语音与回答')) hasChinese = true;
+            if (text.includes('curlCommand') && text.includes('responsePath')) hasCustomProvider = true;
+          }
+          if (!hasChinese) throw new Error('Packaged renderer/main bundles do not contain Chinese resources');
+          if (!hasCustomProvider) throw new Error('Packaged bundles do not contain custom OpenAI-compatible provider support');
+          NODE
+
+          codesign --verify --deep --strict --verbose=4 "$APP_PATH"
+          codesign -dv --verbose=4 "$APP_PATH" 2>&1 | tee -a release/build-verification.txt
+          grep -q "Signature=adhoc" release/build-verification.txt
+
+          {
+            echo "Native module count: $native_count"
+            echo "Mach-O executable count: $executable_count"
+            echo "App signature: ad-hoc, codesign --verify --deep --strict passed"
+            echo "Chinese bundles: present"
+            echo "Required feature modules: present in app.asar"
+          } >> release/build-verification.txt
+
+      - name: Verify DMG mount and embedded app
+        shell: bash
+        run: |
+          set -euo pipefail
+          dmg_count="$(find release -maxdepth 1 -type f -name '*.dmg' | wc -l | tr -d ' ')"
+          zip_count="$(find release -maxdepth 1 -type f -name '*.zip' | wc -l | tr -d ' ')"
+          test "$dmg_count" = "1"
+          test "$zip_count" = "1"
+
+          DMG_PATH="$(find release -maxdepth 1 -type f -name '*.dmg' -print -quit)"
+          ZIP_PATH="$(find release -maxdepth 1 -type f -name '*.zip' -print -quit)"
+          test -s "$DMG_PATH"
+          test -s "$ZIP_PATH"
+
+          dmg_size="$(stat -f '%z' "$DMG_PATH")"
+          zip_size="$(stat -f '%z' "$ZIP_PATH")"
+          test "$dmg_size" -gt 52428800
+          test "$zip_size" -gt 52428800
+
+          MOUNT_POINT="$RUNNER_TEMP/natively-zh-dmg"
+          mkdir -p "$MOUNT_POINT"
+          hdiutil attach "$DMG_PATH" -nobrowse -readonly -mountpoint "$MOUNT_POINT"
+          trap 'hdiutil detach "$MOUNT_POINT" -quiet || true' EXIT
+
+          DMG_APP="$(find "$MOUNT_POINT" -maxdepth 1 -type d -name 'Natively ZH.app' -print -quit)"
+          test -n "$DMG_APP"
+          DMG_EXECUTABLE="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleExecutable' "$DMG_APP/Contents/Info.plist")"
+          dmg_main_desc="$(file -b "$DMG_APP/Contents/MacOS/$DMG_EXECUTABLE")"
+          echo "DMG embedded executable: $dmg_main_desc" | tee -a release/build-verification.txt
+          grep -q "arm64" <<<"$dmg_main_desc"
+          if grep -q "x86_64" <<<"$dmg_main_desc"; then
+            echo "DMG embedded executable unexpectedly contains x86_64"
+            exit 1
+          fi
+
+          codesign --verify --deep --strict --verbose=4 "$DMG_APP"
+          echo "DMG mount: passed; embedded app exists and signature verifies" >> release/build-verification.txt
+
+          hdiutil detach "$MOUNT_POINT" -quiet
+          trap - EXIT
+
+          (
+            cd release
+            shasum -a 256 "$(basename "$DMG_PATH")" "$(basename "$ZIP_PATH")" > SHA256SUMS.txt
+          )
+
+          {
+            echo "DMG file: $(basename "$DMG_PATH")"
+            echo "DMG bytes: $dmg_size"
+            echo "ZIP file: $(basename "$ZIP_PATH")"
+            echo "ZIP bytes: $zip_size"
+            echo
+            cat release/SHA256SUMS.txt
+          } | tee -a release/build-verification.txt
+
+          {
+            echo "## Natively ZH macOS ARM64 build"
+            echo
+            echo "- DMG: \`$(basename "$DMG_PATH")\` ($dmg_size bytes)"
+            echo "- ZIP: \`$(basename "$ZIP_PATH")\` ($zip_size bytes)"
+            echo "- Runner: \`$(uname -m)\`"
+            echo "- Signing: ad-hoc; strict deep verification passed"
+            echo "- DMG mount verification: passed"
+            echo
+            echo '```text'
+            cat release/SHA256SUMS.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload installable artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Natively-ZH-macOS-arm64
+          path: |
+            release/*.dmg
+            release/*.zip
+            release/SHA256SUMS.txt
+            release/build-verification.txt
+            release/native-architectures.txt
+            release/asar-contents.txt
+            release/latest*.yml
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 14
