@@ -163,10 +163,15 @@ jobs:
             node_modules/@img/sharp-libvips-darwin-x64 \
             node_modules/sqlite-vec-darwin-x64
 
-          if [ -d node_modules/onnxruntime-node/bin/napi-v3/darwin ]; then
-            find node_modules/onnxruntime-node/bin/napi-v3/darwin \
-              -mindepth 1 -maxdepth 1 -type d ! -name arm64 -exec rm -rf {} +
-          fi
+          for napi_dir in node_modules/onnxruntime-node/bin/napi-*; do
+            [ -d "$napi_dir" ] || continue
+            find "$napi_dir" \
+              -mindepth 1 -maxdepth 1 -type d ! -name darwin -exec rm -rf {} +
+            if [ -d "$napi_dir/darwin" ]; then
+              find "$napi_dir/darwin" \
+                -mindepth 1 -maxdepth 1 -type d ! -name arm64 -exec rm -rf {} +
+            fi
+          done
 
           test -d node_modules/@img/sharp-darwin-arm64
           test -d node_modules/@img/sharp-libvips-darwin-arm64
