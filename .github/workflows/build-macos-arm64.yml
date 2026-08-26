@@ -172,11 +172,36 @@ jobs:
           test -d node_modules/@img/sharp-libvips-darwin-arm64
           test -d node_modules/sqlite-vec-darwin-arm64
 
-      - name: Package ad-hoc signed ARM64 DMG and ZIP
+      - name: Package ad-hoc signed ARM64 app and ZIP
         shell: bash
         run: |
           set -euo pipefail
-          ./node_modules/.bin/electron-builder --mac dmg zip --arm64 --publish never
+          ./node_modules/.bin/electron-builder --mac zip --arm64 --publish never
+
+      - name: Create installable ARM64 DMG with hdiutil
+        shell: bash
+        run: |
+          set -euo pipefail
+          APP_PATH="$(find release -maxdepth 3 -type d -name 'Natively ZH.app' -print -quit)"
+          test -n "$APP_PATH"
+
+          VERSION="$(node -p "require('./package.json').version")"
+          DMG_PATH="release/Natively-ZH-${VERSION}-arm64.dmg"
+          STAGE_DIR="$RUNNER_TEMP/natively-zh-dmg-stage"
+
+          rm -rf "$STAGE_DIR"
+          mkdir -p "$STAGE_DIR"
+          ditto "$APP_PATH" "$STAGE_DIR/Natively ZH.app"
+          ln -s /Applications "$STAGE_DIR/Applications"
+
+          hdiutil create \
+            -volname "Natively ZH" \
+            -srcfolder "$STAGE_DIR" \
+            -ov \
+            -format UDZO \
+            "$DMG_PATH"
+
+          test -s "$DMG_PATH"
 
       - name: Verify app bundle, modules, resources, and ad-hoc signature
         shell: bash
