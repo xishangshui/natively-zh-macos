@@ -412,18 +412,11 @@ jobs:
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Upload installable artifacts
+      - name: Upload DMG only
         uses: actions/upload-artifact@v4
         with:
-          name: Natively-ZH-macOS-arm64
-          path: |
-            release/*.dmg
-            release/*.zip
-            release/SHA256SUMS.txt
-            release/build-verification.txt
-            release/native-architectures.txt
-            release/asar-contents.txt
-            release/latest*.yml
+          name: Natively-ZH-macOS-arm64-DMG-only
+          path: release/*.dmg
           if-no-files-found: error
           compression-level: 0
           retention-days: 14
